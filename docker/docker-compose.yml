@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:15
+    image: bitnami/postgresql
     container_name: school-crm-db
     restart: always
     environment:
