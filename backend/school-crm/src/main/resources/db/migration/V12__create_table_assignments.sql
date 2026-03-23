@@ -1,11 +1,10 @@
 CREATE TABLE assignments
 (
     id          UUID PRIMARY KEY,
-    class_id    UUID      NOT NULL REFERENCES school_classes (id),
-    subject_id  UUID      NOT NULL REFERENCES subjects (id),
     teacher_id  UUID      NOT NULL REFERENCES teachers (user_id),
+    lesson_id   UUID      NOT NULL REFERENCES lessons (id),
     title       TEXT      NOT NULL,
     description TEXT,
     due_date    DATE      NOT NULL,
-    created_at  TIMESTAMP NOT NULL
+    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 )

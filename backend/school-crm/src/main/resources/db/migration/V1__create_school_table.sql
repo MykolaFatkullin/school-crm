@@ -1,4 +1,5 @@
-CREATE TABLE schools(
-    id UUID PRIMARY KEY,
+CREATE TABLE schools
+(
+    id   UUID PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 )

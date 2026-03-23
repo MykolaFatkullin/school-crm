@@ -10,5 +10,7 @@ CREATE TABLE school_users
     updated_at TIMESTAMP    NOT NULL,
     role       VARCHAR(255) NOT NULL,
     birth_date DATE         NOT NULL,
-    school_id  UUID REFERENCES schools(id)
+    school_id  UUID REFERENCES schools (id),
+
+    CONSTRAINT check_role CHECK (role IN ('SUPER_ADMIN', 'ADMIN', 'TEACHER', 'STUDENT'))
 );
