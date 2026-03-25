@@ -1,4 +1,4 @@
-CREATE TABLE students_assignments
+CREATE TABLE student_assignments
 (
     id            UUID PRIMARY KEY,
     assignment_id UUID        NOT NULL REFERENCES assignments (id),

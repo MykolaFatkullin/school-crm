@@ -6,3 +6,11 @@ spring:
     username: user
     password: password
     url: jdbc:postgresql://localhost:5432/school_crm
+  jpa:
+    hibernate:
+      ddl-auto: none
+jwt:
+  secret-key: yourSuperSecretKeyThatIsAtLeast256BitsLongForHS256Algorithm
+  expiration-in-ms: 60000
+  private-key-path: keys/private_key.pem
+  public-key-path: keys/public_key.pem
