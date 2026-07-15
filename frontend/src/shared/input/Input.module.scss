@@ -1,0 +1,53 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+.inputData {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input {
+  box-sizing: border-box;
+  height: 48px;
+  width: 306px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid $color-gray-250;
+  color: $color-text-secondary;
+
+  @include font(body);
+
+  transition: border $animation-speed,
+  box-shadow $animation-speed;
+
+
+  &:hover {
+    border: 1px solid $color-primary-border-focus;
+    box-shadow: 0 0 0 3px $focus-ring-primary;
+  }
+
+  &:focus {
+    outline: none;
+    border: 1px solid $color-primary;
+  }
+
+  &:disabled {
+    border: 1px solid $color-gray-400;
+    background-color: $color-background;
+    pointer-events: none;
+  }
+}
+
+.label {
+  @include font(caption);
+}
+
+.inputError {
+  border: 1px solid $color-danger;
+}
+
+.errorText {
+  color: $color-danger;
+  @include font(error);
+}

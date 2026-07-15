@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.schoolcrm.domain.AttendanceStatus;
 
 import java.util.UUID;
 
@@ -39,5 +40,5 @@ public class AttendanceEntity {
     private StudentEntity student;
 
     @Column(name = "is_present", nullable = false)
-    private boolean present;
+    private AttendanceStatus attendanceStatus;
 }

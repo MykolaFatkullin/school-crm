@@ -1,0 +1,16 @@
+@use "variables" as *;
+
+@mixin font($name) {
+  $font: map-get($typography, $name);
+
+  font-size: map-get($font, font-size);
+  font-weight: map-get($font, font-weight);
+  line-height: map-get($font, line-height);
+}
+
+@mixin hover($_property, $_toValue) {
+  transition: #{$_property} $animation-speed;
+  &:hover {
+    #{$_property}: $_toValue;
+  }
+}
