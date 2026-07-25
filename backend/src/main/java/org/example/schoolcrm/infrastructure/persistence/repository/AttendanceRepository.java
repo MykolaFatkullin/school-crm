@@ -8,4 +8,9 @@ import java.util.UUID;
 
 @Repository
 public interface AttendanceRepository extends JpaRepository<AttendanceEntity, UUID> {
+
+
+
+
+  hello worldlllllsdlsldssdsdsd
 }
