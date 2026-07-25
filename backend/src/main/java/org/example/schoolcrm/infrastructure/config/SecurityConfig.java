@@ -30,7 +30,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
+        System.out.ptinyln("Some message to test review");
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s ->
