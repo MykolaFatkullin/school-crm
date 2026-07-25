@@ -8,3 +8,4 @@ CREATE TABLE grades
     CONSTRAINT uniq_grade UNIQUE (student_id, lesson_id),
     CONSTRAINT check_grade_range CHECK (grade >= 1 AND grade <= 12)
 );
+fdsdffdssdfsdf
