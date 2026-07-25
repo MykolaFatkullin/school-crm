@@ -6,7 +6,7 @@ type AuthLayoutContextType = {
 };
 
 export const AuthLayoutContext = createContext<AuthLayoutContextType | null>(null);
-
+export const avs = "Hello oooo";
 export const useAuthLayout = () => {
   const context = useContext(AuthLayoutContext);
 
