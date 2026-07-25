@@ -16,6 +16,7 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     public RefreshTokenEntity create(UUID userId, Instant expiresAt) {
+        System.out.println("HEllo world!");
         var tokenEntity = RefreshTokenEntity.builder()
                 .userId(userId)
                 .expiresAt(expiresAt)
