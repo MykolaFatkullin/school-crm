@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: AI Review
-        uses: MykolaFatkullin/ai-review-action@main
+        uses: MykolaFatkullin/ai-review-action@master
         with:
           github-token: ${{ github.token }}
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
