@@ -30,7 +30,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
+        System.out.println("Hello!");
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s ->
