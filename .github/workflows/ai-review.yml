@@ -6,30 +6,32 @@ on:
       - opened
       - synchronize
       - reopened
-permissions:
-  contents: read
-  pull-requests: write
+
 jobs:
   review:
     runs-on: ubuntu-latest
-    
+
+    permissions:
+      pull-requests: write
+      contents: read
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: Fetch base branch
+      - uses: actions/checkout@v4
+
+      - name: Fetch full history
         run: git fetch origin ${{ github.base_ref }}
 
       - name: Generate diff
         run: |
-         git diff origin/${{ github.base_ref }}...HEAD > diff.txt
+          git diff origin/${{ github.base_ref }}...HEAD > diff.patch
 
-      - name: Load prompts
-        run: |
-          echo "PROJECT_CONTEXT<<EOF" >> $GITHUB_ENV
-          cat .github/ai/context.md >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
-          echo "REVIEW_PROMPT<<EOF" >> $GITHUB_ENV
-          cat .github/ai/reviewer.md >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+      - run: npm install openai
+
+      - name: Run AI Review
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node .github/scripts/review.js
