@@ -1,4 +1,4 @@
-name: AI Code Review
+name: AI Review
 
 on:
   pull_request:
@@ -6,41 +6,35 @@ on:
       - opened
       - synchronize
       - reopened
-
+  issue_comment:
+    types: created
+    
 permissions:
   contents: read
   pull-requests: write
+  issues: read
 
 jobs:
   review:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Read prompts
-        id: prompts
-        run: |
-          {
-            echo "context<<EOF"
-            cat .github/ai/context.md
-            echo EOF
-
-            echo "reviewer<<EOF"
-            cat .github/ai/reviewer.md
-            echo EOF
-          } >> "$GITHUB_OUTPUT"
-
       - name: AI Review
-        uses: openai/openai-codex-action@v1
+        uses: MykolaFatkullin/ai-review-action@master
         with:
+          github-token: ${{ secrets.AI_REVIEW_BOT_TOKEN }}
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          github-bot-login: EzioAuditoreReviewer
+          model: gpt-5
+          prompt-path: .github/ai
+          exclude-files: |
+            **/*.pem
+            **/*.json
+            **/*.md
 
-          prompt: |
-            ${{ steps.prompts.outputs.context }}
-
-            ---
-
-            ${{ steps.prompts.outputs.reviewer }}
+            
