@@ -32,3 +32,9 @@ jobs:
           github-bot-login: EzioAuditoreReviewer
           model: gpt-5
           prompt-path: .github/ai
+          exclude-files: |
+            **/*.pem
+            **/*.json
+            **/*.md
+
+            
