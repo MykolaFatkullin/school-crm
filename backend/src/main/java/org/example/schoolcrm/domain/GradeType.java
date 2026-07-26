@@ -1,10 +1,10 @@
 package org.example.schoolcrm.domain;
 
 public enum GradeType {
-    LESSON,
-    HOMEWORK,
-    QUIZ,
-    TEST,
-    EXAM,
-    PROJECT
+  LESSON,
+  HOMEWORK,
+  QUIZ,
+  TEST,
+  EXAM,
+  PROJECT
 }

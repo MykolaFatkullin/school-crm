@@ -1,7 +1,12 @@
+import com.github.spotbugs.snom.SpotBugsTask
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.4'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.diffplug.spotless' version '8.8.0'
+    id 'checkstyle'
+    id 'com.github.spotbugs' version '6.5.9'
 }
 
 group = "org.example"
@@ -29,6 +34,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
     implementation("org.mapstruct:mapstruct:1.6.3")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
@@ -38,3 +44,39 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 }
 
+spotless {
+    java {
+        googleJavaFormat()
+
+        removeUnusedImports()
+
+        trimTrailingWhitespace()
+
+        endWithNewline()
+    }
+}
+
+checkstyle {
+    toolVersion = "10.26.1"
+}
+
+spotbugs {
+    effort = 'max'
+    reportLevel = 'low'
+}
+
+tasks.withType(SpotBugsTask).configureEach {
+
+    reports {
+        html.required = true
+        xml.required = false
+    }
+}
+
+tasks.register("format") {
+    dependsOn("spotlessApply")
+}
+
+check {
+    dependsOn spotlessCheck
+}

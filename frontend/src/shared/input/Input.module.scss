@@ -1,16 +1,17 @@
-@use "../styles/variables" as *;
-@use "../styles/mixins" as *;
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
 
 .inputData {
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 8px;
 }
 
 .input {
   box-sizing: border-box;
   height: 48px;
-  width: 306px;
+  width: 100%;
   padding: 16px;
   border-radius: 8px;
   border: 1px solid $color-gray-250;
@@ -18,9 +19,9 @@
 
   @include font(body);
 
-  transition: border $animation-speed,
-  box-shadow $animation-speed;
-
+  transition:
+    border $animation-speed,
+    box-shadow $animation-speed;
 
   &:hover {
     border: 1px solid $color-primary-border-focus;
@@ -49,5 +50,10 @@
 
 .errorText {
   color: $color-danger;
+  min-height: 18px;
   @include font(error);
+}
+
+.errorTextHidden {
+  visibility: hidden;
 }

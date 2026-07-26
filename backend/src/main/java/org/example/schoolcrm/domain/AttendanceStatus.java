@@ -1,8 +1,8 @@
 package org.example.schoolcrm.domain;
 
 public enum AttendanceStatus {
-    PRESENT,
-    ABSENT,
-    LATE,
-    EXCUSED
+  PRESENT,
+  ABSENT,
+  LATE,
+  EXCUSED
 }

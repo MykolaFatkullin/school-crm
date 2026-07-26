@@ -10,8 +10,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class ApiError {
 
-    private String message;
+  private String message;
 
-    @JsonProperty("error_type")
-    private ErrorTypes errorType;
+  @JsonProperty("error_type")
+  private ErrorTypes errorType;
 }

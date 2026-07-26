@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+  private final AuthService authService;
 
-    @PostMapping("/login")
-    public TokenResponse login(@RequestBody LoginRequest loginRequest) {
-        return authService.login(loginRequest);
-    }
+  @PostMapping("/login")
+  public TokenResponse login(@RequestBody LoginRequest loginRequest) {
+    return authService.login(loginRequest);
+  }
 
-    @PostMapping("/refresh")
-    public TokenResponse refreshToken(@RequestBody RefreshRequest refreshRequest) {
-        return authService.refresh(refreshRequest);
-    }
+  @PostMapping("/refresh")
+  public TokenResponse refreshToken(@RequestBody RefreshRequest refreshRequest) {
+    return authService.refresh(refreshRequest);
+  }
 
-    @PostMapping("/logout")
-    public void logout(@RequestBody RefreshRequest refreshRequest) {
-        authService.logout(refreshRequest);
-    }
+  @PostMapping("/logout")
+  public void logout(@RequestBody RefreshRequest refreshRequest) {
+    authService.logout(refreshRequest);
+  }
 }

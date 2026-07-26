@@ -1,13 +1,14 @@
 import styles from './Button.module.scss';
 import classNames from 'classnames';
 import { ButtonType } from './Button.types';
+import React from 'react';
 
-type Props = {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   variant: ButtonType;
   children: React.ReactNode;
-};
+}
 
 export const Button = ({ disabled, onClick, variant, children }: Props) => {
   return (

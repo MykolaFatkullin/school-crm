@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class ApiException extends RuntimeException {
 
-    private final ErrorTypes type;
+  private final ErrorTypes type;
 
-    public ApiException(ErrorTypes errorType, String message) {
-        super(message);
-        this.type = errorType;
-    }
+  public ApiException(ErrorTypes errorType, String message) {
+    super(message);
+    this.type = errorType;
+  }
 }

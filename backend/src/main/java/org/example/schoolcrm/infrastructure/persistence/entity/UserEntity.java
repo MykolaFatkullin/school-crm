@@ -11,6 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,10 +24,6 @@ import org.example.schoolcrm.domain.UserRoles;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.UUID;
-
 @Entity
 @Table(name = "school_users")
 @Getter
@@ -34,41 +33,42 @@ import java.util.UUID;
 @Builder
 public class UserEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+  @Column(name = "first_name", nullable = false)
+  private String firstName;
 
-    @Column(unique = true, nullable = false)
-    private String email;
+  @Column(name = "last_name", nullable = false)
+  private String lastName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Gender gender;
+  @Column(unique = true, nullable = false)
+  private String email;
 
-    @Column(nullable = false)
-    private String password;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private Gender gender;
 
-    @Column(name = "created_at", nullable = false)
-    @CreationTimestamp
-    private Instant createdAt;
+  @Column(nullable = false)
+  private String password;
 
-    @Column(name = "updated_at", nullable = false)
-    @UpdateTimestamp
-    private Instant updatedAt;
+  @Column(name = "created_at", nullable = false)
+  @CreationTimestamp
+  private Instant createdAt;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserRoles role;
+  @Column(name = "updated_at", nullable = false)
+  @UpdateTimestamp
+  private Instant updatedAt;
 
-    @Column(name = "birth_date", nullable = false)
-    private LocalDate birthDate;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private UserRoles role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "school_id", nullable = false)
-    private SchoolEntity school;
+  @Column(name = "birth_date", nullable = false)
+  private LocalDate birthDate;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "school_id", nullable = false)
+  private SchoolEntity school;
 }

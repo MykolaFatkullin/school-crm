@@ -1,43 +1,38 @@
 import styles from './Input.module.scss';
 import classNames from 'classnames';
-import { HTMLInputTypeAttribute } from 'react';
+import React, { forwardRef, Ref } from 'react';
 
-type Props = {
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  value: string;
-  placeholder?: string;
-  disabled?: boolean;
   error?: string;
-  type?: HTMLInputTypeAttribute;
-};
+}
 
-export const Input = ({
-  label,
-  value,
-  placeholder,
-  disabled,
-  error,
-  type,
-}: Props) => {
-  const isError = !!error;
-  return (
-    <div className={styles.inputData}>
-      <label htmlFor={label} className={styles.label}>
-        {label}
-      </label>
-      <input
-        id={label}
-        type="text"
-        placeholder={placeholder}
-        disabled={disabled}
-        value={value}
-        typeof={type}
-        className={classNames(styles.input, {
-          [styles.inputError]: isError,
-          [styles.inputDisabled]: disabled,
-        })}
-      />
-      {isError && <span className={styles.errorText}>{error}</span>}
-    </div>
-  );
-};
+export const Input = forwardRef(
+  ({ label, error, ...inputProps }: Props, ref: Ref<HTMLInputElement>) => {
+    const isError = error;
+
+    return (
+      <div className={styles.inputData}>
+        <label htmlFor={label} className={styles.label}>
+          {label}
+        </label>
+        <input
+          {...inputProps}
+          id={label}
+          className={classNames(styles.input, {
+            [styles.inputError]: isError,
+            [styles.inputDisabled]: inputProps.disabled,
+          })}
+          ref={ref}
+        />
+        <span
+          className={classNames(styles.errorText, {
+            [styles.errorTextHidden]: !isError,
+          })}
+        >
+          {error}
+        </span>
+      </div>
+    );
+  },
+);

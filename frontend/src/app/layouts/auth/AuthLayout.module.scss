@@ -1,19 +1,18 @@
-@use "../../../shared/styles/variables" as *;
+@use '../../../shared/styles/variables' as *;
 
 .authLayout {
-  padding-top: 100px;
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 53px;
 }
 
-.authLayoutTitle {}
-
 .authLayoutContent {
-  width: 512px;
+  box-shadow: 0 8px 24px 0 $shadow-elevation;
+  width: 480px;
+  border-radius: 16px;
   background-color: $color-white;
   height: 100%;
-  padding: 55px 132px;
+  padding: 40px;
   box-sizing: border-box;
 }

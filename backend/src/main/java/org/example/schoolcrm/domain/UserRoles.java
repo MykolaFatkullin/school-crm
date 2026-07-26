@@ -1,9 +1,9 @@
 package org.example.schoolcrm.domain;
 
 public enum UserRoles {
-    SUPER_ADMIN,
-    ADMIN,
-    TEACHER,
-    STUDENT,
-    PARENT
+  SUPER_ADMIN,
+  ADMIN,
+  TEACHER,
+  STUDENT,
+  PARENT
 }

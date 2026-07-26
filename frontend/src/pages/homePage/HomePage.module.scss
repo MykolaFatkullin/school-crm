@@ -1,0 +1,33 @@
+@use '../../shared/styles/variables' as *;
+@use '../../shared/styles/mixins' as *;
+.homePage {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.headingTitle {
+  @include font(display);
+}
+
+.headingSubtitle {
+  color: $color-text-secondary;
+  @include font(body);
+}
+
+.buttons {
+  padding-inline: 40px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+}

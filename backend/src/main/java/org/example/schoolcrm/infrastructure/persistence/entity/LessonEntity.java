@@ -9,14 +9,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Table(name = "lessons")
@@ -27,17 +26,17 @@ import java.util.UUID;
 @Builder
 public class LessonEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id", nullable = false)
-    private ScheduleEntity schedule;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "schedule_id", nullable = false)
+  private ScheduleEntity schedule;
 
-    @Column(nullable = false)
-    private LocalDate date;
+  @Column(nullable = false)
+  private LocalDate date;
 
-    @Column(name = "is_closed", nullable = false)
-    private Boolean closed;
+  @Column(name = "is_closed", nullable = false)
+  private Boolean closed;
 }

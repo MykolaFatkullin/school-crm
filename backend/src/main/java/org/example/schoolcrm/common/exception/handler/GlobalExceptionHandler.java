@@ -11,26 +11,26 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<ApiError> handleApiException(ApiException exception) {
-        var status = mapStatus(exception.getType());
+  @ExceptionHandler(ApiException.class)
+  public ResponseEntity<ApiError> handleApiException(ApiException exception) {
+    var status = mapStatus(exception.getType());
 
-        var apiError = new ApiError(exception.getMessage(), exception.getType());
+    var apiError = new ApiError(exception.getMessage(), exception.getType());
 
-        return ResponseEntity.status(status).body(apiError);
-    }
+    return ResponseEntity.status(status).body(apiError);
+  }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> handleException(Exception exception) {
-        var status = HttpStatus.INTERNAL_SERVER_ERROR;
-exception.printStackTrace();
-        return ResponseEntity.status(status).build();
-    }
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<ApiError> handleException(Exception exception) {
+    var status = HttpStatus.INTERNAL_SERVER_ERROR;
+    exception.printStackTrace();
+    return ResponseEntity.status(status).build();
+  }
 
-    private HttpStatus mapStatus(ErrorTypes type) {
-        return switch (type) {
-            case AUTH_ERROR -> HttpStatus.UNAUTHORIZED;
-            case NOT_FOUND_ERROR -> HttpStatus.NOT_FOUND;
-        };
-    }
+  private HttpStatus mapStatus(ErrorTypes type) {
+    return switch (type) {
+      case AUTH_ERROR -> HttpStatus.UNAUTHORIZED;
+      case NOT_FOUND_ERROR -> HttpStatus.NOT_FOUND;
+    };
+  }
 }
