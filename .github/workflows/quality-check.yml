@@ -23,10 +23,10 @@ jobs:
         with:
           filters: |
             backend:
-              - 'backend/**'
+              - "backend/**"
 
             frontend:
-              - 'frontend/**'
+              - "frontend/**"
 
   backend:
     name: Backend Quality Checks
@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Java 25
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -51,10 +51,17 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - run: ./gradlew spotlessCheck
-      - run: ./gradlew checkstyleMain
-      - run: ./gradlew spotbugsMain
-      - run: ./gradlew assemble
+      - name: Spotless
+        run: ./gradlew spotlessCheck
+
+      - name: Checkstyle
+        run: ./gradlew checkstyleMain
+
+      - name: SpotBugs
+        run: ./gradlew spotbugsMain
+
+      - name: Assemble
+        run: ./gradlew assemble
 
   frontend:
     name: Frontend Quality Checks
@@ -77,8 +84,18 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - run: npm ci
-      - run: npm run format:check
-      - run: npm run lint
-      - run: npm run type-check
-      - run: npm run knip
-      - run: npm run build
+
+      - name: Prettier
+        run: npm run format:check
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: TypeScript
+        run: npm run type-check
+
+      - name: Knip
+        run: npm run knip
+
+      - name: Build
+        run: npm run build
