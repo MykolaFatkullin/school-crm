@@ -10,8 +10,8 @@ public class ValidationException extends ApiException {
   private final FieldError[] fieldErrors;
 
   public ValidationException(String message, FieldError... fieldErrors) {
-    this.fieldErrors = fieldErrors;
-
     super(ErrorTypes.VALIDATION_ERROR, message);
+
+    this.fieldErrors = fieldErrors;
   }
 }
