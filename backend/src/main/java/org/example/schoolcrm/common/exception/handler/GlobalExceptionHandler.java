@@ -42,8 +42,8 @@ public class GlobalExceptionHandler {
 
     List<FieldError> fieldErrors = null;
 
-    if (exception.getType() == ErrorTypes.VALIDATION_ERROR) {
-      fieldErrors = List.of(((ValidationException) exception).getFieldErrors());
+    if (exception instanceof ValidationException validationException) {
+      fieldErrors = List.of(validationException.getFieldErrors());
     }
 
     val apiError = new ApiError(exception.getMessage(), exception.getType(), fieldErrors);
