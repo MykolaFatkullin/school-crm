@@ -1,0 +1,112 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.Select {
+  @include form-control;
+}
+
+.label {
+  @include form-control-label;
+}
+
+.selectTrigger {
+  @include form-control-field;
+
+  background-color: $color-white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selectTriggerError {
+  @include form-control-error;
+}
+
+.selectTrigger[data-placeholder] > span {
+  color: $color-text-secondary;
+  @include font(body);
+}
+
+.selectTrigger > span {
+  color: $color-text-secondary;
+  @include font(body);
+}
+
+.selectValue {
+  @include font(body);
+}
+
+.selectContent {
+  background-color: $color-white;
+  display: flex;
+  width: var(--radix-select-trigger-width);
+
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid $color-gray-250;
+  box-shadow:
+    0 2px 4px 0 $color-select-primary-shadow,
+    0 4px 12px 0 $color-select-secondary-shadow;
+}
+
+.selectViewport {
+  width: 100%;
+}
+
+.selectGroup {
+  @include font(body);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+}
+
+.selectItem {
+  @include font(body);
+
+  box-sizing: border-box;
+  text-align: center;
+  width: 100%;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.selectItem[data-highlighted] {
+  outline: none;
+  background-color: $color-background;
+}
+
+.selectItem[data-state='checked'] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: $color-primary-tint;
+}
+
+.selectItem[data-state='checked'] > span {
+  color: $color-primary;
+}
+
+.selectItemIndicator {
+  width: 16px;
+  height: 16px;
+}
+
+.selectIconWrapper {
+  width: 18px;
+  height: 18px;
+}
+
+.textHidden {
+  visibility: hidden;
+}
+
+.messageText {
+  @include form-control-message-block;
+}
+
+.messageError {
+  @include form-control-error-message;
+}

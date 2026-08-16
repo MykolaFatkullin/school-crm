@@ -9,8 +9,27 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+  web:
+    locale: en_US
+    locale-resolver: fixed
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: schoolcrm84@gmail.com
+    password: lbgy loim nhip llkw
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+app:
+  default-email: schoolcrm@crm.com
+  frontend-url: http://localhost:5173
+
 jwt:
   secret-key: yourSuperSecretKeyThatIsAtLeast256BitsLongForHS256Algorithm
   expiration-in-ms: 60000
   private-key-path: keys/private_key.pem
   public-key-path: keys/public_key.pem
+

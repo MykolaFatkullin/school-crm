@@ -1,0 +1,29 @@
+@use "../../styles/variables" as *;
+
+.icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--icon-color, currentColor);
+  flex-shrink: 0;
+
+  svg {
+    display: block;
+  }
+}
+
+.withBackground {
+  background-color: var(--icon-bg);
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.ellipse {
+  width: 64px;
+  height: 38px;
+  border-radius: 16px;
+}

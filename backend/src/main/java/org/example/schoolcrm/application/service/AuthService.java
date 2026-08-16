@@ -1,17 +1,24 @@
 package org.example.schoolcrm.application.service;
 
+import jakarta.mail.MessagingException;
+import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
+import lombok.val;
+import org.example.schoolcrm.application.service.mail.MailService;
+import org.example.schoolcrm.common.exception.auth.AuthException;
+import org.example.schoolcrm.common.exception.system.EmailNotSentException;
+import org.example.schoolcrm.domain.MailType;
+import org.example.schoolcrm.domain.model.LoginResult;
+import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
+import org.example.schoolcrm.infrastructure.security.JwtProvider;
+import org.example.schoolcrm.web.dto.auth.ChangePasswordRequest;
+import org.example.schoolcrm.web.dto.auth.LoginRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
-import org.example.schoolcrm.common.exception.auth.AuthException;
-import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
-import org.example.schoolcrm.infrastructure.security.JwtProvider;
-import org.example.schoolcrm.web.dto.auth.LoginRequest;
-import org.example.schoolcrm.web.dto.auth.RefreshRequest;
-import org.example.schoolcrm.web.dto.auth.TokenResponse;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +28,10 @@ public class AuthService {
   private final JwtProvider jwtProvider;
   private final UserService userService;
   private final PasswordEncoder passwordEncoder;
+  private final MailService mailService;
+  private final EmailVerificationService emailVerificationService;
 
-  public TokenResponse login(LoginRequest loginRequest) {
+  public LoginResult login(LoginRequest loginRequest) {
     var user = userService.findByEmail(loginRequest.email());
 
     if (user == null) {
@@ -33,6 +42,10 @@ public class AuthService {
       throw new AuthException("Invalid password");
     }
 
+    if (!Boolean.TRUE.equals(user.getActivated())) {
+      throw new AuthException("User is not activated");
+    }
+
     var jwt =
         jwtProvider.generateAccessToken(user.getId(), user.getRole().name(), getSchoolId(user));
 
@@ -40,11 +53,11 @@ public class AuthService {
 
     var refresh = refreshTokenService.create(user.getId(), expiresAt);
 
-    return new TokenResponse(jwt, refresh.getToken());
+    return new LoginResult(jwt, refresh.getToken().toString());
   }
 
-  public TokenResponse refresh(RefreshRequest refreshRequest) {
-    var existing = refreshTokenService.validate(refreshRequest.refreshToken());
+  public LoginResult refresh(UUID refreshToken) {
+    var existing = refreshTokenService.validate(refreshToken);
 
     refreshTokenService.delete(existing.getToken());
 
@@ -55,11 +68,44 @@ public class AuthService {
 
     var newToken = refreshTokenService.create(user.getId(), existing.getExpiresAt());
 
-    return new TokenResponse(access, newToken.getToken());
+    return new LoginResult(access, newToken.getToken().toString());
   }
 
-  public void logout(RefreshRequest refreshRequest) {
-    refreshTokenService.delete(refreshRequest.refreshToken());
+  public void logout(UUID refreshToken) {
+    if (refreshToken == null) {
+      return;
+    }
+
+    refreshTokenService.delete(refreshToken);
+  }
+
+  public void resetPassword(@NotBlank String email) {
+    val storedUser = userService.findByEmail(email);
+
+    if (storedUser == null) {
+      return;
+    }
+
+    val token = emailVerificationService.generateVerificationCode(storedUser, MailType.RESET_PASSWORD);
+
+    try {
+      mailService.sendResetPasswordMail(token, storedUser.getFirstName(), storedUser.getEmail());
+    } catch (MessagingException e) {
+      throw new EmailNotSentException();
+    }
+  }
+
+  public void changePassword(ChangePasswordRequest request) {
+    val tokenEntity = emailVerificationService.getStoredToken(request.token());
+    val user = tokenEntity.getUser();
+
+    if (tokenEntity.getType() != MailType.RESET_PASSWORD || tokenEntity.getExpirationDate().isBefore(Instant.now())) {
+      throw new AuthException("Invalid token");
+    }
+
+    user.setPassword(passwordEncoder.encode(request.password()));
+    userService.save(user);
+    emailVerificationService.dropToken(request.token());
   }
 
   private UUID getSchoolId(UserEntity user) {

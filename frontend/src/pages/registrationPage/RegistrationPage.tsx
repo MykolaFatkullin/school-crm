@@ -1,67 +1,56 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { Logo } from '../../shared/Logo';
-import { RegisterForm } from './RegisterForm.type';
+import { FormProvider } from 'react-hook-form';
+import { RegisterForm } from './model';
 import { useState } from 'react';
-import { SchoolInfoStep } from './components';
-import styles from './RegistrationPage.module.scss';
-
-const registerSteps = [
-  {
-    stepNumber: 1,
-    title: 'Create your school',
-    description: 'Set up workspace in minutes',
-  },
-  {
-    stepNumber: 2,
-    title: 'Create your password',
-    description: 'Secure your school account',
-  },
-];
+import { AccountCredentialsStep, SchoolInfoStep } from './components';
+import { useRegistrationForm } from './hooks/useRegistrationForm';
+import { MAX_STEPS, registerSteps } from './hooks/registrationSteps';
+import { Alert } from '../../shared/components/alert';
+import { AuthHeader } from '../../shared/components/authHeader';
+import { Form } from '../../shared/components/form';
+import { useAppForm } from '../../shared/hooks';
 
 export const RegistrationPage = () => {
   const [step, setStep] = useState(0);
+  const formMethods = useAppForm<RegisterForm>();
+  const { submit, isLoading, submitError } = useRegistrationForm(
+    formMethods,
+    setStep,
+  );
 
-  const methods = useForm<RegisterForm>({
-    mode: 'onBlur',
-    reValidateMode: 'onBlur',
-  });
-
-  const clearInputError = (name: keyof RegisterForm) => {
-    if (methods.formState.errors[name]) {
-      methods.clearErrors(name);
+  const renderCurrentStep = (step: number) => {
+    switch (step) {
+      case 0:
+        return <SchoolInfoStep />;
+      case 1:
+        return (
+          <AccountCredentialsStep
+            backToPreviousStep={() => setStep(0)}
+            isLoading={isLoading}
+          />
+        );
+      default:
+        return null;
     }
   };
 
   return (
     <>
-      <div className={styles.registrationPageHeader}>
-        <Logo />
-        <p className={styles.registrationPageHeaderStep}>
-          Step {registerSteps[step].stepNumber} of 2
-        </p>
-        <div className={styles.registrationPageHeaderTitles}>
-          <h1 className={styles.registrationPageHeaderTitle}>
-            {registerSteps[step].title}
-          </h1>
-          <p className={styles.registrationPageHeaderDescription}>
-            {registerSteps[step].description}
-          </p>
-        </div>
-      </div>
-      <FormProvider {...methods}>
-        <form
-          className={styles.registrationPageForm}
-          onSubmit={methods.handleSubmit(() => {
-            if (step === 0) {
-              setStep(1);
-            } else {
-              console.log('Submit');
-            }
+      <AuthHeader
+        header={registerSteps[step].title}
+        subHeader={registerSteps[step].description}
+        additionalInfo={`Step ${registerSteps[step].stepNumber} of ${MAX_STEPS}`}
+      />
+      <FormProvider {...formMethods}>
+        {submitError && <Alert message={submitError} />}
+        <Form
+          onSubmit={formMethods.handleSubmit(form => {
+            if (step === MAX_STEPS - 1) {
+              void submit(form);
+            } else setStep(step + 1);
           })}
         >
-          {step === 0 && <SchoolInfoStep clearInputError={clearInputError} />}
-          {step === 1 && <div>Step 2</div>}
-        </form>
+          {renderCurrentStep(step)}
+        </Form>
       </FormProvider>
     </>
   );

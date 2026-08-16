@@ -5,8 +5,12 @@ $color-danger: #ef4444;
 $color-danger-hover: #dc2626;
 $color-danger-pressed: #b91c1c;
 $color-background: #f8fafc;
+$color-alert-border: #FCA5A5;
+$color-alert-background: #FEF2F2;
+$color-alert-text: #991B1B;
 $color-text: #111827;
 $color-text-secondary: #6b7280;
+$color-text-pressed: #374151;
 $color-white: #ffffff;
 $color-gray-50: #f9fafb;
 $color-gray-100: #f3f4f6;
@@ -29,6 +33,15 @@ $shadow-danger-secondary-hover: #ef44441f;
 $color-primary-border-focus: #4f7cff80;
 $focus-ring-primary: #4f7cff33;
 $shadow-elevation: #00000014;
+$color-primary-tint: #F0F5FF;
+$color-select-primary-shadow: #0000000A;
+$color-select-secondary-shadow: #00000014;
+$color-mail-icon-bg: #EDF0FA;
+$color-success: #10B981;
+$color-success-background: #E5F7EB;
+$color-warning: #F59E0B;
+$color-info: #3B82F6;
+$color-logo-bg: #EEF4FF;
 
 $animation-speed: 0.3s;
 
@@ -67,5 +80,15 @@ $typography: (
     font-size: 12px,
     font-weight: 500,
     line-height: 18px,
+  ),
+  toast-title: (
+    font-size: 14px,
+    font-weight: 600,
+    line-height: 100%,
+  ),
+  toast-message: (
+    font-size: 13px,
+    font-weight: 400,
+    line-height: 140%,
   ),
 );

@@ -12,7 +12,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.schoolcrm.domain.Gender;
 import org.example.schoolcrm.domain.UserRoles;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -65,10 +65,11 @@ public class UserEntity {
   @Column(nullable = false)
   private UserRoles role;
 
-  @Column(name = "birth_date", nullable = false)
-  private LocalDate birthDate;
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "school_id", nullable = false)
   private SchoolEntity school;
+
+  @Column(name = "activated", nullable = false)
+  @ColumnDefault(value = "false")
+  private Boolean activated;
 }

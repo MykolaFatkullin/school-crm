@@ -1,0 +1,40 @@
+@use '../../shared/styles/variables' as *;
+@use '../../shared/styles/mixins' as *;
+
+.successPage {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.iconMail {
+  --icon-bg: #{$color-mail-icon-bg};
+  --icon-color: #{$color-primary};
+}
+
+.title {
+  @include font(heading);
+}
+
+.text {
+  color: $color-text-secondary;
+  text-align: center;
+  @include font(body);
+}
+
+.email {
+  @include font(body-bold);
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

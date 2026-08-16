@@ -47,7 +47,10 @@ public class JwtProvider {
   private final Logger log = LoggerFactory.getLogger(JwtProvider.class);
 
   @PostConstruct
-  public void setKeys() throws Exception {
+  public void setKeys()
+      throws java.io.IOException,
+          java.security.NoSuchAlgorithmException,
+          java.security.spec.InvalidKeySpecException {
     privateKey = loadPrivateKey();
     publicKey = loadPublicKey();
   }
@@ -83,7 +86,10 @@ public class JwtProvider {
     return false;
   }
 
-  private PrivateKey loadPrivateKey() throws Exception {
+  private PrivateKey loadPrivateKey()
+      throws java.io.IOException,
+          java.security.NoSuchAlgorithmException,
+          java.security.spec.InvalidKeySpecException {
     var key = new ClassPathResource(privateKeyPath).getInputStream().readAllBytes();
     var sanitizedKey = prepareRsaKeys(new String(key));
     var decoded = Base64.getDecoder().decode(sanitizedKey);
@@ -92,7 +98,10 @@ public class JwtProvider {
     return KeyFactory.getInstance(ALGORITHM).generatePrivate(spec);
   }
 
-  private PublicKey loadPublicKey() throws Exception {
+  private PublicKey loadPublicKey()
+      throws java.io.IOException,
+          java.security.NoSuchAlgorithmException,
+          java.security.spec.InvalidKeySpecException {
     var key = new ClassPathResource(publicKeyPath).getInputStream().readAllBytes();
     var sanitizedKey = prepareRsaKeys(new String(key));
     var decoded = Base64.getDecoder().decode(sanitizedKey);

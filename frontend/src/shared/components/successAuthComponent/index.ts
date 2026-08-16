@@ -1,0 +1,1 @@
+export { SuccessAuthComponent } from './SuccessAuthComponent';
