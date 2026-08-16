@@ -10,8 +10,7 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class FieldError implements Serializable {
-  @Serial
-  private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
   private String field;
   private String message;
 }
