@@ -2,6 +2,9 @@ package org.example.schoolcrm.application.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.validation.constraints.NotBlank;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.example.schoolcrm.application.service.mail.MailService;
@@ -15,10 +18,6 @@ import org.example.schoolcrm.web.dto.auth.ChangePasswordRequest;
 import org.example.schoolcrm.web.dto.auth.LoginRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -86,7 +85,8 @@ public class AuthService {
       return;
     }
 
-    val token = emailVerificationService.generateVerificationCode(storedUser, MailType.RESET_PASSWORD);
+    val token =
+        emailVerificationService.generateVerificationCode(storedUser, MailType.RESET_PASSWORD);
 
     try {
       mailService.sendResetPasswordMail(token, storedUser.getFirstName(), storedUser.getEmail());
@@ -99,7 +99,8 @@ public class AuthService {
     val tokenEntity = emailVerificationService.getStoredToken(request.token());
     val user = tokenEntity.getUser();
 
-    if (tokenEntity.getType() != MailType.RESET_PASSWORD || tokenEntity.getExpirationDate().isBefore(Instant.now())) {
+    if (tokenEntity.getType() != MailType.RESET_PASSWORD
+        || tokenEntity.getExpirationDate().isBefore(Instant.now())) {
       throw new AuthException("Invalid token");
     }
 

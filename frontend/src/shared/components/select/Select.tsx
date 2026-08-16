@@ -37,7 +37,6 @@ export const Select = ({
           className={classNames(styles.selectTrigger, {
             [styles.selectTriggerError]: error,
           })}
-          aria-label={label}
         >
           <RadixSelect.Value
             placeholder={placeholder}

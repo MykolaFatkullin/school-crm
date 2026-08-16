@@ -10,12 +10,11 @@ import {
   RegistrationRequest,
   ResendVerificationMailRequest,
   ResetPasswordRequest,
-  VerifyTokenRequest,
 } from './request';
 import { setAccessToken } from '../../store/authSlice';
 import { ChangePasswordRequest } from './request/ChangePasswordRequest';
 
-export const authApi = baseApi.injectEndpoints({
+const authApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     register: builder.mutation<RegistrationResponse, RegistrationRequest>({
       query: body => ({
@@ -38,7 +37,7 @@ export const authApi = baseApi.injectEndpoints({
 
     verifyMailToken: builder.mutation<
       UserVerificationResponse,
-      VerifyTokenRequest
+      MailTokenRequest
     >({
       query: body => ({
         url: `/auth/verify-mail-token`,

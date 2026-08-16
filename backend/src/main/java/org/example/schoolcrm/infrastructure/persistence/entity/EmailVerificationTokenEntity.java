@@ -9,15 +9,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.time.Instant;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.schoolcrm.domain.MailType;
-
-import java.time.Instant;
-import java.util.UUID;
 
 @Entity
 @Table(name = "email_verification_token")
@@ -28,8 +27,7 @@ import java.util.UUID;
 @Builder
 public class EmailVerificationTokenEntity {
 
-  @Id
-  UUID token;
+  @Id UUID token;
 
   @Column(name = "expiration_date", nullable = false)
   Instant expirationDate;

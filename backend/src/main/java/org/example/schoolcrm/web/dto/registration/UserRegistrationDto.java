@@ -10,6 +10,6 @@ public record UserRegistrationDto(
     @NotBlank String firstName,
     @NotBlank String lastName,
     @NotBlank @Email String email,
-    @NotBlank @Length(min = 8, max = 32, message = "Password length should be between 8 and 32") String password,
-    Gender gender) {
-}
+    @NotBlank @Length(min = 8, max = 32, message = "Password length should be between 8 and 32")
+        String password,
+    Gender gender) {}

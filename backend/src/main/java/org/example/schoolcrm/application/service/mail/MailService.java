@@ -2,6 +2,7 @@ package org.example.schoolcrm.application.service.mail;
 
 import jakarta.mail.MessagingException;
 import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.example.schoolcrm.application.service.EmailVerificationService;
@@ -12,8 +13,6 @@ import org.example.schoolcrm.domain.MailType;
 import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,23 +31,16 @@ public class MailService {
 
     String html = templateService.buildWelcomeEmailTemplate(url);
 
-    mailSender.sendMailFromSystem(
-        email,
-        html,
-        MailType.REGISTRATION
-    );
+    mailSender.sendMailFromSystem(email, html, MailType.REGISTRATION);
   }
 
-  public void sendResetPasswordMail(UUID token, String firstName, String email) throws MessagingException {
+  public void sendResetPasswordMail(UUID token, String firstName, String email)
+      throws MessagingException {
     String url = frontendUrl + "/set-new-password/" + token;
 
     String html = templateService.buildResetPasswordTemplate(url, firstName);
 
-    mailSender.sendMailFromSystem(
-        email,
-        html,
-        MailType.RESET_PASSWORD
-    );
+    mailSender.sendMailFromSystem(email, html, MailType.RESET_PASSWORD);
   }
 
   public void resendVerificationMail(@NotBlank String email, MailType type) {

@@ -1,5 +1,8 @@
 package org.example.schoolcrm.application.service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.example.schoolcrm.common.exception.not_found.VerificationTokenNotFoundException;
@@ -12,10 +15,6 @@ import org.example.schoolcrm.web.dto.auth.UserVerificationResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class EmailVerificationService {
@@ -27,12 +26,13 @@ public class EmailVerificationService {
   public UUID generateVerificationCode(UserEntity user, MailType type) {
     emailVerificationTokenRepository.deleteAllByUserAndType(user, type);
 
-    val entity = EmailVerificationTokenEntity.builder()
-        .token(UUID.randomUUID())
-        .user(user)
-        .type(type)
-        .expirationDate(Instant.now().plus(24, ChronoUnit.HOURS))
-        .build();
+    val entity =
+        EmailVerificationTokenEntity.builder()
+            .token(UUID.randomUUID())
+            .user(user)
+            .type(type)
+            .expirationDate(Instant.now().plus(24, ChronoUnit.HOURS))
+            .build();
 
     val storedEntity = emailVerificationTokenRepository.save(entity);
 
@@ -69,7 +69,8 @@ public class EmailVerificationService {
   }
 
   public EmailVerificationTokenEntity getStoredToken(UUID token) {
-    return emailVerificationTokenRepository.findById(token)
+    return emailVerificationTokenRepository
+        .findById(token)
         .orElseThrow(VerificationTokenNotFoundException::new);
   }
 

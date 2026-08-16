@@ -42,7 +42,8 @@ public class RegistrationService {
 
     val storedUser = userService.save(user);
 
-    val token = emailVerificationService.generateVerificationCode(storedUser, MailType.REGISTRATION);
+    val token =
+        emailVerificationService.generateVerificationCode(storedUser, MailType.REGISTRATION);
 
     try {
       mailService.sendVerificationMail(storedUser.getEmail(), token);

@@ -1,10 +1,10 @@
 import { useVerifyMailTokenMutation } from '../../api';
-import { VerifyTokenRequest } from '../../api/auth/request';
+import { MailTokenRequest } from '../../api/auth/request';
 
 export const useVerifyMailToken = () => {
   const [verifyMailTokenMutation, verifyState] = useVerifyMailTokenMutation();
 
-  const verifyMailToken = async (request: VerifyTokenRequest) => {
+  const verifyMailToken = async (request: MailTokenRequest) => {
     return await verifyMailTokenMutation(request).unwrap();
   };
 
