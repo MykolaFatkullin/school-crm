@@ -21,7 +21,6 @@ export const AccountCredentialsStep = ({
 }: Props) => {
   const {
     register,
-    getValues,
     formState: { errors },
   } = useFormContext<RegisterForm>();
 

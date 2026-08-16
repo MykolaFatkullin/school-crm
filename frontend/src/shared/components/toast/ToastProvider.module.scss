@@ -2,9 +2,9 @@
 @use '../../styles/mixins' as *;
 
 .toast {
-  border-top: 1px solid var(--Border, #D1D5DB);
-  border-right: 1px solid var(--Border, #D1D5DB);
-  border-bottom: 1px solid var(--Border, #D1D5DB);
+  border-top: 1px solid var(--Border, #d1d5db);
+  border-right: 1px solid var(--Border, #d1d5db);
+  border-bottom: 1px solid var(--Border, #d1d5db);
   border-left: 4px solid $color-gray-250;
   padding: 16px;
   border-radius: 12px;

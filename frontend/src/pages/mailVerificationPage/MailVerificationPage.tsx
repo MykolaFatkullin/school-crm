@@ -24,7 +24,7 @@ export const MailVerificationPage = () => {
     submit(token!, MailType.REGISTRATION).then(r =>
       setVerificationResult(r!.result),
     );
-  }, []);
+  });
 
   const isSuccess =
     !submitError && !isLoading && verificationResult === 'VERIFIED';

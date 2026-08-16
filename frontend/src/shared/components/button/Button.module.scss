@@ -25,9 +25,10 @@
   justify-content: center;
   gap: 8px;
 
-  transition: background-color $animation-speed,
-  color $animation-speed,
-  box-shadow $animation-speed;
+  transition:
+    background-color $animation-speed,
+    color $animation-speed,
+    box-shadow $animation-speed;
 
   @include font(body);
 

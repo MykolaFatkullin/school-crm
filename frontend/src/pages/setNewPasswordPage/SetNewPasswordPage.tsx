@@ -41,7 +41,7 @@ export const SetNewPasswordPage = () => {
     submit(token, MailType.RESET_PASSWORD).then(r =>
       setVerificationResult(r!.result),
     );
-  }, []);
+  });
 
   const password = register('password', createPasswordValidation());
   const confirmPassword = register(

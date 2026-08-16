@@ -5,6 +5,6 @@ import styles from './Logo.module.scss';
 
 export const Logo = () => (
   <NavLink to={ROUTES.HOME} className={styles.logo}>
-    <img src={logo} alt="SchoolCRM logo" width={56} height={56}/>
+    <img src={logo} alt="SchoolCRM logo" width={56} height={56} />
   </NavLink>
 );

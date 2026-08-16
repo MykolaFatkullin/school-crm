@@ -9,9 +9,7 @@ import { LoginPage } from '../../../pages/loginPage';
 import { ResetPasswordPage } from '../../../pages/resetPasswordPage';
 import { SetNewPasswordPage } from '../../../pages/setNewPasswordPage';
 import { ResetPasswordResultPage } from '../../../pages/resetPasswordResultPage';
-import {
-  ResetPasswordSentPage
-} from '../../../pages/resetPasswordSentPage';
+import { ResetPasswordSentPage } from '../../../pages/resetPasswordSentPage';
 
 export const router = createBrowserRouter([
   {

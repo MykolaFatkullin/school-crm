@@ -1,5 +1,5 @@
 @use 'variables' as *;
-@use "sass:map";
+@use 'sass:map';
 
 @mixin font($name) {
   $font: map.get($typography, $name);
