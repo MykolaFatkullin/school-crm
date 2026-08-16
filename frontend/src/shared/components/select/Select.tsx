@@ -1,8 +1,7 @@
 import { Select as RadixSelect } from 'radix-ui';
 import { Check, ChevronDown } from 'lucide-react';
 import styles from './Select.module.scss';
-import React from 'react';
-import { SelectOption } from './SelectOption';
+import type { SelectOption } from './SelectOption';
 import classNames from 'classnames';
 
 type Props = {
