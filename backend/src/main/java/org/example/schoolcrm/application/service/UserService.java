@@ -1,5 +1,6 @@
 package org.example.schoolcrm.application.service;
 
+import jakarta.transaction.Transactional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.schoolcrm.common.exception.not_found.UserNotFoundException;
@@ -21,7 +22,8 @@ public class UserService {
     return userRepository.findByEmail(email).orElse(null);
   }
 
-  public void save(UserEntity userEntity) {
-    userRepository.save(userEntity);
+  @Transactional
+  public UserEntity save(UserEntity userEntity) {
+    return userRepository.save(userEntity);
   }
 }

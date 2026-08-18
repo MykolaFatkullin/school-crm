@@ -1,0 +1,64 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.toast {
+  border-top: 1px solid var(--Border, #d1d5db);
+  border-right: 1px solid var(--Border, #d1d5db);
+  border-bottom: 1px solid var(--Border, #d1d5db);
+  border-left: 4px solid $color-gray-250;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px 0 $color-select-primary-shadow;
+}
+
+.toastContent {
+  display: flex;
+  gap: 12px;
+}
+
+.success {
+  color: $color-success;
+}
+
+.error {
+  color: $color-danger;
+}
+
+.info {
+  color: $color-info;
+}
+
+.warning {
+  color: $color-warning;
+}
+
+.toastInfo {
+  width: 300px;
+}
+
+.toastTitle {
+  @include font(toast-title);
+}
+
+.toastDescription {
+  @include font(toast-message);
+}
+
+.toastClose {
+  max-width: 12px;
+  height: 12px;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.toastViewport {
+  width: 400px;
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

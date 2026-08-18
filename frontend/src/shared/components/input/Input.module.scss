@@ -1,0 +1,36 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.inputData {
+  @include form-control;
+}
+
+.input {
+  @include form-control-field;
+
+  box-sizing: border-box;
+  padding: 16px;
+  color: $color-text-secondary;
+
+  @include font(body);
+}
+
+.label {
+  @include form-control-label;
+}
+
+.inputError {
+  @include form-control-error;
+}
+
+.textHidden {
+  visibility: hidden;
+}
+
+.messageText {
+  @include form-control-message-block;
+}
+
+.messageError {
+  @include form-control-error-message;
+}

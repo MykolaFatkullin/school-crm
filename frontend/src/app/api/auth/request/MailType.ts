@@ -1,0 +1,4 @@
+export enum MailType {
+  REGISTRATION = 'REGISTRATION',
+  RESET_PASSWORD = 'RESET_PASSWORD',
+}

@@ -1,0 +1,39 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.icon {
+  --icon-bg: #{$color-alert-background};
+  --icon-color: #{$color-danger};
+}
+
+.title {
+  text-align: center;
+  @include font(heading);
+}
+
+.text {
+  color: $color-text-secondary;
+  text-align: center;
+  @include font(body);
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

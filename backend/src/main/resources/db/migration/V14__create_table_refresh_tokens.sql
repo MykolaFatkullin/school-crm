@@ -1,7 +1,7 @@
 CREATE TABLE refresh_tokens
 (
     id         UUID PRIMARY KEY,
-    user_id    UUID         NOT NULL,
+    user_id    UUID         NOT NULL REFERENCES school_users (id),
     token      VARCHAR(255) NOT NULL,
     expires_at TIMESTAMP    NOT NULL
 )

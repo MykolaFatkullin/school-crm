@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.schoolcrm.infrastructure.security.JwtProvider;
 import org.example.schoolcrm.infrastructure.security.UserPrincipal;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
   private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -46,7 +48,12 @@ public class JwtFilter extends OncePerRequestFilter {
       }
 
       filterChain.doFilter(request, response);
+    } catch (RuntimeException e) {
+      log.error("Runtime exception during JWT processing: {}", e.getMessage(), e);
+      SecurityContextHolder.clearContext();
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     } catch (Exception e) {
+      log.error("Exception during JWT processing: {}", e.getMessage(), e);
       SecurityContextHolder.clearContext();
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
@@ -54,6 +61,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
   private UsernamePasswordAuthenticationToken getAuthentication(String token) {
     if (!jwtProvider.validateToken(token)) {
+      log.warn("Invalid JWT token provided");
       return null;
     }
 
