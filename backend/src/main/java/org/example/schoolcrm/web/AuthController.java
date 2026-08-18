@@ -1,8 +1,6 @@
 package org.example.schoolcrm.web;
 
 import jakarta.validation.Valid;
-import java.time.Duration;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.example.schoolcrm.application.service.AuthService;
@@ -26,6 +24,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.Duration;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth")
@@ -75,7 +76,7 @@ public class AuthController {
   }
 
   @PostMapping("/verify-mail-token")
-  public UserVerificationResponse verifyMailToken(@RequestBody MailTokenRequest request) {
+  public UserVerificationResponse verifyMailToken(@RequestBody @Valid MailTokenRequest request) {
     return emailVerificationService.verifyToken(request.token());
   }
 

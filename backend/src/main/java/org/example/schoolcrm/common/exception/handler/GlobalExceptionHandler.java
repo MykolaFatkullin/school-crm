@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     val status = HttpStatus.INTERNAL_SERVER_ERROR;
     log.error("Validation failed: {}", exception.getMessage());
 
-    val apiError = new ApiError(exception.getMessage(), ErrorTypes.SYSTEM_ERROR, null);
+    val apiError = new ApiError("An unexpected error occurred", ErrorTypes.SYSTEM_ERROR, null);
 
     return ResponseEntity.status(status).body(apiError);
   }

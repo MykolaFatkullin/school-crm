@@ -61,10 +61,6 @@ public class EmailVerificationService {
       emailVerificationTokenRepository.delete(storedToken);
     }
 
-    if (storedToken.getType() == MailType.RESET_PASSWORD) {
-      user.setActivated(false);
-    }
-
     return new UserVerificationResponse(MailVerificationResult.VERIFIED);
   }
 
