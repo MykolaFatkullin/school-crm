@@ -41,9 +41,377 @@ The project favors simple solutions that provide clear value over strict adheren
 
 The frontend follows a modular architecture.
 
-```text
 src/
 ├── app/
 ├── assets/
 ├── pages/
 └── shared/
+
+---
+
+## app
+
+Contains application bootstrap and configuration.
+
+Examples:
+
+- App
+- Layouts
+- Routing
+- Global styles
+
+---
+
+## assets
+
+Contains static resources.
+
+Examples:
+
+- Fonts
+- Icons
+- Images
+
+---
+
+## pages
+
+Contains route pages.
+
+Each page owns its own:
+
+- Components
+- Styles
+- Types
+- Hooks
+- Validation
+
+Page-specific components should generally remain inside the page folder.
+
+Example:
+
+pages/
+    registrationPage/
+        components/
+        RegistrationPage.tsx
+        RegistrationPage.module.scss
+
+---
+
+## shared
+
+Contains reusable components and utilities.
+
+Examples:
+
+- Button
+- Input
+- Modal
+- Select
+- Checkbox
+- Hooks
+- Utils
+- Shared styles
+
+Only genuinely reusable code belongs here.
+
+Do not move page-specific code into shared merely for organizational purposes.
+
+---
+
+# Backend Architecture
+
+The backend follows a layered architecture inspired by Clean Architecture.
+
+application/
+common/
+domain/
+infrastructure/
+web/
+
+The architecture is intended to provide clear separation of responsibilities while remaining practical and maintainable.
+
+It is not required to follow theoretical Clean Architecture rules with absolute strictness.
+
+---
+
+## application
+
+Contains application services, use cases and mappers.
+
+Coordinates business operations.
+
+Application code may contain technical coordination required to implement application use cases.
+
+Do not introduce additional layers or abstractions unless they provide clear value.
+
+---
+
+## domain
+
+Contains business rules.
+
+Includes:
+
+- Domain models
+- Enums
+- Validators
+- Security abstractions
+
+Business logic should generally belong here when it represents domain behavior.
+
+The domain should remain independent from infrastructure frameworks and technical implementation details.
+
+---
+
+## infrastructure
+
+Contains technical implementations.
+
+Examples:
+
+- Persistence
+- Spring Security implementation
+- Configuration
+- External integrations
+
+Infrastructure is responsible for technical concerns.
+
+---
+
+## web
+
+Contains REST API.
+
+Responsibilities:
+
+- Controllers
+- Request DTOs
+- Response DTOs
+
+Controllers should generally remain thin.
+
+Business logic should generally not be implemented directly in controllers.
+
+---
+
+## common
+
+Contains shared infrastructure and cross-cutting functionality.
+
+Examples:
+
+- Configuration
+- Exception handling
+- Utilities
+
+Avoid placing business-specific logic here.
+
+---
+
+# Dependency Rules
+
+The preferred dependency direction is:
+
+web
+    ↓
+application
+    ↓
+domain
+
+infrastructure
+    ↓
+application
+    ↓
+domain
+
+The domain layer should remain independent from infrastructure and framework-specific implementation details.
+
+These are architectural guidelines rather than absolute rules.
+
+Not every cross-layer dependency is considered a defect.
+
+Technical components such as:
+
+- Mappers
+- DTO converters
+- Adapters
+- Persistence helpers
+- Integration components
+
+may interact with types from other technical layers when this is reasonable for their responsibility.
+
+Architectural boundaries should be evaluated based on their practical impact.
+
+A dependency should only be considered problematic when it creates meaningful:
+
+- Coupling
+- Maintenance cost
+- Testing difficulty
+- Evolution difficulty
+- Responsibility confusion
+- Architectural inconsistency
+
+Prefer consistency with established patterns in the existing codebase.
+
+Do not introduce architectural changes merely to make the structure theoretically cleaner.
+
+---
+
+# Business Domain
+
+Supported user roles:
+
+- Administrator
+- Teacher
+- Student
+- Parent
+
+Administrators manage:
+
+- Users
+- Students
+- Teachers
+- Parents
+- Classes
+- Subjects
+- School Settings
+- SMTP Settings
+- Payments
+
+Teachers manage:
+
+- Lessons
+- Attendance
+- Homework
+- Grades
+
+Students can:
+
+- View schedule
+- View attendance
+- Submit homework
+- View grades
+
+Parents can:
+
+- View children's grades
+- View attendance
+- View homework
+- Monitor academic progress
+
+---
+
+# API
+
+Frontend communicates with the backend through REST APIs.
+
+Business logic belongs primarily to the backend.
+
+Frontend is responsible for presentation and user interaction.
+
+---
+
+# Authentication
+
+Authentication is JWT-based.
+
+Access Tokens are short-lived.
+
+Refresh Tokens are stored in HttpOnly cookies.
+
+Frontend never stores Refresh Tokens.
+
+---
+
+# Authorization
+
+Authorization is role-based.
+
+Frontend may hide unavailable functionality.
+
+Backend always validates permissions.
+
+---
+
+# Database
+
+Database: PostgreSQL.
+
+Schema changes are managed exclusively through Flyway migrations.
+
+Never modify existing migrations.
+
+Always create a new migration.
+
+---
+
+# Forms
+
+Forms use React Hook Form.
+
+Validation is schema-based.
+
+Reusable inputs should integrate with React Hook Form.
+
+---
+
+# Routing
+
+Routes are defined as constants.
+
+Avoid hardcoded route strings.
+
+---
+
+# Components
+
+Prefer small, focused components.
+
+Reusable components belong in shared.
+
+Page-specific components remain inside their page.
+
+Prefer composition over inheritance.
+
+Do not introduce component abstractions without a concrete reuse or maintainability benefit.
+
+---
+
+# Styling
+
+Use SCSS Modules.
+
+Use design tokens for:
+
+- Colors
+- Typography
+- Spacing
+- Shadows
+- Border radius
+
+Avoid hardcoded design values whenever practical.
+
+Do not report hardcoded values when they are clearly intentional or when replacing them would not provide meaningful value.
+
+---
+
+# Error Handling
+
+Handle API failures gracefully.
+
+Return meaningful feedback to users.
+
+Never expose backend exception messages directly.
+
+---
+
+# Security
+
+Never trust client-side data.
+
+Never expose secrets.
+
+Never bypass backend authorization.
+
+Assume every client request can be manipulated.
