@@ -191,9 +191,8 @@ Avoid placing business logic here.
 
 # Dependency Rules
 
-Allowed dependency direction:
+The project generally follows a layered architecture with the following preferred dependency direction:
 
-```
 web
     ↓
 application
@@ -205,9 +204,24 @@ infrastructure
 application
     ↓
 domain
-```
 
-The domain layer should remain independent.
+The domain layer should remain independent from technical frameworks and infrastructure concerns.
+
+These rules describe the preferred architectural direction, not an automatic violation for every dependency that crosses a layer boundary.
+
+Report a layering violation only when the dependency:
+
+- creates meaningful coupling to infrastructure or delivery mechanisms;
+- places responsibilities in the wrong architectural layer;
+- makes the application harder to test or evolve;
+- violates an established architectural pattern used consistently across the project;
+- or introduces a dependency that clearly should point in the opposite direction.
+
+Do not report a layering violation solely because a mapper, adapter, DTO or similar technical component references another layer.
+
+Consider the responsibility of the component and the existing project structure before reporting an architectural issue.
+
+If the architectural intent cannot be determined from the provided code and context, do not assume that the dependency is incorrect.
 
 ---
 
