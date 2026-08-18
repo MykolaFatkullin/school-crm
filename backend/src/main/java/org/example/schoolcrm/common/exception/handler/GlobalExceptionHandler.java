@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
             .map(error -> new FieldError(error.getField(), error.getDefaultMessage()))
             .toList();
 
-    val message = "Validation pf object failed. Check details in FieldError";
+    val message = "Validation of object failed. Check details in FieldError";
 
     val apiError = new ApiError(message, ErrorTypes.VALIDATION_ERROR, fieldErrors);
 
@@ -56,7 +56,9 @@ public class GlobalExceptionHandler {
     val status = HttpStatus.INTERNAL_SERVER_ERROR;
     log.error("Validation failed: {}", exception.getMessage());
 
-    return ResponseEntity.status(status).build();
+    val apiError = new ApiError(exception.getMessage(), ErrorTypes.SYSTEM_ERROR, null);
+
+    return ResponseEntity.status(status).body(apiError);
   }
 
   private HttpStatus mapStatus(ErrorTypes type) {
