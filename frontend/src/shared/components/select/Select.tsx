@@ -1,4 +1,4 @@
-import { Select as RadixSelect } from 'radix-ui';
+import * as RadixSelect from '@radix-ui/react-select';
 import { Check, ChevronDown } from 'lucide-react';
 import styles from './Select.module.scss';
 import type { SelectOption } from './SelectOption';

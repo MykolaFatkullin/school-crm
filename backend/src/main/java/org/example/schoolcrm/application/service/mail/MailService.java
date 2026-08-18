@@ -4,16 +4,17 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.constraints.NotBlank;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.example.schoolcrm.application.service.EmailVerificationService;
 import org.example.schoolcrm.application.service.UserService;
-import org.example.schoolcrm.common.exception.not_found.UserNotFoundException;
 import org.example.schoolcrm.common.exception.system.EmailNotSentException;
 import org.example.schoolcrm.domain.MailType;
 import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailService {
@@ -47,7 +48,8 @@ public class MailService {
     val user = userService.findByEmail(email);
 
     if (user == null) {
-      throw new UserNotFoundException(email);
+      log.info("User with email {} not found", email);
+      return;
     }
 
     if (type == MailType.REGISTRATION && Boolean.TRUE.equals(user.getActivated())) {

@@ -3,6 +3,6 @@ import { FieldError } from './FieldError';
 
 export interface ApiError {
   message: string;
-  code: ErrorCode;
+  errorType: ErrorCode;
   fieldErrors?: FieldError[];
 }

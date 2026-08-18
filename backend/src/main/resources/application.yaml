@@ -15,8 +15,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: schoolcrm84@gmail.com
-    password: lbgy loim nhip llkw
+    username:
+    password:
     properties:
       mail:
         smtp:
@@ -26,9 +26,12 @@ spring:
 app:
   default-email: schoolcrm@crm.com
   frontend-url: http://localhost:5173
+  mail-token-expiration-in-minutes: 1440
+  reset-password-expiration-in-minutes: 30
+  cookies:
+    secure: false
 
 jwt:
-  secret-key: yourSuperSecretKeyThatIsAtLeast256BitsLongForHS256Algorithm
   expiration-in-ms: 60000
   private-key-path: keys/private_key.pem
   public-key-path: keys/public_key.pem

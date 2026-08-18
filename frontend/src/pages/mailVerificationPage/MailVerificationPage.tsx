@@ -6,6 +6,7 @@ import { SuccessVerification } from './component';
 import { FailedVerification } from '../../shared/components/failedLinkVerificationComponent';
 import { MailType } from '../../app/api/auth/request';
 import { MailVerificationResult } from '../../app/api/auth/response';
+import { LoadingPage } from '../loadingPage';
 
 export const MailVerificationPage = () => {
   const { token } = useParams();
@@ -19,26 +20,33 @@ export const MailVerificationPage = () => {
       navigate(ROUTES.HOME, {
         replace: true,
       });
+
+      return;
     }
 
-    submit(token!, MailType.REGISTRATION).then(r =>
-      setVerificationResult(r!.result),
-    );
-  });
+    submit(token, MailType.REGISTRATION).then(r => {
+      if (r) {
+        setVerificationResult(r.result);
+      }
+    });
+  }, [token, navigate, submit]);
 
   const isSuccess =
     !submitError && !isLoading && verificationResult === 'VERIFIED';
 
+  if (isLoading) {
+    return <LoadingPage message={'Verifying your email...'} />;
+  }
+
+  if (isSuccess) {
+    return <SuccessVerification />;
+  }
+
   return (
-    <>
-      {isSuccess && <SuccessVerification />}
-      {!isSuccess && (
-        <FailedVerification
-          verificationResult={verificationResult!}
-          token={token}
-          type={MailType.REGISTRATION}
-        />
-      )}
-    </>
+    <FailedVerification
+      verificationResult={verificationResult!}
+      token={token}
+      type={MailType.REGISTRATION}
+    />
   );
 };

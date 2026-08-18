@@ -17,7 +17,7 @@ export const useLoginForm = () => {
     } catch (error) {
       const apiError = parseApiError(error);
 
-      if (apiError?.code === 'AUTH_ERROR') {
+      if (apiError?.errorType === 'AUTH_ERROR') {
         setSubmitError(
           'Incorrect email or password, or the user is not activated.',
         );

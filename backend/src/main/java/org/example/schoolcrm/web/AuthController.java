@@ -18,6 +18,7 @@ import org.example.schoolcrm.web.dto.mail.EmailRequest;
 import org.example.schoolcrm.web.dto.mail.MailTokenRequest;
 import org.example.schoolcrm.web.dto.registration.UserRegistrationDto;
 import org.example.schoolcrm.web.dto.registration.UserRegistrationResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
+
+  @Value("${app.cookies.secure}")
+  private final boolean cookiesSecured;
 
   private final AuthService authService;
   private final RegistrationService registrationService;
@@ -85,7 +89,7 @@ public class AuthController {
   }
 
   @PostMapping("/resend-verification-by-token")
-  public void resendByToken(@RequestBody MailTokenRequest request) {
+  public void resendByToken(@RequestBody @Valid MailTokenRequest request) {
     mailService.resendVerificationMail(request.token());
   }
 
@@ -95,7 +99,7 @@ public class AuthController {
   }
 
   @PostMapping("/change-password")
-  public void changePassword(@RequestBody ChangePasswordRequest request) {
+  public void changePassword(@RequestBody @Valid ChangePasswordRequest request) {
     authService.changePassword(request);
   }
 
@@ -103,7 +107,7 @@ public class AuthController {
     val cookieBuilder =
         ResponseCookie.from("refreshToken", value)
             .httpOnly(true)
-            .secure(true)
+            .secure(cookiesSecured)
             .sameSite("Strict")
             .path("/");
 

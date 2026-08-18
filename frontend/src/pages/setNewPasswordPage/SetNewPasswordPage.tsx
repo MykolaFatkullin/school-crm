@@ -15,6 +15,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { MailType } from '../../app/api/auth/request';
 import { MailVerificationResult } from '../../app/api/auth/response';
 import { FailedVerification } from '../../shared/components/failedLinkVerificationComponent';
+import { LoadingPage } from '../loadingPage';
 
 export const SetNewPasswordPage = () => {
   const { token } = useParams();
@@ -38,10 +39,12 @@ export const SetNewPasswordPage = () => {
       return;
     }
 
-    submit(token, MailType.RESET_PASSWORD).then(r =>
-      setVerificationResult(r!.result),
-    );
-  });
+    submit(token, MailType.RESET_PASSWORD).then(r => {
+      if (r) {
+        setVerificationResult(r.result);
+      }
+    });
+  }, [token, submit, navigate]);
 
   const password = register('password', createPasswordValidation());
   const confirmPassword = register(
@@ -58,46 +61,49 @@ export const SetNewPasswordPage = () => {
   const shouldShowFailedVerification =
     isVerificationResolved && !isVerified && !isLoading;
 
+  if (isLoading) {
+    return <LoadingPage message={'Verifying your email...'} />;
+  }
+
+  if (shouldShowFailedVerification) {
+    return (
+      <FailedVerification
+        verificationResult={verificationResult!}
+        token={token}
+        type={MailType.RESET_PASSWORD}
+      />
+    );
+  }
+
   return (
     <>
-      {shouldShowFailedVerification && (
-        <FailedVerification
-          verificationResult={verificationResult!}
-          token={token}
-          type={MailType.RESET_PASSWORD}
+      <AuthHeader
+        header={'Reset password'}
+        subHeader={'Enter your new password below'}
+      />
+      {submitError && <Alert message={submitError} />}
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          {...password}
+          type={'password'}
+          label={'New Password'}
+          placeholder={'Enter new password'}
+          additionalText={'Must contain at least 8 characters'}
+          error={errors.password?.message}
         />
-      )}
-      {isVerified && (
-        <>
-          <AuthHeader
-            header={'Reset password'}
-            subHeader={'Enter your new password below'}
-          />
-          {submitError && <Alert message={submitError} />}
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Input
-              {...password}
-              type={'password'}
-              label={'New Password'}
-              placeholder={'Enter new password'}
-              additionalText={'Must contain at least 8 characters'}
-              error={errors.password?.message}
-            />
-            <Input
-              {...confirmPassword}
-              type={'password'}
-              label={'Confirm Password'}
-              placeholder={'Confirm new password'}
-              error={errors.confirmPassword?.message}
-            />
-            <AuthStepActions>
-              <Button variant={'primary'} type="submit" isLoading={isLoading}>
-                Update Password
-              </Button>
-            </AuthStepActions>
-          </Form>
-        </>
-      )}
+        <Input
+          {...confirmPassword}
+          type={'password'}
+          label={'Confirm Password'}
+          placeholder={'Confirm new password'}
+          error={errors.confirmPassword?.message}
+        />
+        <AuthStepActions>
+          <Button variant={'primary'} type="submit" isLoading={isLoading}>
+            Update Password
+          </Button>
+        </AuthStepActions>
+      </Form>
     </>
   );
 };

@@ -12,12 +12,19 @@ import org.example.schoolcrm.infrastructure.persistence.entity.EmailVerification
 import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
 import org.example.schoolcrm.infrastructure.persistence.repository.EmailVerificationTokenRepository;
 import org.example.schoolcrm.web.dto.auth.UserVerificationResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class EmailVerificationService {
+
+  @Value("${app.mail-token-expiration-in-minutes}")
+  private Long mailTokenExpirationInMins;
+
+  @Value("${app.reset-password-expiration-in-minutes}")
+  private Long passwordTokenExpirationInMins;
 
   private final EmailVerificationTokenRepository emailVerificationTokenRepository;
   private final UserService userService;
@@ -26,13 +33,18 @@ public class EmailVerificationService {
   public UUID generateVerificationCode(UserEntity user, MailType type) {
     emailVerificationTokenRepository.deleteAllByUserAndType(user, type);
 
-    val entity =
-        EmailVerificationTokenEntity.builder()
-            .token(UUID.randomUUID())
-            .user(user)
-            .type(type)
-            .expirationDate(Instant.now().plus(24, ChronoUnit.HOURS))
-            .build();
+    val entityBuilder =
+        EmailVerificationTokenEntity.builder().token(UUID.randomUUID()).user(user).type(type);
+
+    if (type == MailType.RESET_PASSWORD) {
+      entityBuilder.expirationDate(
+          Instant.now().plus(passwordTokenExpirationInMins, ChronoUnit.MINUTES));
+    } else {
+      entityBuilder.expirationDate(
+          Instant.now().plus(mailTokenExpirationInMins, ChronoUnit.MINUTES));
+    }
+
+    val entity = entityBuilder.build();
 
     val storedEntity = emailVerificationTokenRepository.save(entity);
 
