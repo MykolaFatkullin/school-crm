@@ -66,7 +66,7 @@ export const FailedVerification = ({
             <Button
               variant={'primary'}
               isLoading={isLoading}
-              onClick={() => resendMail(token, type)}
+              onClick={() => void resendMail(token, type)}
             >
               Send new verification email
             </Button>

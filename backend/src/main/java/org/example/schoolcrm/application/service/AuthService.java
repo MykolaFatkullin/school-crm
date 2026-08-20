@@ -56,6 +56,10 @@ public class AuthService {
   }
 
   public LoginResult refresh(UUID refreshToken) {
+    if (refreshToken == null) {
+      throw new AuthException("Unauthorized");
+    }
+
     var existing = refreshTokenService.validate(refreshToken);
 
     refreshTokenService.delete(existing.getToken());

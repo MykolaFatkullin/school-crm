@@ -1,1 +1,1 @@
-export type { RessetPasswordForm } from './RessetPasswordForm';
+export type { ResetPasswordForm } from './ResetPasswordForm';

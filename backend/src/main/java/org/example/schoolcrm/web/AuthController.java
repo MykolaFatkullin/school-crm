@@ -84,7 +84,7 @@ public class AuthController {
   }
 
   @PostMapping("/resend-verification-by-email")
-  public void resendByEmail(@RequestBody EmailRequest request) {
+  public void resendByEmail(@RequestBody @Valid EmailRequest request) {
     mailService.resendVerificationMail(request.email(), request.type());
   }
 
@@ -94,7 +94,7 @@ public class AuthController {
   }
 
   @PostMapping("/reset-password")
-  public void resetPassword(@RequestBody ResetPasswordRequest emailRequest) {
+  public void resetPassword(@RequestBody @Valid ResetPasswordRequest emailRequest) {
     authService.resetPassword(emailRequest.email());
   }
 

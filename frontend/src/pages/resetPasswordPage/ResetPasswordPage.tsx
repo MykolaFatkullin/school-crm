@@ -5,8 +5,8 @@ import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { createEmailValidation, ROUTES } from '../../shared/config';
 import { AuthHeader } from '../../shared/components/authHeader';
-import { RessetPasswordForm } from './model';
-import { useResetPasswordForm } from './hooks/useRessetPasswordForm';
+import { ResetPasswordForm } from './model';
+import { useResetPasswordForm } from './hooks/useResetPasswordForm';
 import { Alert } from '../../shared/components/alert';
 import { Form } from '../../shared/components/form';
 import { useAppForm } from '../../shared/hooks';
@@ -17,7 +17,7 @@ export const ResetPasswordPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useAppForm<RessetPasswordForm>();
+  } = useAppForm<ResetPasswordForm>();
   const { resetPassword, isLoading, submitError } = useResetPasswordForm();
 
   const email = register('email', createEmailValidation());

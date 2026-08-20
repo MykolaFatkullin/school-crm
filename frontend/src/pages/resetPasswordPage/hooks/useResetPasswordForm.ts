@@ -1,4 +1,4 @@
-import { RessetPasswordForm } from '../model';
+import { ResetPasswordForm } from '../model';
 import { useResetPassword } from '../../../app/hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -10,7 +10,7 @@ export const useResetPasswordForm = () => {
   const navigate = useNavigate();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const resetPassword = async (form: RessetPasswordForm) => {
+  const resetPassword = async (form: ResetPasswordForm) => {
     try {
       setSubmitError(null);
 

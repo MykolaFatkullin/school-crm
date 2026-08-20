@@ -2,6 +2,7 @@ package org.example.schoolcrm.application.service.mail;
 
 import jakarta.mail.MessagingException;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,14 +57,10 @@ public class MailService {
       return;
     }
 
-    if (type == MailType.RESET_PASSWORD && !Boolean.TRUE.equals(user.getActivated())) {
-      return;
-    }
-
     resendVerificationMail(user, type);
   }
 
-  public void resendVerificationMail(@NotBlank UUID token) {
+  public void resendVerificationMail(@NotNull UUID token) {
     val verificationToken = emailVerificationService.getStoredToken(token);
     val user = verificationToken.getUser();
     val type = verificationToken.getType();

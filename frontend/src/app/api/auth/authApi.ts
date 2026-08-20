@@ -46,10 +46,7 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
 
-    resendMailByToken: builder.mutation<
-      UserVerificationResponse,
-      MailTokenRequest
-    >({
+    resendMailByToken: builder.mutation<void, MailTokenRequest>({
       query: body => ({
         url: `/auth/resend-verification-by-token`,
         method: 'POST',
