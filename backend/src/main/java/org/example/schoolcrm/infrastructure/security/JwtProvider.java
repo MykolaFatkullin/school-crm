@@ -36,6 +36,7 @@ public class JwtProvider {
   private static final String ALGORITHM = "RSA";
   private static final String ROLE_FIELD = "role";
   private static final String SCHOOL_ID_FIELD = "schoolId";
+  private static final String PASSWORD_CHANGED_AT_FIELD = "pca";
 
   private PrivateKey privateKey;
   private PublicKey publicKey;
@@ -52,14 +53,15 @@ public class JwtProvider {
   }
 
   public String generateAccessToken(UUID userId, String role, UUID schoolId) {
-    return Jwts.builder()
-        .subject(userId.toString())
-        .claim(ROLE_FIELD, role)
-        .claim(SCHOOL_ID_FIELD, schoolId)
-        .notBefore(new Date())
-        .expiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
-        .signWith(privateKey)
-        .compact();
+    var builder =
+        Jwts.builder()
+            .subject(userId.toString())
+            .claim(ROLE_FIELD, role)
+            .claim(SCHOOL_ID_FIELD, schoolId)
+            .notBefore(new Date())
+            .expiration(new Date(System.currentTimeMillis() + jwtExpirationInMs));
+
+    return builder.signWith(privateKey).compact();
   }
 
   public Claims parseToken(String token) {

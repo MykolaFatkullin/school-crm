@@ -69,10 +69,6 @@ public class MailService {
       return;
     }
 
-    if (type == MailType.RESET_PASSWORD && !Boolean.TRUE.equals(user.getActivated())) {
-      return;
-    }
-
     resendVerificationMail(user, type);
   }
 

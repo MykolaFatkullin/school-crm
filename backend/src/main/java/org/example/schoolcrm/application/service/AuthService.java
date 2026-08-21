@@ -18,6 +18,7 @@ import org.example.schoolcrm.web.dto.auth.ChangePasswordRequest;
 import org.example.schoolcrm.web.dto.auth.LoginRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -99,6 +100,7 @@ public class AuthService {
     }
   }
 
+  @Transactional
   public void changePassword(ChangePasswordRequest request) {
     val tokenEntity = emailVerificationService.getStoredToken(request.token());
     val user = tokenEntity.getUser();
@@ -109,8 +111,10 @@ public class AuthService {
     }
 
     user.setPassword(passwordEncoder.encode(request.password()));
+    user.setPasswordLastChangedAt(Instant.now());
     userService.save(user);
     emailVerificationService.dropToken(request.token());
+    refreshTokenService.dropTokenByUser(user);
   }
 
   private UUID getSchoolId(UserEntity user) {

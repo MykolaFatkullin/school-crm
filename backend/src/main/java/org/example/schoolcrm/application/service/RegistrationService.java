@@ -1,6 +1,7 @@
 package org.example.schoolcrm.application.service;
 
 import jakarta.mail.MessagingException;
+import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.example.schoolcrm.application.mapper.UserMapper;
@@ -36,6 +37,7 @@ public class RegistrationService {
 
     user.setSchool(storedSchool);
     user.setRole(UserRoles.SUPER_ADMIN);
+    user.setPasswordLastChangedAt(Instant.now());
 
     val hashedPassword = passwordEncoder.encode(userRegistrationDto.password());
     user.setPassword(hashedPassword);

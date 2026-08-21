@@ -24,7 +24,7 @@ export const SuccessRegistrationPage = () => {
     if (!email) {
       navigate(ROUTES.LOGIN);
     }
-  });
+  }, [email, navigate]);
 
   const resendEmailHandler = async () => {
     if (!email) return;

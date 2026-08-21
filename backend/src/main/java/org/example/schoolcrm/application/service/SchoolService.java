@@ -1,6 +1,5 @@
 package org.example.schoolcrm.application.service;
 
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,7 @@ import org.example.schoolcrm.infrastructure.persistence.entity.SchoolEntity;
 import org.example.schoolcrm.infrastructure.persistence.repository.SchoolRepository;
 import org.example.schoolcrm.web.dto.school.SchoolViewDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor

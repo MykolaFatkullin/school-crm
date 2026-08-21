@@ -1,16 +1,15 @@
 import { useVerifyMailToken } from '../../../app/hooks/auth';
 import { parseApiError } from '../../../app/api';
 import { useCallback, useState } from 'react';
-import { MailType } from '../../../app/api/auth/request';
 
 export const useVerificationToken = () => {
   const { verifyMailToken, isLoading } = useVerifyMailToken();
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const submit = useCallback(
-    async (token: string, type: MailType) => {
+    async (token: string) => {
       try {
-        const request = { token, type };
+        const request = { token };
 
         return await verifyMailToken(request);
       } catch (error) {

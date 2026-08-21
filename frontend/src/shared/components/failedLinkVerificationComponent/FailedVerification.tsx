@@ -35,11 +35,7 @@ const getText = (verificationResult: MailVerificationResult) => {
   return 'This verification link has expired, is invalid, or has already been used.';
 };
 
-export const FailedVerification = ({
-  verificationResult,
-  token,
-  type,
-}: Props) => {
+export const FailedVerification = ({ verificationResult, token }: Props) => {
   const navigate = useNavigate();
   const { resendMail, isLoading, submitError } = useResendMail();
   const shouldShowResendEmailButton = verificationResult === 'EXPIRED' && token;
@@ -66,7 +62,7 @@ export const FailedVerification = ({
             <Button
               variant={'primary'}
               isLoading={isLoading}
-              onClick={() => void resendMail(token, type)}
+              onClick={() => void resendMail(token)}
             >
               Send new verification email
             </Button>

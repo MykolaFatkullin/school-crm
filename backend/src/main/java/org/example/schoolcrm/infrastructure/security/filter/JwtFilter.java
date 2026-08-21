@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.schoolcrm.application.service.UserService;
 import org.example.schoolcrm.infrastructure.security.JwtProvider;
 import org.example.schoolcrm.infrastructure.security.UserPrincipal;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
   private static final String BEARER_PREFIX = "Bearer ";
 
   private final JwtProvider jwtProvider;
+  private final UserService userService;
 
   @Override
   protected void doFilterInternal(
@@ -68,6 +70,15 @@ public class JwtFilter extends OncePerRequestFilter {
     var claims = jwtProvider.parseToken(token);
 
     var userId = UUID.fromString(claims.getSubject());
+
+    var userFromDb = userService.findById(userId);
+
+    if (userFromDb.getPasswordLastChangedAt() != null
+        && userFromDb.getPasswordLastChangedAt().isAfter(claims.getIssuedAt().toInstant())) {
+      log.warn("Password changed after token expiration");
+      return null;
+    }
+
     var role = claims.get("role", String.class);
     var schoolIdString = claims.get("schoolId", String.class);
 
