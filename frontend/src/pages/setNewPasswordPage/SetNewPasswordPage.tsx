@@ -40,7 +40,7 @@ export const SetNewPasswordPage = () => {
       return;
     }
 
-    submit(token, MailType.RESET_PASSWORD)
+    submit(token)
       .then(r => {
         if (r) {
           setVerificationResult(r.result);

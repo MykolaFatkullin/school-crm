@@ -24,7 +24,7 @@ export const MailVerificationPage = () => {
       return;
     }
 
-    submit(token, MailType.REGISTRATION).then(r => {
+    submit(token).then(r => {
       if (r) {
         setVerificationResult(r.result);
       }
