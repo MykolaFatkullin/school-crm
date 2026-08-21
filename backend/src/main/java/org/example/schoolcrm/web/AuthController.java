@@ -15,7 +15,7 @@ import org.example.schoolcrm.web.dto.auth.LoginRequest;
 import org.example.schoolcrm.web.dto.auth.ResetPasswordRequest;
 import org.example.schoolcrm.web.dto.auth.UserVerificationResponse;
 import org.example.schoolcrm.web.dto.mail.EmailRequest;
-import org.example.schoolcrm.web.dto.mail.MailTokenRequest;
+import org.example.schoolcrm.web.dto.mail.TokenRequest;
 import org.example.schoolcrm.web.dto.registration.UserRegistrationDto;
 import org.example.schoolcrm.web.dto.registration.UserRegistrationResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -79,7 +79,7 @@ public class AuthController {
   }
 
   @PostMapping("/verify-mail-token")
-  public UserVerificationResponse verifyMailToken(@RequestBody @Valid MailTokenRequest request) {
+  public UserVerificationResponse verifyMailToken(@RequestBody @Valid TokenRequest request) {
     return emailVerificationService.verifyToken(request.token());
   }
 
@@ -89,7 +89,7 @@ public class AuthController {
   }
 
   @PostMapping("/resend-verification-by-token")
-  public void resendByToken(@RequestBody @Valid MailTokenRequest request) {
+  public void resendByToken(@RequestBody @Valid TokenRequest request) {
     mailService.resendVerificationMail(request.token());
   }
 

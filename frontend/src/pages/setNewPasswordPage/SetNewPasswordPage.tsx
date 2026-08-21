@@ -19,6 +19,7 @@ import { LoadingPage } from '../loadingPage';
 
 export const SetNewPasswordPage = () => {
   const { token } = useParams();
+  const [isPageLoading, setIsPageLoading] = useState(true);
   const [verificationResult, setVerificationResult] =
     useState<MailVerificationResult | null>(null);
   const {
@@ -39,11 +40,13 @@ export const SetNewPasswordPage = () => {
       return;
     }
 
-    submit(token, MailType.RESET_PASSWORD).then(r => {
-      if (r) {
-        setVerificationResult(r.result);
-      }
-    });
+    submit(token, MailType.RESET_PASSWORD)
+      .then(r => {
+        if (r) {
+          setVerificationResult(r.result);
+        }
+      })
+      .finally(() => setIsPageLoading(false));
   }, [token, submit, navigate]);
 
   const password = register('password', createPasswordValidation());
@@ -59,9 +62,9 @@ export const SetNewPasswordPage = () => {
   const isVerificationResolved = verificationResult !== null;
   const isVerified = verificationResult === 'VERIFIED';
   const shouldShowFailedVerification =
-    isVerificationResolved && !isVerified && !isLoading;
+    isVerificationResolved && !isVerified && !isPageLoading;
 
-  if (isLoading) {
+  if (isPageLoading) {
     return <LoadingPage message={'Verifying your email...'} />;
   }
 

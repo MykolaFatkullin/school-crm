@@ -64,6 +64,7 @@ public class EmailVerificationService {
     val user = storedToken.getUser();
 
     if (user.getActivated() && storedToken.getType() == MailType.REGISTRATION) {
+      emailVerificationTokenRepository.delete(storedToken);
       return new UserVerificationResponse(MailVerificationResult.ALREADY_VERIFIED);
     }
 
