@@ -42,7 +42,7 @@ public class AuthController {
   private final MailService mailService;
 
   @PostMapping("/login")
-  public ResponseEntity<AccessTokenResponse> login(@RequestBody LoginRequest loginRequest) {
+  public ResponseEntity<AccessTokenResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
     val result = authService.login(loginRequest);
 
     val cookie = getCookieForRefresh(result.refreshToken(), 7);

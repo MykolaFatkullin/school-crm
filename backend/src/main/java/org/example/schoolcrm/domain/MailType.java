@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum MailType {
-  REGISTRATION("Confirm your email", "registration-template.html"),
-  RESET_PASSWORD("Reset your SchoolCRM password", "reset-password-template.html");
+  REGISTRATION("Confirm your email", "registration-template"),
+  RESET_PASSWORD("Reset your SchoolCRM password", "reset-password-template");
 
   private final String subject;
   private final String bodyPath;

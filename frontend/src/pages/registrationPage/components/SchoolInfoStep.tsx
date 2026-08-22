@@ -21,7 +21,7 @@ export const SchoolInfoStep = () => {
   const schoolName = register('schoolName', {
     required: {
       value: true,
-      message: 'School name must no be empty',
+      message: 'School name must not be empty',
     },
   });
 
