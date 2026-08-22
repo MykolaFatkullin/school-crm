@@ -5,7 +5,6 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.schoolcrm.common.exception.auth.InvalidRefreshTokenException;
 import org.example.schoolcrm.infrastructure.persistence.entity.RefreshTokenEntity;
-import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
 import org.example.schoolcrm.infrastructure.persistence.repository.RefreshTokenRepository;
 import org.springframework.stereotype.Service;
 
