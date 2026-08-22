@@ -1,5 +1,6 @@
 package org.example.schoolcrm.common.exception.handler;
 
+import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -23,6 +24,7 @@ public class GlobalExceptionHandler {
       MethodArgumentNotValidException exception) {
     val status = HttpStatus.BAD_REQUEST;
     log.warn("Validation failed: {}", exception.getMessage());
+
     val fieldErrors =
         exception.getBindingResult().getFieldErrors().stream()
             .map(error -> new FieldError(error.getField(), error.getDefaultMessage()))
@@ -43,7 +45,7 @@ public class GlobalExceptionHandler {
     List<FieldError> fieldErrors = null;
 
     if (exception instanceof ValidationException validationException) {
-      fieldErrors = List.of(validationException.getFieldErrors());
+      fieldErrors = Arrays.asList(validationException.getFieldErrors());
     }
 
     val apiError = new ApiError(exception.getMessage(), exception.getType(), fieldErrors);
