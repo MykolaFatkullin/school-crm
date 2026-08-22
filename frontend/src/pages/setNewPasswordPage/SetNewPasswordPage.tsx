@@ -73,7 +73,6 @@ export const SetNewPasswordPage = () => {
       <FailedVerification
         verificationResult={verificationResult!}
         token={token}
-        type={MailType.RESET_PASSWORD}
       />
     );
   }
