@@ -118,7 +118,7 @@ public class AuthService {
     user.setPasswordLastChangedAt(Instant.now());
     userService.save(user);
     emailVerificationService.dropToken(request.token());
-    refreshTokenService.deleteByToken(request.token());
+    refreshTokenService.dropTokenByUser(user.getId());
   }
 
   private UUID getSchoolId(UserEntity user) {

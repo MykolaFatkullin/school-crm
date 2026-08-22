@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ApiError> handleMethodArgumentNotValidException(
       MethodArgumentNotValidException exception) {
     val status = HttpStatus.BAD_REQUEST;
-    log.error("Validation failed: {}", exception.getMessage());
+    log.warn("Validation failed: {}", exception.getMessage());
     val fieldErrors =
         exception.getBindingResult().getFieldErrors().stream()
             .map(error -> new FieldError(error.getField(), error.getDefaultMessage()))

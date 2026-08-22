@@ -37,7 +37,7 @@ public class RefreshTokenService {
     refreshTokenRepository.deleteByToken(tokenId);
   }
 
-  public void dropTokenByUser(UserEntity user) {
-    refreshTokenRepository.deleteByUserId(user.getId());
+  public void dropTokenByUser(UUID userId) {
+    refreshTokenRepository.deleteByUserId(userId);
   }
 }
