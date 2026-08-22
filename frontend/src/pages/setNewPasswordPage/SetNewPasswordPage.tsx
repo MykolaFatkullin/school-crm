@@ -12,7 +12,6 @@ import { Alert } from '../../shared/components/alert';
 import { useEffect, useState } from 'react';
 import { useVerificationToken } from '../mailVerificationPage/hooks';
 import { useNavigate, useParams } from 'react-router-dom';
-import { MailType } from '../../app/api/auth/request';
 import { MailVerificationResult } from '../../app/api/auth/response';
 import { FailedVerification } from '../../shared/components/failedLinkVerificationComponent';
 import { LoadingPage } from '../loadingPage';
