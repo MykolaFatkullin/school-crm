@@ -34,16 +34,12 @@ public class AuthService {
   public LoginResult login(LoginRequest loginRequest) {
     var user = userService.findByEmail(loginRequest.email());
 
-    if (user == null) {
+    if (user == null || Boolean.FALSE.equals(user.getActivated())) {
       throw new AuthException("Unauthorized");
     }
 
     if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
       throw new AuthException("Invalid password");
-    }
-
-    if (!Boolean.TRUE.equals(user.getActivated())) {
-      throw new AuthException("User is not activated");
     }
 
     var jwt =

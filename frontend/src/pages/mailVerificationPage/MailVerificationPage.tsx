@@ -31,7 +31,9 @@ export const MailVerificationPage = () => {
   }, [token, navigate, submit]);
 
   const isSuccess =
-    !submitError && !isLoading && verificationResult === 'VERIFIED';
+    !submitError &&
+    !isLoading &&
+    verificationResult === MailVerificationResult.VERIFIED;
 
   if (isLoading) {
     return <LoadingPage message={'Verifying your email...'} />;

@@ -14,7 +14,7 @@ type Props = {
 };
 
 const getTitle = (verificationResult?: MailVerificationResult | null) => {
-  if (verificationResult === 'EXPIRED') {
+  if (verificationResult === MailVerificationResult.EXPIRED) {
     return 'Verification link is no longer valid';
   }
 
@@ -22,11 +22,11 @@ const getTitle = (verificationResult?: MailVerificationResult | null) => {
 };
 
 const getText = (verificationResult?: MailVerificationResult | null) => {
-  if (verificationResult === 'EXPIRED') {
+  if (verificationResult === MailVerificationResult.EXPIRED) {
     return 'This verification link has expired, is invalid, or has already been used. Request a new verification email to continue setting up your account.';
   }
 
-  if (verificationResult === 'ALREADY_VERIFIED') {
+  if (verificationResult === MailVerificationResult.ALREADY_VERIFIED) {
     return 'This email has already been verified. Please log in to continue.';
   }
 
@@ -36,7 +36,8 @@ const getText = (verificationResult?: MailVerificationResult | null) => {
 export const FailedVerification = ({ verificationResult, token }: Props) => {
   const navigate = useNavigate();
   const { resendMail, isLoading, submitError } = useResendMail();
-  const shouldShowResendEmailButton = verificationResult === 'EXPIRED' && token;
+  const shouldShowResendEmailButton =
+    verificationResult === MailVerificationResult.EXPIRED && token;
   const title = getTitle(verificationResult);
   const text = getText(verificationResult);
 

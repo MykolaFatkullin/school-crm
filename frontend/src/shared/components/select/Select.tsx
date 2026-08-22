@@ -25,9 +25,7 @@ export const Select = ({
 }: Props) => {
   return (
     <div className={styles.Select}>
-      <label id={value} className={styles.label}>
-        {label}
-      </label>
+      <label className={styles.label}>{label}</label>
       <RadixSelect.Root
         disabled={disabled}
         value={value}
