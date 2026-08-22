@@ -36,7 +36,7 @@ public class RegistrationService {
     val user = userMapper.registerUser(userRegistrationDto);
 
     user.setSchool(storedSchool);
-    user.setRole(UserRoles.SUPER_ADMIN);
+    user.setRole(UserRoles.ADMIN);
     user.setPasswordLastChangedAt(Instant.now());
 
     val hashedPassword = passwordEncoder.encode(userRegistrationDto.password());
