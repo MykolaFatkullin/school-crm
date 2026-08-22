@@ -67,7 +67,7 @@ public class AuthService {
 
     var existing = refreshTokenService.validate(refreshToken);
 
-    refreshTokenService.delete(existing.getToken());
+    refreshTokenService.deleteByToken(existing.getToken());
 
     var user = userService.findById(existing.getUserId());
 
@@ -84,7 +84,7 @@ public class AuthService {
       return;
     }
 
-    refreshTokenService.delete(refreshToken);
+    refreshTokenService.deleteByToken(refreshToken);
   }
 
   public void resetPassword(@NotBlank String email) {
@@ -118,7 +118,7 @@ public class AuthService {
     user.setPasswordLastChangedAt(Instant.now());
     userService.save(user);
     emailVerificationService.dropToken(request.token());
-    refreshTokenService.dropTokenByUser(user);
+    refreshTokenService.deleteByToken(request.token());
   }
 
   private UUID getSchoolId(UserEntity user) {
