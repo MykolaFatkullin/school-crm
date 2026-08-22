@@ -43,7 +43,7 @@ public class AuthService {
     }
 
     if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
-      throw new AuthException("Invalid password");
+      throw new AuthException("Unauthorized");
     }
 
     if (Boolean.FALSE.equals(user.getActivated())) {

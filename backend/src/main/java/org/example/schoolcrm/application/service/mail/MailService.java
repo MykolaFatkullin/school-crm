@@ -14,6 +14,7 @@ import org.example.schoolcrm.domain.MailType;
 import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Service
@@ -29,18 +30,25 @@ public class MailService {
   private final EmailVerificationService emailVerificationService;
 
   public void sendVerificationMail(String email, UUID token) throws MessagingException {
-    String url = frontendUrl + "/email-verification/" + token;
-
-    String html = templateService.buildWelcomeEmailTemplate(url);
+    val url =
+        UriComponentsBuilder.fromUriString(frontendUrl)
+            .path("/email-verification/")
+            .path(token.toString())
+            .toUriString();
+    val html = templateService.buildWelcomeEmailTemplate(url);
 
     mailSender.sendMailFromSystem(email, html, MailType.REGISTRATION);
   }
 
   public void sendResetPasswordMail(UUID token, String firstName, String email)
       throws MessagingException {
-    String url = frontendUrl + "/set-new-password/" + token;
+    val url =
+        UriComponentsBuilder.fromUriString(frontendUrl)
+            .path("/set-new-password/")
+            .path(token.toString())
+            .toUriString();
 
-    String html = templateService.buildResetPasswordTemplate(url, firstName);
+    val html = templateService.buildResetPasswordTemplate(url, firstName);
 
     mailSender.sendMailFromSystem(email, html, MailType.RESET_PASSWORD);
   }
