@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { LoginForm } from '../model';
 import { useLogin } from '../../../app/hooks/auth/useLogin';
 import { parseApiError } from '../../../app/api';
+import { ErrorCode } from '../../../app/model/ErrorCode';
 
 export const useLoginForm = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -17,7 +18,7 @@ export const useLoginForm = () => {
     } catch (error) {
       const apiError = parseApiError(error);
 
-      if (apiError?.errorType === 'AUTH_ERROR') {
+      if (apiError?.errorType === ErrorCode.AUTH_ERROR) {
         setSubmitError(
           'Incorrect email or password, or the user is not activated.',
         );

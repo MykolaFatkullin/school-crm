@@ -56,7 +56,7 @@ public class JwtProvider {
         Jwts.builder()
             .subject(userId.toString())
             .claim(ROLE_FIELD, role)
-            .claim(SCHOOL_ID_FIELD, schoolId.toString())
+            .claim(SCHOOL_ID_FIELD, schoolId != null ? schoolId.toString() : null)
             .issuedAt(new Date())
             .notBefore(new Date())
             .expiration(new Date(System.currentTimeMillis() + jwtExpirationInMs));

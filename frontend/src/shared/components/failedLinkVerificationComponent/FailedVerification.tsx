@@ -6,13 +6,11 @@ import { MailVerificationResult } from '../../../app/api/auth/response';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../config';
 import { useResendMail } from './hooks';
-import { MailType } from '../../../app/api/auth/request';
 import { Alert } from '../alert';
 
 type Props = {
   verificationResult?: MailVerificationResult | null;
   token?: string;
-  type: MailType;
 };
 
 const getTitle = (verificationResult?: MailVerificationResult | null) => {

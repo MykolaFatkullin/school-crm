@@ -56,8 +56,6 @@ public class EmailVerificationService {
     val storedToken = getStoredToken(token);
 
     if (storedToken.getExpirationDate().isBefore(Instant.now())) {
-      emailVerificationTokenRepository.delete(storedToken);
-
       return new UserVerificationResponse(MailVerificationResult.EXPIRED);
     }
 
