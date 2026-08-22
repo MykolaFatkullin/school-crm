@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ApiError> handleException(Exception exception) {
     val status = HttpStatus.INTERNAL_SERVER_ERROR;
-    log.error("Unhandled exception: {}", exception.getMessage());
+    log.error("Unhandled exception: {}", exception);
 
     val apiError = new ApiError("An unexpected error occurred", ErrorTypes.SYSTEM_ERROR, null);
 

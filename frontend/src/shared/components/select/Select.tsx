@@ -63,9 +63,7 @@ export const Select = ({
                     >
                       <Check size={16} />
                     </RadixSelect.ItemIndicator>
-                    <RadixSelect.ItemText className={styles.selectItemText}>
-                      {option.label}
-                    </RadixSelect.ItemText>
+                    <RadixSelect.ItemText>{option.label}</RadixSelect.ItemText>
                   </RadixSelect.Item>
                 ))}
               </RadixSelect.Group>

@@ -16,6 +16,7 @@ import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
 import org.example.schoolcrm.infrastructure.security.JwtProvider;
 import org.example.schoolcrm.web.dto.auth.ChangePasswordRequest;
 import org.example.schoolcrm.web.dto.auth.LoginRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,9 @@ public class AuthService {
   private final MailService mailService;
   private final EmailVerificationService emailVerificationService;
 
+  @Value("${jwt.refresh-token-expiration-in-days}")
+  private final int refreshExpiration;
+
   public LoginResult login(LoginRequest loginRequest) {
     var user = userService.findByEmail(loginRequest.email());
 
@@ -45,7 +49,7 @@ public class AuthService {
     var jwt =
         jwtProvider.generateAccessToken(user.getId(), user.getRole().name(), getSchoolId(user));
 
-    var expiresAt = Instant.now().plus(7, ChronoUnit.DAYS);
+    var expiresAt = Instant.now().plus(refreshExpiration, ChronoUnit.DAYS);
 
     var refresh = refreshTokenService.create(user.getId(), expiresAt);
 

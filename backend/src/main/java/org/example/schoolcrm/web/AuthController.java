@@ -36,6 +36,9 @@ public class AuthController {
   @Value("${app.cookies.secure}")
   private final boolean cookiesSecured;
 
+  @Value("${jwt.refresh-token-expiration-in-days}")
+  private final int refreshExpiration;
+
   private final AuthService authService;
   private final RegistrationService registrationService;
   private final EmailVerificationService emailVerificationService;
@@ -45,7 +48,7 @@ public class AuthController {
   public ResponseEntity<AccessTokenResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
     val result = authService.login(loginRequest);
 
-    val cookie = getCookieForRefresh(result.refreshToken(), 7);
+    val cookie = getCookieForRefresh(result.refreshToken(), refreshExpiration);
 
     return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, cookie.toString())
@@ -58,7 +61,9 @@ public class AuthController {
     val result = authService.refresh(refreshToken);
 
     return ResponseEntity.ok()
-        .header(HttpHeaders.SET_COOKIE, getCookieForRefresh(result.refreshToken(), 7).toString())
+        .header(
+            HttpHeaders.SET_COOKIE,
+            getCookieForRefresh(result.refreshToken(), refreshExpiration).toString())
         .body(new AccessTokenResponse(result.accessToken()));
   }
 
@@ -67,7 +72,7 @@ public class AuthController {
       @CookieValue(value = "refreshToken", required = false) UUID refreshToken) {
     authService.logout(refreshToken);
 
-    val cookie = getCookieForRefresh("", 0);
+    val cookie = getCookieForRefresh("", null);
 
     return ResponseEntity.noContent().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
   }

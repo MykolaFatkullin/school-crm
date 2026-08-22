@@ -59,7 +59,7 @@ export const SetNewPasswordPage = () => {
   };
 
   const isVerificationResolved = verificationResult !== null;
-  const isVerified = verificationResult === 'VERIFIED';
+  const isVerified = verificationResult === MailVerificationResult.VERIFIED;
   const shouldShowFailedVerification =
     isVerificationResolved && !isVerified && !isPageLoading;
 
