@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import classNames from 'classnames';
 
-const DURATION = 50000;
+const DURATION = 5000;
 
 const icons = {
   success: CircleCheckBig,

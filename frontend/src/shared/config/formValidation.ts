@@ -23,7 +23,7 @@ export const createPasswordValidation = <
   TFieldValues extends FieldValues,
   TFieldName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
-  message = 'Must contain at least 8 characters',
+  message = 'Must contain at least 8 characters maximum 32 characters',
 ): RegisterOptions<TFieldValues, TFieldName> =>
   ({
     required: {
@@ -32,6 +32,10 @@ export const createPasswordValidation = <
     },
     minLength: {
       value: 8,
+      message,
+    },
+    maxLength: {
+      value: 32,
       message,
     },
   }) as RegisterOptions<TFieldValues, TFieldName>;

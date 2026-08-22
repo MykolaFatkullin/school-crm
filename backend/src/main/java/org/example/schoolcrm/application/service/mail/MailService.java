@@ -49,7 +49,7 @@ public class MailService {
     val user = userService.findByEmail(email);
 
     if (user == null) {
-      log.info("User with email {} not found", email);
+      log.debug("User with email {} not found", email);
       return;
     }
 
