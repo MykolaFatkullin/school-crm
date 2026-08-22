@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useVerificationToken } from './hooks';
 import { SuccessVerification } from './component';
 import { FailedVerification } from '../../shared/components/failedLinkVerificationComponent';
-import { MailType } from '../../app/api/auth/request';
 import { MailVerificationResult } from '../../app/api/auth/response';
 import { LoadingPage } from '../loadingPage';
 
@@ -43,10 +42,6 @@ export const MailVerificationPage = () => {
   }
 
   return (
-    <FailedVerification
-      verificationResult={verificationResult}
-      token={token}
-      type={MailType.REGISTRATION}
-    />
+    <FailedVerification verificationResult={verificationResult} token={token} />
   );
 };
