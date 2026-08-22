@@ -44,7 +44,7 @@ export const MailVerificationPage = () => {
 
   return (
     <FailedVerification
-      verificationResult={verificationResult!}
+      verificationResult={verificationResult}
       token={token}
       type={MailType.REGISTRATION}
     />

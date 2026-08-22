@@ -4,11 +4,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.example.schoolcrm.application.service.UserService;
 import org.example.schoolcrm.infrastructure.security.JwtProvider;
 import org.example.schoolcrm.infrastructure.security.UserPrincipal;
@@ -17,6 +15,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -39,12 +41,12 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     try {
-      var header = request.getHeader(AUTHORIZATION_HEADER);
+      val header = request.getHeader(AUTHORIZATION_HEADER);
 
       if (header != null && header.startsWith(BEARER_PREFIX)) {
-        var token = header.substring(BEARER_PREFIX.length());
+        val token = header.substring(BEARER_PREFIX.length());
 
-        var auth = getAuthentication(token);
+        val auth = getAuthentication(token);
 
         SecurityContextHolder.getContext().setAuthentication(auth);
       }
@@ -67,25 +69,36 @@ public class JwtFilter extends OncePerRequestFilter {
       return null;
     }
 
-    var claims = jwtProvider.parseToken(token);
+    val claims = jwtProvider.parseToken(token);
 
-    var userId = UUID.fromString(claims.getSubject());
+    val userId = UUID.fromString(claims.getSubject());
 
-    var userFromDb = userService.findById(userId);
+    val userFromDb = userService.findById(userId);
 
-    if (userFromDb.getPasswordLastChangedAt() != null
-        && userFromDb.getPasswordLastChangedAt().isAfter(claims.getIssuedAt().toInstant())) {
-      log.warn("Password changed after token expiration");
+    if (userFromDb == null) {
+      log.warn("User not found in database");
       return null;
     }
 
-    var role = claims.get("role", String.class);
-    var schoolIdString = claims.get("schoolId", String.class);
+    val issuedAt = claims.getIssuedAt();
+
+    if (issuedAt == null) {
+      log.warn("IssuedAt is null");
+      return null;
+    }
+
+    if (userFromDb.getPasswordLastChangedAt() != null && userFromDb.getPasswordLastChangedAt().isAfter(issuedAt.toInstant())) {
+      log.warn("Password changed after token issued");
+      return null;
+    }
+
+    val role = claims.get("role", String.class);
+    val schoolIdString = claims.get("schoolId", String.class);
 
     UUID schoolId = schoolIdString != null ? UUID.fromString(schoolIdString) : null;
 
-    var user = new UserPrincipal(userId, schoolId);
-    var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+    val user = new UserPrincipal(userId, schoolId);
+    val authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
 
     return new UsernamePasswordAuthenticationToken(user, null, authorities);
   }

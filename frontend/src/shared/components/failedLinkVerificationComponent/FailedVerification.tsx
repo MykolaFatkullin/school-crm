@@ -10,12 +10,12 @@ import { MailType } from '../../../app/api/auth/request';
 import { Alert } from '../alert';
 
 type Props = {
-  verificationResult: MailVerificationResult;
+  verificationResult?: MailVerificationResult | null;
   token?: string;
   type: MailType;
 };
 
-const getTitle = (verificationResult: MailVerificationResult) => {
+const getTitle = (verificationResult?: MailVerificationResult | null) => {
   if (verificationResult === 'EXPIRED') {
     return 'Verification link is no longer valid';
   }
@@ -23,7 +23,7 @@ const getTitle = (verificationResult: MailVerificationResult) => {
   return 'Verification failed';
 };
 
-const getText = (verificationResult: MailVerificationResult) => {
+const getText = (verificationResult?: MailVerificationResult | null) => {
   if (verificationResult === 'EXPIRED') {
     return 'This verification link has expired, is invalid, or has already been used. Request a new verification email to continue setting up your account.';
   }

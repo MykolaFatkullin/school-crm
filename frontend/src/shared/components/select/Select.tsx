@@ -56,7 +56,7 @@ export const Select = ({
               <RadixSelect.Group className={styles.selectGroup}>
                 {options.map(option => (
                   <RadixSelect.Item
-                    key={option.label}
+                    key={option.value}
                     value={option.value}
                     className={styles.selectItem}
                   >

@@ -36,7 +36,6 @@ public class JwtProvider {
   private static final String ALGORITHM = "RSA";
   private static final String ROLE_FIELD = "role";
   private static final String SCHOOL_ID_FIELD = "schoolId";
-  private static final String PASSWORD_CHANGED_AT_FIELD = "pca";
 
   private PrivateKey privateKey;
   private PublicKey publicKey;
@@ -58,6 +57,7 @@ public class JwtProvider {
             .subject(userId.toString())
             .claim(ROLE_FIELD, role)
             .claim(SCHOOL_ID_FIELD, schoolId)
+            .issuedAt(new Date())
             .notBefore(new Date())
             .expiration(new Date(System.currentTimeMillis() + jwtExpirationInMs));
 
