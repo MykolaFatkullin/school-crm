@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
             .map(error -> new FieldError(error.getField(), error.getDefaultMessage()))
             .toList();
 
-    val message = "Validation of object failed. Check details in FieldError";
+    val message = "Some inputs are invalid. See details.";
 
     val apiError = new ApiError(message, ErrorTypes.VALIDATION_ERROR, fieldErrors);
 

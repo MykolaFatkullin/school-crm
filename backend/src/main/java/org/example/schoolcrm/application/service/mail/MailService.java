@@ -27,7 +27,7 @@ public class MailService {
   @Value("${app.mail-token-expiration-in-minutes}")
   private final Long mailTokenExpirationInMinutes;
 
-  @Value("${app.mail-token-expiration-in-minutes}")
+  @Value("${app.reset-password-expiration-in-minutes}")
   private Long passwordExpirationInMinutes;
 
   private final ThymeleafEmailTemplateService templateService;
