@@ -64,7 +64,7 @@ public class MailService {
       return;
     }
 
-    if (type == MailType.REGISTRATION && Boolean.TRUE.equals(user.getActivated())) {
+    if (type == MailType.REGISTRATION && user.isActivated()) {
       return;
     }
 
@@ -76,7 +76,7 @@ public class MailService {
     val user = verificationToken.getUser();
     val type = verificationToken.getType();
 
-    if (type == MailType.REGISTRATION && Boolean.TRUE.equals(user.getActivated())) {
+    if (type == MailType.REGISTRATION && user.isActivated()) {
       return;
     }
 

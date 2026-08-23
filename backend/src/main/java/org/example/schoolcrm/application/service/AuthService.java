@@ -44,7 +44,7 @@ public class AuthService {
       throw new AuthException("Unauthorized");
     }
 
-    if (Boolean.FALSE.equals(user.getActivated())) {
+    if (!user.isActivated()) {
       throw new AuthException("Unauthorized");
     }
 
