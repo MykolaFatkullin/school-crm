@@ -22,6 +22,16 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
+const isAuthEndpoint = (rawUrl: string) => {
+  try {
+    const pathname = new URL(rawUrl, 'http://localhost').pathname;
+
+    return pathname === '/auth' || pathname.startsWith('/auth/');
+  } catch {
+    return rawUrl === '/auth' || rawUrl.startsWith('/auth/');
+  }
+};
+
 const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,
@@ -30,10 +40,8 @@ const baseQueryWithReauth: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
 
   const url = typeof args === 'string' ? args : args.url;
-  const isAuthEndpoint =
-    url.includes('/auth/login') || url.includes('/auth/refresh');
 
-  if (result.error?.status === 401 && !isAuthEndpoint) {
+  if (result.error?.status === 401 && !isAuthEndpoint(url)) {
     const refreshResult = await baseQuery(
       {
         url: '/auth/refresh',

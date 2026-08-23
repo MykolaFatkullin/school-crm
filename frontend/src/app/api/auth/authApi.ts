@@ -11,11 +11,27 @@ import {
   ResendVerificationMailRequest,
   ResetPasswordRequest,
 } from './request';
-import { setAccessToken } from '../../store/authSlice';
+import { clearAccessToken, setAccessToken } from '../../store/authSlice';
 import { ChangePasswordRequest } from './request/ChangePasswordRequest';
 
-const authApi = baseApi.injectEndpoints({
+export const authApi = baseApi.injectEndpoints({
   endpoints: builder => ({
+    refresh: builder.mutation<AccessTokenResponse, void>({
+      query: () => ({
+        url: '/auth/refresh',
+        method: 'POST',
+      }),
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+        try {
+          const { data } = await queryFulfilled;
+
+          dispatch(setAccessToken(data.accessToken));
+        } catch {
+          dispatch(clearAccessToken());
+        }
+      },
+    }),
+
     register: builder.mutation<RegistrationResponse, RegistrationRequest>({
       query: body => ({
         url: '/auth/register',
@@ -86,6 +102,7 @@ const authApi = baseApi.injectEndpoints({
 });
 
 export const {
+  useRefreshMutation,
   useRegisterMutation,
   useResendVerificationMailMutation,
   useVerifyMailTokenMutation,
