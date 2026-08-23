@@ -29,7 +29,11 @@ const baseQueryWithReauth: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error?.status === 401) {
+  const url = typeof args === 'string' ? args : args.url;
+  const isAuthEndpoint =
+    url.includes('/auth/login') || url.includes('/auth/refresh');
+
+  if (result.error?.status === 401 && !isAuthEndpoint) {
     const refreshResult = await baseQuery(
       {
         url: '/auth/refresh',
