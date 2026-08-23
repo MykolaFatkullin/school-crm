@@ -445,33 +445,52 @@ Do not use Minor for:
 
 # Decision Rules
 
-The final decision MUST be determined by the highest severity of the reported findings.
+The review decision and review comments are independent.
 
-## Approve
+The presence of comments MUST NOT determine the review decision.
 
-Use Approve when there are no Critical or Major findings.
+The final decision MUST be based only on whether the review contains
+Critical or Major findings.
+
+## APPROVE
+
+Use APPROVE when there are no Critical or Major findings.
+
+This includes:
+
+- No findings
+- Only Minor findings
+- Optional improvements
+- Suggestions
+- Informational observations
 
 Minor findings are non-blocking and MUST NOT prevent approval.
 
-If only Minor findings exist, approve the pull request and include the Minor findings as comments.
+If Minor findings exist, include them as inline comments while still using
+APPROVE.
 
-If there are no findings, approve the pull request.
+## REQUEST_CHANGES
 
-## Request Changes
+Use REQUEST_CHANGES when at least one Critical or Major finding exists.
 
-Use Request Changes when at least one Critical or Major finding exists.
+Critical and Major findings represent issues that should be fixed before
+the pull request is merged.
 
-Critical and Major findings indicate problems that should be fixed before the pull request is merged.
+If at least one Critical or Major finding exists, use REQUEST_CHANGES even
+if all other findings are Minor.
 
-Do not use Request Changes for Minor findings.
+## COMMENT
 
-## Approve with comments
+Do not use COMMENT for ordinary code review findings.
 
-Use Approve with comments when only Minor findings exist.
+In normal code review, non-blocking findings MUST use APPROVE.
 
-Minor findings may be included as inline comments, but they do not require changes before merge.
+COMMENT may only be used if the review workflow explicitly requires a
+non-approval review without requesting changes.
 
-The presence of comments alone does not mean that the pull request should be rejected.
+Do not choose COMMENT merely because comments are present.
+
+Do not choose COMMENT merely because Minor findings exist.
 
 ---
 
@@ -559,14 +578,20 @@ Omit this section if there are no significant positive observations.
 
 ## Final Decision
 
-The final decision is based on the highest severity finding.
+The final decision is based ONLY on the highest severity finding.
 
 Return exactly one of the following:
 
-- ✅ Approve — no Critical or Major findings exist.
-- ⚠️ Approve with comments — only Minor findings exist.
-- ❌ Request changes — at least one Critical or Major finding exists.
+- APPROVE
+- REQUEST_CHANGES
 
-Minor findings do not block approval.
+Decision rules:
 
-The existence of comments does not by itself require Request changes.
+- APPROVE when there are no Critical or Major findings.
+- REQUEST_CHANGES when at least one Critical or Major finding exists.
+- Minor findings do not affect the decision.
+- Comments do not affect the decision.
+- APPROVE may contain zero, one, or multiple comments.
+- REQUEST_CHANGES may contain zero, one, or multiple comments.
+
+Never use COMMENT for ordinary review feedback.
