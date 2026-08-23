@@ -38,8 +38,7 @@ public class EmailVerificationService {
               .plus(appProperties.getResetPasswordExpirationInMinutes(), ChronoUnit.MINUTES));
     } else {
       entityBuilder.expirationDate(
-          Instant.now()
-              .plus(appProperties.getMailTokenExpirationInMinutes(), ChronoUnit.MINUTES));
+          Instant.now().plus(appProperties.getMailTokenExpirationInMinutes(), ChronoUnit.MINUTES));
     }
 
     val entity = entityBuilder.build();
