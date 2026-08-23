@@ -28,7 +28,9 @@ export const Select = ({
 
   return (
     <div className={styles.Select}>
-      <label id={labelId} className={styles.label}>{label}</label>
+      <label id={labelId} className={styles.label}>
+        {label}
+      </label>
       <RadixSelect.Root
         disabled={disabled}
         value={value}
