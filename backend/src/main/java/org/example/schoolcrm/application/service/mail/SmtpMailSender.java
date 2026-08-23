@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.example.schoolcrm.domain.MailType;
-import org.springframework.beans.factory.annotation.Value;
+import org.example.schoolcrm.infrastructure.config.AppProperties;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SmtpMailSender {
 
-  @Value("${app.default-email}")
-  private final String defaultEmail;
+  private final AppProperties appProperties;
 
   private final JavaMailSender javaMailSender;
 
@@ -30,7 +29,7 @@ public class SmtpMailSender {
             MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
             StandardCharsets.UTF_8.name());
 
-    mimeMessage.setFrom(defaultEmail);
+    mimeMessage.setFrom(appProperties.getDefaultEmail());
     mimeMessage.setRecipients(Message.RecipientType.TO, to);
     mimeMessage.setSubject(mailType.getSubject());
 

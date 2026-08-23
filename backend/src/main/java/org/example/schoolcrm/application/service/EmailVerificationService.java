@@ -8,11 +8,11 @@ import lombok.val;
 import org.example.schoolcrm.common.exception.not_found.VerificationTokenNotFoundException;
 import org.example.schoolcrm.domain.MailType;
 import org.example.schoolcrm.domain.MailVerificationResult;
+import org.example.schoolcrm.infrastructure.config.AppProperties;
 import org.example.schoolcrm.infrastructure.persistence.entity.EmailVerificationTokenEntity;
 import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
 import org.example.schoolcrm.infrastructure.persistence.repository.EmailVerificationTokenRepository;
 import org.example.schoolcrm.web.dto.auth.UserVerificationResponse;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EmailVerificationService {
 
-  @Value("${app.mail-token-expiration-in-minutes}")
-  private Long mailTokenExpirationInMins;
-
-  @Value("${app.reset-password-expiration-in-minutes}")
-  private Long passwordTokenExpirationInMins;
+  private final AppProperties appProperties;
 
   private final EmailVerificationTokenRepository emailVerificationTokenRepository;
   private final UserService userService;
@@ -38,10 +34,12 @@ public class EmailVerificationService {
 
     if (type == MailType.RESET_PASSWORD) {
       entityBuilder.expirationDate(
-          Instant.now().plus(passwordTokenExpirationInMins, ChronoUnit.MINUTES));
+          Instant.now()
+              .plus(appProperties.getResetPasswordExpirationInMinutes(), ChronoUnit.MINUTES));
     } else {
       entityBuilder.expirationDate(
-          Instant.now().plus(mailTokenExpirationInMins, ChronoUnit.MINUTES));
+          Instant.now()
+              .plus(appProperties.getMailTokenExpirationInMinutes(), ChronoUnit.MINUTES));
     }
 
     val entity = entityBuilder.build();

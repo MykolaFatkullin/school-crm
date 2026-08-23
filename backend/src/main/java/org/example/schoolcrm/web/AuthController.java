@@ -18,6 +18,7 @@ import org.example.schoolcrm.web.dto.mail.EmailRequest;
 import org.example.schoolcrm.web.dto.mail.TokenRequest;
 import org.example.schoolcrm.web.dto.registration.UserRegistrationDto;
 import org.example.schoolcrm.web.dto.registration.UserRegistrationResponse;
+import org.example.schoolcrm.infrastructure.config.AppProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -33,8 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-  @Value("${app.cookies.secure}")
-  private final boolean cookiesSecured;
+  private final AppProperties appProperties;
 
   @Value("${jwt.refresh-token-expiration-in-days}")
   private final int refreshExpiration;
@@ -112,7 +112,7 @@ public class AuthController {
     val cookieBuilder =
         ResponseCookie.from("refreshToken", value)
             .httpOnly(true)
-            .secure(cookiesSecured)
+            .secure(appProperties.getCookies().isSecure())
             .sameSite("Strict")
             .path("/");
 

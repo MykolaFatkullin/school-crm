@@ -11,8 +11,8 @@ import org.example.schoolcrm.application.service.EmailVerificationService;
 import org.example.schoolcrm.application.service.UserService;
 import org.example.schoolcrm.common.exception.system.EmailNotSentException;
 import org.example.schoolcrm.domain.MailType;
+import org.example.schoolcrm.infrastructure.config.AppProperties;
 import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -21,14 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class MailService {
 
-  @Value("${app.frontend-url}")
-  private final String frontendUrl;
-
-  @Value("${app.mail-token-expiration-in-minutes}")
-  private final Long mailTokenExpirationInMinutes;
-
-  @Value("${app.reset-password-expiration-in-minutes}")
-  private Long passwordExpirationInMinutes;
+  private final AppProperties appProperties;
 
   private final ThymeleafEmailTemplateService templateService;
   private final SmtpMailSender mailSender;
@@ -37,11 +30,13 @@ public class MailService {
 
   public void sendVerificationMail(String email, UUID token) throws MessagingException {
     val url =
-        UriComponentsBuilder.fromUriString(frontendUrl)
+        UriComponentsBuilder.fromUriString(appProperties.getFrontendUrl())
             .path("/email-verification/")
             .path(token.toString())
             .toUriString();
-    val html = templateService.buildWelcomeEmailTemplate(url, mailTokenExpirationInMinutes);
+    val html =
+        templateService.buildWelcomeEmailTemplate(
+            url, (long) appProperties.getMailTokenExpirationInMinutes());
 
     mailSender.sendMailFromSystem(email, html, MailType.REGISTRATION);
   }
@@ -49,13 +44,14 @@ public class MailService {
   public void sendResetPasswordMail(UUID token, String firstName, String email)
       throws MessagingException {
     val url =
-        UriComponentsBuilder.fromUriString(frontendUrl)
+        UriComponentsBuilder.fromUriString(appProperties.getFrontendUrl())
             .path("/set-new-password/")
             .path(token.toString())
             .toUriString();
 
     val html =
-        templateService.buildResetPasswordTemplate(url, firstName, passwordExpirationInMinutes);
+        templateService.buildResetPasswordTemplate(
+            url, firstName, (long) appProperties.getResetPasswordExpirationInMinutes());
 
     mailSender.sendMailFromSystem(email, html, MailType.RESET_PASSWORD);
   }
