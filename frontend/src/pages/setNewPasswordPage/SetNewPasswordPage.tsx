@@ -27,7 +27,11 @@ export const SetNewPasswordPage = () => {
     formState: { errors },
   } = useAppForm<SetNewPasswordForm>();
   const { changePassword, isLoading, submitError } = useChangePasswordForm();
-  const { submit } = useVerificationToken();
+  const {
+    submit,
+    submitError: verificationTokenError,
+    isLoading: isVerificationLoading,
+  } = useVerificationToken();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,9 +65,10 @@ export const SetNewPasswordPage = () => {
   const isVerificationResolved = verificationResult !== null;
   const isVerified = verificationResult === MailVerificationResult.VERIFIED;
   const shouldShowFailedVerification =
-    isVerificationResolved && !isVerified && !isPageLoading;
+    (isVerificationResolved && !isVerified && !isPageLoading) ||
+    !!verificationTokenError;
 
-  if (isPageLoading) {
+  if (isPageLoading || isVerificationLoading) {
     return <LoadingPage message={'Verifying your email...'} />;
   }
 
