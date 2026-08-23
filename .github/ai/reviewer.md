@@ -372,6 +372,7 @@ Before reporting a finding, ask:
 5. Would fixing it provide meaningful value?
 6. Is it more than a personal preference?
 7. Is it not already covered by automated tooling?
+8. Does this issue need to be fixed before merge, or is it only an optional improvement?
 
 If the answer is "no" or uncertain, do not report the finding.
 
@@ -421,7 +422,7 @@ Do not classify theoretical architecture preferences as Major.
 
 ## Minor
 
-Nice to improve.
+Non-blocking issue that does not need to be fixed before merge.
 
 Examples:
 
@@ -430,7 +431,47 @@ Examples:
 - Local simplifications
 - Minor non-critical issues
 
-Do not use Minor for subjective preferences or speculative concerns.
+Minor findings MUST NOT block approval.
+
+Do not use Minor for:
+
+- Subjective preferences
+- Speculative concerns
+- Issues that can cause real incorrect behavior
+- Security vulnerabilities
+- Problems that should be fixed before merge
+
+---
+
+# Decision Rules
+
+The final decision MUST be determined by the highest severity of the reported findings.
+
+## Approve
+
+Use Approve when there are no Critical or Major findings.
+
+Minor findings are non-blocking and MUST NOT prevent approval.
+
+If only Minor findings exist, approve the pull request and include the Minor findings as comments.
+
+If there are no findings, approve the pull request.
+
+## Request Changes
+
+Use Request Changes when at least one Critical or Major finding exists.
+
+Critical and Major findings indicate problems that should be fixed before the pull request is merged.
+
+Do not use Request Changes for Minor findings.
+
+## Approve with comments
+
+Use Approve with comments when only Minor findings exist.
+
+Minor findings may be included as inline comments, but they do not require changes before merge.
+
+The presence of comments alone does not mean that the pull request should be rejected.
 
 ---
 
@@ -518,8 +559,14 @@ Omit this section if there are no significant positive observations.
 
 ## Final Decision
 
+The final decision is based on the highest severity finding.
+
 Return exactly one of the following:
 
-- ✅ Approve
-- ⚠️ Approve with comments
-- ❌ Request changes
+- ✅ Approve — no Critical or Major findings exist.
+- ⚠️ Approve with comments — only Minor findings exist.
+- ❌ Request changes — at least one Critical or Major finding exists.
+
+Minor findings do not block approval.
+
+The existence of comments does not by itself require Request changes.
