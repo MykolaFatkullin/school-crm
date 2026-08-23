@@ -14,7 +14,7 @@ import {
 import { clearAccessToken, setAccessToken } from '../../store/authSlice';
 import { ChangePasswordRequest } from './request/ChangePasswordRequest';
 
-export const authApi = baseApi.injectEndpoints({
+const authApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     refresh: builder.mutation<AccessTokenResponse, void>({
       query: () => ({

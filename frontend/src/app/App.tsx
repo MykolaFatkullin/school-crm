@@ -5,13 +5,13 @@ import './App.scss';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import { ToastProvider } from '../shared/components/toast';
-import { useRefreshMutation } from './api';
+import { useRefresh } from './hooks/auth';
 
 const AppInitializer = () => {
-  const [refresh] = useRefreshMutation();
+  const { refresh } = useRefresh();
 
   useEffect(() => {
-    refresh();
+    void refresh();
   }, [refresh]);
 
   return <RouterProvider router={router} />;
