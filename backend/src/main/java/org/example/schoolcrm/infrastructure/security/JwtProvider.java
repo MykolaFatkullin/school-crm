@@ -11,6 +11,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
@@ -36,6 +37,7 @@ public class JwtProvider {
   private static final String ALGORITHM = "RSA";
   private static final String ROLE_FIELD = "role";
   private static final String SCHOOL_ID_FIELD = "schoolId";
+  private static final String PASSWORD_LAST_CHANGED_AT_FIELD = "passwordLastChangedAt";
 
   private PrivateKey privateKey;
   private PublicKey publicKey;
@@ -51,7 +53,8 @@ public class JwtProvider {
     publicKey = loadPublicKey();
   }
 
-  public String generateAccessToken(UUID userId, String role, UUID schoolId) {
+  public String generateAccessToken(
+      UUID userId, String role, UUID schoolId, Instant passwordLastChangedAt) {
     var builder =
         Jwts.builder()
             .subject(userId.toString())
@@ -62,6 +65,10 @@ public class JwtProvider {
 
     if (schoolId != null) {
       builder.claim(SCHOOL_ID_FIELD, schoolId.toString());
+    }
+
+    if (passwordLastChangedAt != null) {
+      builder.claim(PASSWORD_LAST_CHANGED_AT_FIELD, passwordLastChangedAt.getEpochSecond());
     }
 
     return builder.signWith(privateKey).compact();

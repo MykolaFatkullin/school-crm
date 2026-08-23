@@ -40,7 +40,12 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(ApiException.class)
   public ResponseEntity<ApiError> handleApiException(ApiException exception) {
     val status = mapStatus(exception.getType());
-    log.error("An error occurred: {}", exception.getMessage());
+
+    if (status.is4xxClientError()) {
+      log.warn("Application error: {}", exception.getMessage());
+    } else {
+      log.error("An error occurred: {}", exception.getMessage());
+    }
 
     List<FieldError> fieldErrors = null;
 

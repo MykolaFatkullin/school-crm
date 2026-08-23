@@ -51,7 +51,11 @@ public class AuthService {
     }
 
     var jwt =
-        jwtProvider.generateAccessToken(user.getId(), user.getRole().name(), getSchoolId(user));
+        jwtProvider.generateAccessToken(
+            user.getId(),
+            user.getRole().name(),
+            getSchoolId(user),
+            user.getPasswordLastChangedAt());
 
     var expiresAt = Instant.now().plus(refreshExpiration, ChronoUnit.DAYS);
 
@@ -72,7 +76,11 @@ public class AuthService {
     var user = userService.findById(existing.getUserId());
 
     var access =
-        jwtProvider.generateAccessToken(user.getId(), user.getRole().name(), getSchoolId(user));
+        jwtProvider.generateAccessToken(
+            user.getId(),
+            user.getRole().name(),
+            getSchoolId(user),
+            user.getPasswordLastChangedAt());
 
     var newToken = refreshTokenService.create(user.getId(), existing.getExpiresAt());
 

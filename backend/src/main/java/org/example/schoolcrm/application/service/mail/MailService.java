@@ -24,6 +24,12 @@ public class MailService {
   @Value("${app.frontend-url}")
   private final String frontendUrl;
 
+  @Value("${app.mail-token-expiration-in-minutes}")
+  private final Long mailTokenExpirationInMinutes;
+
+  @Value("${app.mail-token-expiration-in-minutes}")
+  private Long passwordExpirationInMinutes;
+
   private final ThymeleafEmailTemplateService templateService;
   private final SmtpMailSender mailSender;
   private final UserService userService;
@@ -35,7 +41,7 @@ public class MailService {
             .path("/email-verification/")
             .path(token.toString())
             .toUriString();
-    val html = templateService.buildWelcomeEmailTemplate(url);
+    val html = templateService.buildWelcomeEmailTemplate(url, mailTokenExpirationInMinutes);
 
     mailSender.sendMailFromSystem(email, html, MailType.REGISTRATION);
   }
@@ -48,7 +54,8 @@ public class MailService {
             .path(token.toString())
             .toUriString();
 
-    val html = templateService.buildResetPasswordTemplate(url, firstName);
+    val html =
+        templateService.buildResetPasswordTemplate(url, firstName, passwordExpirationInMinutes);
 
     mailSender.sendMailFromSystem(email, html, MailType.RESET_PASSWORD);
   }

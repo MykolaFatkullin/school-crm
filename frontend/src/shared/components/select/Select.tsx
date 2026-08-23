@@ -3,6 +3,7 @@ import { Check, ChevronDown } from 'lucide-react';
 import styles from './Select.module.scss';
 import type { SelectOption } from './SelectOption';
 import classNames from 'classnames';
+import { useId } from 'react';
 
 type Props = {
   label: string;
@@ -23,15 +24,18 @@ export const Select = ({
   value,
   onChange,
 }: Props) => {
+  const labelId = useId();
+
   return (
     <div className={styles.Select}>
-      <label className={styles.label}>{label}</label>
+      <label id={labelId} className={styles.label}>{label}</label>
       <RadixSelect.Root
         disabled={disabled}
         value={value}
         onValueChange={onChange}
       >
         <RadixSelect.Trigger
+          aria-labelledby={labelId}
           className={classNames(styles.selectTrigger, {
             [styles.selectTriggerError]: error,
           })}

@@ -5,13 +5,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.example.schoolcrm.application.service.UserService;
-import org.example.schoolcrm.common.exception.not_found.UserNotFoundException;
 import org.example.schoolcrm.infrastructure.security.JwtProvider;
 import org.example.schoolcrm.infrastructure.security.UserPrincipal;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,13 +28,12 @@ public class JwtFilter extends OncePerRequestFilter {
   private static final String BEARER_PREFIX = "Bearer ";
 
   private final JwtProvider jwtProvider;
-  private final UserService userService;
 
   @Override
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    if (request.getRequestURI().contains("/auth/")) {
+    if (request.getRequestURI().startsWith("/auth/")) {
       filterChain.doFilter(request, response);
       return;
     }
@@ -75,34 +73,33 @@ public class JwtFilter extends OncePerRequestFilter {
 
     val userId = UUID.fromString(claims.getSubject());
 
-    try {
-      val userFromDb = userService.findById(userId);
+    val issuedAt = claims.getIssuedAt();
 
-      val issuedAt = claims.getIssuedAt();
-
-      if (issuedAt == null) {
-        log.warn("IssuedAt is null");
-        return null;
-      }
-
-      if (userFromDb.getPasswordLastChangedAt() != null
-          && userFromDb.getPasswordLastChangedAt().isAfter(issuedAt.toInstant())) {
-        log.warn("Password changed after token issued");
-        return null;
-      }
-
-      val role = claims.get("role", String.class);
-      val schoolIdString = claims.get("schoolId", String.class);
-
-      UUID schoolId = schoolIdString != null ? UUID.fromString(schoolIdString) : null;
-
-      val user = new UserPrincipal(userId, schoolId);
-      val authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
-
-      return new UsernamePasswordAuthenticationToken(user, null, authorities);
-    } catch (UserNotFoundException e) {
-      log.warn("User not found for JWT token");
+    if (issuedAt == null) {
+      log.warn("IssuedAt is null");
       return null;
     }
+
+    val passwordLastChangedAtSec = claims.get("passwordLastChangedAt", Long.class);
+    if (passwordLastChangedAtSec != null) {
+      val passwordLastChangedAt = Instant.ofEpochSecond(passwordLastChangedAtSec);
+      if (passwordLastChangedAt.isAfter(issuedAt.toInstant())) {
+        log.warn(
+            "Password changed after token issued. Last changed: {}, Token issued: {}",
+            passwordLastChangedAt,
+            issuedAt.toInstant());
+        return null;
+      }
+    }
+
+    val role = claims.get("role", String.class);
+    val schoolIdString = claims.get("schoolId", String.class);
+
+    UUID schoolId = schoolIdString != null ? UUID.fromString(schoolIdString) : null;
+
+    val user = new UserPrincipal(userId, schoolId);
+    val authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+
+    return new UsernamePasswordAuthenticationToken(user, null, authorities);
   }
 }
