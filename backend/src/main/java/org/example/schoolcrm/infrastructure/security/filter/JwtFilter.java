@@ -26,6 +26,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
   private static final String AUTHORIZATION_HEADER = "Authorization";
   private static final String BEARER_PREFIX = "Bearer ";
+  private static final int PASSWORD_CHANGE_LEEWAY_SECONDS = 2;
 
   private final JwtProvider jwtProvider;
 
@@ -52,10 +53,6 @@ public class JwtFilter extends OncePerRequestFilter {
       }
 
       filterChain.doFilter(request, response);
-    } catch (RuntimeException e) {
-      log.error("Runtime exception during JWT processing: {}", e.getMessage(), e);
-      SecurityContextHolder.clearContext();
-      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     } catch (Exception e) {
       log.error("Exception during JWT processing: {}", e.getMessage(), e);
       SecurityContextHolder.clearContext();
@@ -83,7 +80,9 @@ public class JwtFilter extends OncePerRequestFilter {
     val passwordLastChangedAtSec = claims.get("passwordLastChangedAt", Long.class);
     if (passwordLastChangedAtSec != null) {
       val passwordLastChangedAt = Instant.ofEpochSecond(passwordLastChangedAtSec);
-      if (passwordLastChangedAt.isAfter(issuedAt.toInstant())) {
+      if (passwordLastChangedAt
+          .minusSeconds(PASSWORD_CHANGE_LEEWAY_SECONDS)
+          .isAfter(issuedAt.toInstant())) {
         log.warn(
             "Password changed after token issued. Last changed: {}, Token issued: {}",
             passwordLastChangedAt,

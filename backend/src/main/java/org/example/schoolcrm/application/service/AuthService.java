@@ -12,11 +12,11 @@ import org.example.schoolcrm.common.exception.auth.AuthException;
 import org.example.schoolcrm.common.exception.system.EmailNotSentException;
 import org.example.schoolcrm.domain.MailType;
 import org.example.schoolcrm.domain.model.LoginResult;
+import org.example.schoolcrm.infrastructure.config.JwtProperties;
 import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
 import org.example.schoolcrm.infrastructure.security.JwtProvider;
 import org.example.schoolcrm.web.dto.auth.ChangePasswordRequest;
 import org.example.schoolcrm.web.dto.auth.LoginRequest;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,9 +31,7 @@ public class AuthService {
   private final PasswordEncoder passwordEncoder;
   private final MailService mailService;
   private final EmailVerificationService emailVerificationService;
-
-  @Value("${jwt.refresh-token-expiration-in-days}")
-  private final int refreshExpiration;
+  private final JwtProperties jwtProperties;
 
   public LoginResult login(LoginRequest loginRequest) {
     var user = userService.findByEmail(loginRequest.email());
@@ -57,7 +55,8 @@ public class AuthService {
             getSchoolId(user),
             user.getPasswordLastChangedAt());
 
-    var expiresAt = Instant.now().plus(refreshExpiration, ChronoUnit.DAYS);
+    var expiresAt =
+        Instant.now().plus(jwtProperties.getRefreshTokenExpirationInDays(), ChronoUnit.DAYS);
 
     var refresh = refreshTokenService.create(user.getId(), expiresAt);
 

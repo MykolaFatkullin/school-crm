@@ -1,7 +1,7 @@
 import { Button } from '../button';
 import { Check } from 'lucide-react';
 import { Icon } from '../icons';
-import styles from './SuccessVerification.module.scss';
+import styles from './SuccessAuth.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../config';
 

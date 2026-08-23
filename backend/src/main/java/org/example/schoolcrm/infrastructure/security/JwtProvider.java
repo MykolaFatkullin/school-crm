@@ -16,22 +16,17 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import lombok.RequiredArgsConstructor;
+import org.example.schoolcrm.infrastructure.config.JwtProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class JwtProvider {
-  @Value("${jwt.expiration-in-ms}")
-  private Integer jwtExpirationInMs;
-
-  @Value("${jwt.private-key-path}")
-  private String privateKeyPath;
-
-  @Value("${jwt.public-key-path}")
-  private String publicKeyPath;
+  private final JwtProperties jwtProperties;
 
   private static final String KEYS_REGEX = "-----.*?-----|\\s+";
   private static final String ALGORITHM = "RSA";
@@ -61,7 +56,7 @@ public class JwtProvider {
             .claim(ROLE_FIELD, role)
             .issuedAt(new Date())
             .notBefore(new Date())
-            .expiration(new Date(System.currentTimeMillis() + jwtExpirationInMs));
+            .expiration(new Date(System.currentTimeMillis() + jwtProperties.getExpirationInMs()));
 
     if (schoolId != null) {
       builder.claim(SCHOOL_ID_FIELD, schoolId.toString());
@@ -98,7 +93,8 @@ public class JwtProvider {
       throws java.io.IOException,
           java.security.NoSuchAlgorithmException,
           java.security.spec.InvalidKeySpecException {
-    var key = new ClassPathResource(privateKeyPath).getInputStream().readAllBytes();
+    var key =
+        new ClassPathResource(jwtProperties.getPrivateKeyPath()).getInputStream().readAllBytes();
     var sanitizedKey = prepareRsaKeys(new String(key));
     var decoded = Base64.getDecoder().decode(sanitizedKey);
     var spec = new PKCS8EncodedKeySpec(decoded);
@@ -110,7 +106,8 @@ public class JwtProvider {
       throws java.io.IOException,
           java.security.NoSuchAlgorithmException,
           java.security.spec.InvalidKeySpecException {
-    var key = new ClassPathResource(publicKeyPath).getInputStream().readAllBytes();
+    var key =
+        new ClassPathResource(jwtProperties.getPublicKeyPath()).getInputStream().readAllBytes();
     var sanitizedKey = prepareRsaKeys(new String(key));
     var decoded = Base64.getDecoder().decode(sanitizedKey);
     var spec = new X509EncodedKeySpec(decoded);

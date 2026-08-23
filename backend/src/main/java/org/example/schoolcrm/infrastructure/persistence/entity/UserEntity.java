@@ -71,7 +71,7 @@ public class UserEntity {
 
   @Column(name = "activated", nullable = false)
   @ColumnDefault(value = "false")
-  private Boolean activated;
+  private boolean activated;
 
   @Column(name = "password_last_changed_at")
   private Instant passwordLastChangedAt;

@@ -10,6 +10,7 @@ import org.example.schoolcrm.application.service.EmailVerificationService;
 import org.example.schoolcrm.application.service.RegistrationService;
 import org.example.schoolcrm.application.service.mail.MailService;
 import org.example.schoolcrm.infrastructure.config.AppProperties;
+import org.example.schoolcrm.infrastructure.config.JwtProperties;
 import org.example.schoolcrm.web.dto.auth.AccessTokenResponse;
 import org.example.schoolcrm.web.dto.auth.ChangePasswordRequest;
 import org.example.schoolcrm.web.dto.auth.LoginRequest;
@@ -19,7 +20,6 @@ import org.example.schoolcrm.web.dto.mail.EmailRequest;
 import org.example.schoolcrm.web.dto.mail.TokenRequest;
 import org.example.schoolcrm.web.dto.registration.UserRegistrationDto;
 import org.example.schoolcrm.web.dto.registration.UserRegistrationResponse;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
   private final AppProperties appProperties;
-
-  @Value("${jwt.refresh-token-expiration-in-days}")
-  private final int refreshExpiration;
-
+  private final JwtProperties jwtProperties;
   private final AuthService authService;
   private final RegistrationService registrationService;
   private final EmailVerificationService emailVerificationService;
@@ -48,7 +45,8 @@ public class AuthController {
   public ResponseEntity<AccessTokenResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
     val result = authService.login(loginRequest);
 
-    val cookie = getCookieForRefresh(result.refreshToken(), refreshExpiration);
+    val cookie =
+        getCookieForRefresh(result.refreshToken(), jwtProperties.getRefreshTokenExpirationInDays());
 
     return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, cookie.toString())
@@ -63,7 +61,9 @@ public class AuthController {
     return ResponseEntity.ok()
         .header(
             HttpHeaders.SET_COOKIE,
-            getCookieForRefresh(result.refreshToken(), refreshExpiration).toString())
+            getCookieForRefresh(
+                    result.refreshToken(), jwtProperties.getRefreshTokenExpirationInDays())
+                .toString())
         .body(new AccessTokenResponse(result.accessToken()));
   }
 
