@@ -3,10 +3,10 @@ package org.example.schoolcrm.application.service;
 import jakarta.mail.MessagingException;
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.example.schoolcrm.application.mapper.UserMapper;
 import org.example.schoolcrm.application.service.mail.MailService;
-import org.example.schoolcrm.common.exception.system.EmailNotSentException;
 import org.example.schoolcrm.common.exception.validation.UserAlreadyExistsException;
 import org.example.schoolcrm.domain.MailType;
 import org.example.schoolcrm.domain.UserRoles;
@@ -14,9 +14,13 @@ import org.example.schoolcrm.web.dto.registration.UserRegistrationDto;
 import org.example.schoolcrm.web.dto.registration.UserRegistrationResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RegistrationService {
 
   private final SchoolService schoolService;
@@ -26,8 +30,9 @@ public class RegistrationService {
   private final EmailVerificationService emailVerificationService;
   private final MailService mailService;
 
+  @Transactional
   public UserRegistrationResponse register(UserRegistrationDto userRegistrationDto) {
-    if (userService.findByEmail(userRegistrationDto.email()) != null) {
+    if (userService.findByEmail(userRegistrationDto.email()).isEmpty()) {
       throw new UserAlreadyExistsException();
     }
 
@@ -47,12 +52,18 @@ public class RegistrationService {
     val token =
         emailVerificationService.generateVerificationCode(storedUser, MailType.REGISTRATION);
 
-    try {
-      mailService.sendVerificationMail(storedUser.getEmail(), token);
+    TransactionSynchronizationManager.registerSynchronization(
+        new TransactionSynchronization() {
+          @Override
+          public void afterCommit() {
+            try {
+              mailService.sendVerificationMail(storedUser.getEmail(), token);
+            } catch (MessagingException e) {
+              log.error("Failed to send verification email to {}", storedUser.getEmail(), e);
+            }
+          }
+        });
 
-      return new UserRegistrationResponse(storedUser.getEmail());
-    } catch (MessagingException e) {
-      throw new EmailNotSentException();
-    }
+    return new UserRegistrationResponse(storedUser.getEmail());
   }
 }

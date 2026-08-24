@@ -14,4 +14,5 @@ public class JwtProperties {
   private Integer refreshTokenExpirationInDays;
   private String privateKeyPath;
   private String publicKeyPath;
+  private Integer passwordChangeLeewaySeconds;
 }

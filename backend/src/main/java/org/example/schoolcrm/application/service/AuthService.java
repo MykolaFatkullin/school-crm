@@ -36,11 +36,13 @@ public class AuthService {
   private final JwtProperties jwtProperties;
 
   public LoginResult login(LoginRequest loginRequest) {
-    var user = userService.findByEmail(loginRequest.email());
+    var userOptional = userService.findByEmail(loginRequest.email());
 
-    if (user == null) {
+    if (userOptional.isEmpty()) {
       throw new AuthException("Unauthorized");
     }
+
+    val user = userOptional.get();
 
     if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
       throw new AuthException("Unauthorized");
@@ -97,11 +99,13 @@ public class AuthService {
   }
 
   public void resetPassword(String email) {
-    val storedUser = userService.findByEmail(email);
+    val storedUserOptional = userService.findByEmail(email);
 
-    if (storedUser == null) {
+    if (storedUserOptional.isEmpty()) {
       return;
     }
+
+    val storedUser = storedUserOptional.get();
 
     val token =
         emailVerificationService.generateVerificationCode(storedUser, MailType.RESET_PASSWORD);

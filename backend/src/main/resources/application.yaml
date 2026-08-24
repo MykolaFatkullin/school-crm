@@ -37,4 +37,5 @@ jwt:
   refresh-token-expiration-in-days: 7
   private-key-path: keys/private_key.pem
   public-key-path: keys/public_key.pem
+  password-change-leeway-seconds: 2
 

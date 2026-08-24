@@ -1,5 +1,6 @@
 package org.example.schoolcrm.application.service;
 
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.example.schoolcrm.common.exception.not_found.UserNotFoundException;
@@ -18,8 +19,8 @@ public class UserService {
     return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
   }
 
-  public UserEntity findByEmail(String email) {
-    return userRepository.findByEmail(email).orElse(null);
+  public Optional<UserEntity> findByEmail(String email) {
+    return userRepository.findByEmail(email);
   }
 
   @Transactional

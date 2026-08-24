@@ -9,6 +9,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.example.schoolcrm.infrastructure.config.JwtProperties;
 import org.example.schoolcrm.infrastructure.security.JwtProvider;
 import org.example.schoolcrm.infrastructure.security.UserPrincipal;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,12 +22,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
-
   private static final String AUTHORIZATION_HEADER = "Authorization";
   private static final String BEARER_PREFIX = "Bearer ";
-  private static final int PASSWORD_CHANGE_LEEWAY_SECONDS = 2;
 
   private final JwtProvider jwtProvider;
+  private final JwtProperties jwtProperties;
 
   @Override
   protected void doFilterInternal(
@@ -73,7 +73,7 @@ public class JwtFilter extends OncePerRequestFilter {
     if (passwordLastChangedAtSec != null) {
       val passwordLastChangedAt = Instant.ofEpochSecond(passwordLastChangedAtSec);
       if (passwordLastChangedAt
-          .minusSeconds(PASSWORD_CHANGE_LEEWAY_SECONDS)
+          .minusSeconds(jwtProperties.getPasswordChangeLeewaySeconds())
           .isAfter(issuedAt.toInstant())) {
         log.warn(
             "Password changed after token issued. Last changed: {}, Token issued: {}",

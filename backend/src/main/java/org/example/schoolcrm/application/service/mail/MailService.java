@@ -1,7 +1,6 @@
 package org.example.schoolcrm.application.service.mail;
 
 import jakarta.mail.MessagingException;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -56,13 +55,15 @@ public class MailService {
     mailSender.sendMailFromSystem(email, html, MailType.RESET_PASSWORD);
   }
 
-  public void resendVerificationMail(@NotBlank String email, MailType type) {
-    val user = userService.findByEmail(email);
+  public void resendVerificationMail(String email, MailType type) {
+    val userOptional = userService.findByEmail(email);
 
-    if (user == null) {
+    if (userOptional.isEmpty()) {
       log.debug("User with email {} not found", email);
       return;
     }
+
+    val user = userOptional.get();
 
     if (type == MailType.REGISTRATION && user.isActivated()) {
       return;
