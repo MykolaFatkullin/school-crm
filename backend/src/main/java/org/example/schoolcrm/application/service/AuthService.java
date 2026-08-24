@@ -1,18 +1,28 @@
 package org.example.schoolcrm.application.service;
 
+import jakarta.mail.MessagingException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.example.schoolcrm.application.service.mail.MailService;
 import org.example.schoolcrm.common.exception.auth.AuthException;
+import org.example.schoolcrm.common.exception.system.EmailNotSentException;
+import org.example.schoolcrm.common.exception.validation.ValidationException;
+import org.example.schoolcrm.domain.MailType;
+import org.example.schoolcrm.domain.model.LoginResult;
+import org.example.schoolcrm.infrastructure.config.JwtProperties;
 import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
 import org.example.schoolcrm.infrastructure.security.JwtProvider;
+import org.example.schoolcrm.web.dto.auth.ChangePasswordRequest;
 import org.example.schoolcrm.web.dto.auth.LoginRequest;
-import org.example.schoolcrm.web.dto.auth.RefreshRequest;
-import org.example.schoolcrm.web.dto.auth.TokenResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -21,45 +31,108 @@ public class AuthService {
   private final JwtProvider jwtProvider;
   private final UserService userService;
   private final PasswordEncoder passwordEncoder;
+  private final MailService mailService;
+  private final EmailVerificationService emailVerificationService;
+  private final JwtProperties jwtProperties;
 
-  public TokenResponse login(LoginRequest loginRequest) {
-    var user = userService.findByEmail(loginRequest.email());
+  public LoginResult login(LoginRequest loginRequest) {
+    var userOptional = userService.findByEmail(loginRequest.email());
 
-    if (user == null) {
+    if (userOptional.isEmpty()) {
       throw new AuthException("Unauthorized");
     }
 
+    val user = userOptional.get();
+
     if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
-      throw new AuthException("Invalid password");
+      throw new AuthException("Unauthorized");
+    }
+
+    if (!user.isActivated()) {
+      throw new AuthException("Unauthorized");
     }
 
     var jwt =
-        jwtProvider.generateAccessToken(user.getId(), user.getRole().name(), getSchoolId(user));
+        jwtProvider.generateAccessToken(
+            user.getId(),
+            user.getRole().name(),
+            getSchoolId(user),
+            user.getPasswordLastChangedAt());
 
-    var expiresAt = Instant.now().plus(7, ChronoUnit.DAYS);
+    var expiresAt =
+        Instant.now().plus(jwtProperties.getRefreshTokenExpirationInDays(), ChronoUnit.DAYS);
 
     var refresh = refreshTokenService.create(user.getId(), expiresAt);
 
-    return new TokenResponse(jwt, refresh.getToken());
+    return new LoginResult(jwt, refresh.getToken().toString());
   }
 
-  public TokenResponse refresh(RefreshRequest refreshRequest) {
-    var existing = refreshTokenService.validate(refreshRequest.refreshToken());
+  public LoginResult refresh(UUID refreshToken) {
+    if (refreshToken == null) {
+      throw new AuthException("Unauthorized");
+    }
 
-    refreshTokenService.delete(existing.getToken());
+    var existing = refreshTokenService.validate(refreshToken);
+
+    refreshTokenService.deleteByToken(existing.getToken());
 
     var user = userService.findById(existing.getUserId());
 
     var access =
-        jwtProvider.generateAccessToken(user.getId(), user.getRole().name(), getSchoolId(user));
+        jwtProvider.generateAccessToken(
+            user.getId(),
+            user.getRole().name(),
+            getSchoolId(user),
+            user.getPasswordLastChangedAt());
 
     var newToken = refreshTokenService.create(user.getId(), existing.getExpiresAt());
 
-    return new TokenResponse(access, newToken.getToken());
+    return new LoginResult(access, newToken.getToken().toString());
   }
 
-  public void logout(RefreshRequest refreshRequest) {
-    refreshTokenService.delete(refreshRequest.refreshToken());
+  public void logout(UUID refreshToken) {
+    if (refreshToken == null) {
+      return;
+    }
+
+    refreshTokenService.deleteByToken(refreshToken);
+  }
+
+  public void resetPassword(String email) {
+    val storedUserOptional = userService.findByEmail(email);
+
+    if (storedUserOptional.isEmpty()) {
+      return;
+    }
+
+    val storedUser = storedUserOptional.get();
+
+    val token =
+        emailVerificationService.generateVerificationCode(storedUser, MailType.RESET_PASSWORD);
+
+    try {
+      mailService.sendResetPasswordMail(token, storedUser.getFirstName(), storedUser.getEmail());
+    } catch (MessagingException e) {
+      log.error("Error sending reset password email", e);
+      throw new EmailNotSentException();
+    }
+  }
+
+  @Transactional
+  public void changePassword(ChangePasswordRequest request) {
+    val tokenEntity = emailVerificationService.getStoredToken(request.token());
+    val user = tokenEntity.getUser();
+
+    if (tokenEntity.getType() != MailType.RESET_PASSWORD
+        || tokenEntity.getExpirationDate().isBefore(Instant.now())) {
+      throw new ValidationException("Invalid token");
+    }
+
+    user.setPassword(passwordEncoder.encode(request.password()));
+    user.setPasswordLastChangedAt(Instant.now());
+    userService.save(user);
+    emailVerificationService.dropToken(request.token());
+    refreshTokenService.dropTokenByUser(user.getId());
   }
 
   private UUID getSchoolId(UserEntity user) {

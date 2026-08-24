@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm your email</title>
+</head>
+<body style="
+        margin:0;
+        padding:40px 20px;
+        background:#f8fafc;
+        font-family:Inter,Arial,sans-serif;
+">
+
+<table role="presentation"
+       cellspacing="0"
+       cellpadding="0"
+       border="0"
+       width="100%">
+    <tr>
+        <td align="center">
+
+            <table role="presentation"
+                   cellspacing="0"
+                   cellpadding="0"
+                   border="0"
+                   width="600"
+                   style="
+                        background:#ffffff;
+                        border-radius:16px;
+                        padding:48px;
+                        box-shadow:0 8px 24px rgba(15,23,42,.08);
+                   ">
+
+                <tr>
+                    <td align="center">
+
+                        <h1 style="
+                                margin:0;
+                                color:#111827;
+                                font-size:32px;
+                                font-weight:700;
+                        ">
+                            Welcome to SchoolCRM 👋
+                        </h1>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding-top:24px">
+
+                        <p style="
+                                margin:0;
+                                color:#374151;
+                                font-size:16px;
+                                line-height:28px;
+                        ">
+                            Hi,
+                        </p>
+
+                        <p style="
+                                margin:16px 0 0;
+                                color:#374151;
+                                font-size:16px;
+                                line-height:28px;
+                        ">
+                            Thank you for creating your SchoolCRM workspace.
+                            Before you can start using your account, please
+                            verify your email address.
+                        </p>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="center" style="padding:40px 0">
+
+                        <a th:href="${confirmationUrl}"
+                           style="
+                                display:inline-block;
+                                padding:14px 32px;
+                                background:#4F7CFF;
+                                color:#ffffff;
+                                text-decoration:none;
+                                border-radius:10px;
+                                font-size:16px;
+                                font-weight:600;
+                           ">
+                            Verify Email
+                        </a>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+
+                        <p style="
+                                margin:0;
+                                color:#6B7280;
+                                font-size:14px;
+                                line-height:24px;
+                        ">
+                            If the button above doesn't work, copy and paste this
+                            link into your browser:
+                        </p>
+
+                        <p style="
+                                margin-top:12px;
+                                word-break:break-all;
+                                color:#4F7CFF;
+                                font-size:14px;
+                                line-height:22px;
+                        ">
+                            <a th:href="${confirmationUrl}"
+                               th:text="${confirmationUrl}"
+                               style="color:#4F7CFF;">
+                            </a>
+                        </p>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="
+                            padding-top:40px;
+                            border-top:1px solid #E5E7EB;
+                    ">
+
+                        <p style="
+                                margin:0;
+                                color:#9CA3AF;
+                                font-size:13px;
+                                line-height:22px;
+                        ">
+                            This verification link will expire in
+                            <strong th:text="${expirationTime}">24 hours</strong></p>
+
+                        <p style="
+                                margin-top:12px;
+                                color:#9CA3AF;
+                                font-size:13px;
+                                line-height:22px;
+                        ">
+                            If you didn't create a SchoolCRM account, you can
+                            safely ignore this email.
+                        </p>
+
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

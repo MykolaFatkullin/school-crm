@@ -1,2 +1,1 @@
-export * from './RegistrationPage';
-export * from './RegisterForm.type';
+export { RegistrationPage } from './RegistrationPage';

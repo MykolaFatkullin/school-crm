@@ -1,0 +1,23 @@
+@use '../../styles/variables' as *;
+
+.alert {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background-color: $color-alert-background;
+  border: 1px solid $color-alert-border;
+  border-radius: 12px;
+  box-sizing: border-box;
+  align-items: center;
+  margin-block: 12px;
+}
+
+.alertIcon {
+  color: $color-danger;
+  height: 20px;
+}
+
+.alertMessage {
+  color: $color-alert-text;
+}

@@ -25,15 +25,15 @@ public class SecurityConfig {
   private final SchoolAccessFilter schoolAccessFilter;
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-    return http.csrf(AbstractHttpConfigurer::disable)
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    http.csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth -> auth.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-        .addFilterAfter(schoolAccessFilter, JwtFilter.class)
-        .build();
+        .addFilterAfter(schoolAccessFilter, JwtFilter.class);
+
+    return http.build();
   }
 
   @Bean

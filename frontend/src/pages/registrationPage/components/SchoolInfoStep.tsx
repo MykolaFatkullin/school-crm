@@ -1,97 +1,100 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { RegisterForm } from '../RegisterForm.type';
-import { Input } from '../../../shared/input';
-import { Button } from '../../../shared/button';
+import { RegisterForm } from '../model';
+import { Input } from '../../../shared/components/input';
+import { Button } from '../../../shared/components/button';
 import { ArrowRight } from 'lucide-react';
+import { Select } from '../../../shared/components/select';
+import style from './SchoolInfoStep.module.scss';
+import { GENDER_OPTIONS } from '../../../entities/user/constants/genderOptions';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../shared/config';
+import { AuthStepActions } from '../../../shared/components/authStepActions';
 
-type Props = {
-  clearInputError: (name: keyof RegisterForm) => void;
-};
-
-export const SchoolInfoStep = ({ clearInputError }: Props) => {
+export const SchoolInfoStep = () => {
   const {
+    register,
     control,
     formState: { errors },
   } = useFormContext<RegisterForm>();
+  const navigate = useNavigate();
+
+  const schoolName = register('schoolName', {
+    required: {
+      value: true,
+      message: 'School name must not be empty',
+    },
+  });
+
+  const firstName = register('firstName', {
+    required: {
+      value: true,
+      message: 'First name must not be empty',
+    },
+  });
+
+  const lastName = register('lastName', {
+    required: {
+      value: true,
+      message: 'Last name must not be empty',
+    },
+  });
 
   return (
     <>
+      <Input
+        {...schoolName}
+        label={'School Name'}
+        error={errors.schoolName?.message}
+        placeholder={'Enter school name'}
+      />
+      <div className={style.nameInfo}>
+        <Input
+          {...firstName}
+          label={'First name'}
+          error={errors.firstName?.message}
+          placeholder={'First name'}
+        />
+        <Input
+          {...lastName}
+          label={'Last name'}
+          error={errors.lastName?.message}
+          placeholder={'Last name'}
+        />
+      </div>
       <Controller
         control={control}
-        name="schoolName"
+        name="gender"
         rules={{
           required: {
             value: true,
-            message: 'School name must no be empty',
+            message: 'Please choose your gender',
           },
         }}
         defaultValue={''}
-        render={({ field: { onChange, ...restInputFields } }) => (
-          <Input
-            {...restInputFields}
-            label={'School Name'}
-            error={errors.schoolName?.message}
-            placeholder={'Enter school name'}
-            onChange={e => {
-              onChange(e);
-              clearInputError(e.target.name as keyof RegisterForm);
-            }}
+        render={({ field, fieldState }) => (
+          <Select
+            {...field}
+            label={'Gender'}
+            placeholder={'Select gender'}
+            options={GENDER_OPTIONS}
+            error={fieldState.error?.message}
+            value={field.value}
           />
         )}
       />
-      <Controller
-        control={control}
-        name="administratorName"
-        rules={{
-          required: {
-            value: true,
-            message: 'Administrator name must not be empty',
-          },
-        }}
-        defaultValue={''}
-        render={({ field: { onChange, ...restInputFields } }) => (
-          <Input
-            {...restInputFields}
-            label={'Administrator name'}
-            error={errors.administratorName?.message}
-            placeholder={'Enter administrator name'}
-            onChange={e => {
-              onChange(e);
-              clearInputError(e.target.name as keyof RegisterForm);
-            }}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name="schoolEmail"
-        rules={{
-          required: {
-            value: true,
-            message: 'School email must not be empty',
-          },
-          pattern: {
-            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            message: 'Invalid email address',
-          },
-        }}
-        defaultValue={''}
-        render={({ field: { onChange, ...restInputFields } }) => (
-          <Input
-            {...restInputFields}
-            label={'School email'}
-            error={errors.schoolEmail?.message}
-            placeholder={'Enter school email'}
-            onChange={e => {
-              onChange(e);
-              clearInputError(e.target.name as keyof RegisterForm);
-            }}
-          />
-        )}
-      />
-      <Button type="submit" variant={'primary'}>
-        Continue <ArrowRight size={18} />
-      </Button>
+      <AuthStepActions>
+        <Button type="submit" variant={'primary'}>
+          Continue <ArrowRight size={18} />
+        </Button>
+        <Button
+          variant={'text'}
+          type={'button'}
+          onClick={() => navigate(ROUTES.LOGIN)}
+          inlineText={'Already have an account?'}
+        >
+          Log in
+        </Button>
+      </AuthStepActions>
     </>
   );
 };

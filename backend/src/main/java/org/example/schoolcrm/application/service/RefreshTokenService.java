@@ -32,7 +32,11 @@ public class RefreshTokenService {
         .orElseThrow(InvalidRefreshTokenException::new);
   }
 
-  public void delete(UUID tokenId) {
-    refreshTokenRepository.deleteById(tokenId);
+  public void deleteByToken(UUID tokenId) {
+    refreshTokenRepository.deleteByToken(tokenId);
+  }
+
+  public void dropTokenByUser(UUID userId) {
+    refreshTokenRepository.deleteByUserId(userId);
   }
 }

@@ -1,9 +1,9 @@
-import { Logo } from '../../shared/Logo';
-import { Button } from '../../shared/button';
+import { Button } from '../../shared/components/button';
 import { ArrowRight } from 'lucide-react';
 import styles from './HomePage.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '../../app/layouts/router';
+import { ROUTES } from '../../shared/config';
+import { Logo } from '../../shared/components/icons';
 
 export const HomePage = () => {
   const navigate = useNavigate();

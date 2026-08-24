@@ -9,8 +9,33 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+  web:
+    locale: en_US
+    locale-resolver: fixed
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+app:
+  default-email: schoolcrm@crm.com
+  frontend-url: http://localhost:5173
+  mail-token-expiration-in-minutes: 1440
+  reset-password-expiration-in-minutes: 30
+  expired-token-cleanup-after-hours: 24
+  cookies:
+    secure: false
+
 jwt:
-  secret-key: yourSuperSecretKeyThatIsAtLeast256BitsLongForHS256Algorithm
   expiration-in-ms: 60000
+  refresh-token-expiration-in-days: 7
   private-key-path: keys/private_key.pem
   public-key-path: keys/public_key.pem
+  password-change-leeway-seconds: 2
+

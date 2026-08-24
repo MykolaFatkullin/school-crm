@@ -10,6 +10,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.schoolcrm.infrastructure.security.UserPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class SchoolAccessFilter extends OncePerRequestFilter {
 
   private static final Pattern SCHOOL_ID_PATTERN =
@@ -40,6 +42,9 @@ public class SchoolAccessFilter extends OncePerRequestFilter {
     var auth = SecurityContextHolder.getContext().getAuthentication();
 
     if (auth == null || !(auth.getPrincipal() instanceof UserPrincipal principal)) {
+      log.warn(
+          "Unauthorized access to school path: {}, authentication missing or invalid principal",
+          path);
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       return;
     }
@@ -51,6 +56,11 @@ public class SchoolAccessFilter extends OncePerRequestFilter {
     if (!isSuperAdmin) {
 
       if (principal.schoolId() == null || !principal.schoolId().equals(schoolId)) {
+        log.warn(
+            "Forbidden access for user {} to school {}. User's school: {}",
+            principal.userId(),
+            schoolId,
+            principal.schoolId());
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         return;
       }
