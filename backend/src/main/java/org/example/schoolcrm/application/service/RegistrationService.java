@@ -32,7 +32,7 @@ public class RegistrationService {
 
   @Transactional
   public UserRegistrationResponse register(UserRegistrationDto userRegistrationDto) {
-    if (userService.findByEmail(userRegistrationDto.email()).isEmpty()) {
+    if (userService.findByEmail(userRegistrationDto.email()).isPresent()) {
       throw new UserAlreadyExistsException();
     }
 
