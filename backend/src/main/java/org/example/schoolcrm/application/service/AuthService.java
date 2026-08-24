@@ -1,7 +1,6 @@
 package org.example.schoolcrm.application.service;
 
 import jakarta.mail.MessagingException;
-import jakarta.validation.constraints.NotBlank;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;

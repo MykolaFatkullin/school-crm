@@ -1,10 +1,8 @@
 package org.example.schoolcrm.infrastructure.security.filter;
 
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
