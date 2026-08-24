@@ -5,10 +5,12 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.example.schoolcrm.application.service.mail.MailService;
 import org.example.schoolcrm.common.exception.auth.AuthException;
 import org.example.schoolcrm.common.exception.system.EmailNotSentException;
+import org.example.schoolcrm.common.exception.validation.ValidationException;
 import org.example.schoolcrm.domain.MailType;
 import org.example.schoolcrm.domain.model.LoginResult;
 import org.example.schoolcrm.infrastructure.config.JwtProperties;
@@ -20,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -106,6 +109,7 @@ public class AuthService {
     try {
       mailService.sendResetPasswordMail(token, storedUser.getFirstName(), storedUser.getEmail());
     } catch (MessagingException e) {
+      log.error("Error sending reset password email", e);
       throw new EmailNotSentException();
     }
   }
@@ -117,7 +121,7 @@ public class AuthService {
 
     if (tokenEntity.getType() != MailType.RESET_PASSWORD
         || tokenEntity.getExpirationDate().isBefore(Instant.now())) {
-      throw new AuthException("Invalid token");
+      throw new ValidationException("Invalid token");
     }
 
     user.setPassword(passwordEncoder.encode(request.password()));
