@@ -32,6 +32,8 @@ const isAuthEndpoint = (rawUrl: string) => {
   }
 };
 
+let refreshPromise: Promise<boolean> | null = null;
+
 const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,
@@ -42,23 +44,45 @@ const baseQueryWithReauth: BaseQueryFn<
   const url = typeof args === 'string' ? args : args.url;
 
   if (result.error?.status === 401 && !isAuthEndpoint(url)) {
-    const refreshResult = await baseQuery(
-      {
-        url: '/auth/refresh',
-        method: 'POST',
-      },
-      api,
-      extraOptions,
-    );
+    if (!refreshPromise) {
+      refreshPromise = (async () => {
+        try {
+          const refreshResult = await baseQuery(
+            {
+              url: '/auth/refresh',
+              method: 'POST',
+            },
+            api,
+            extraOptions,
+          );
 
-    if (refreshResult.data) {
-      const { accessToken } = refreshResult.data as { accessToken: string };
+          if (refreshResult.data) {
+            const { accessToken } = refreshResult.data as {
+              accessToken: string;
+            };
 
-      api.dispatch(setAccessToken(accessToken));
+            api.dispatch(setAccessToken(accessToken));
 
+            return true;
+          } else {
+            api.dispatch(clearAccessToken());
+
+            return false;
+          }
+        } catch {
+          api.dispatch(clearAccessToken());
+
+          return false;
+        } finally {
+          refreshPromise = null;
+        }
+      })();
+    }
+
+    const refreshSuccess = await refreshPromise;
+
+    if (refreshSuccess) {
       result = await baseQuery(args, api, extraOptions);
-    } else {
-      api.dispatch(clearAccessToken());
     }
   }
 

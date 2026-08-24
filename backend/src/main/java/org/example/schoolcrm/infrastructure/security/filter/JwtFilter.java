@@ -32,13 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(
-      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-      throws ServletException, IOException {
-    if (request.getRequestURI().startsWith("/auth/")) {
-      filterChain.doFilter(request, response);
-      return;
-    }
-
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
     try {
       val header = request.getHeader(AUTHORIZATION_HEADER);
 

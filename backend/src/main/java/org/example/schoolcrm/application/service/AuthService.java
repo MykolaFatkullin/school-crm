@@ -94,7 +94,7 @@ public class AuthService {
     refreshTokenService.deleteByToken(refreshToken);
   }
 
-  public void resetPassword(@NotBlank String email) {
+  public void resetPassword(String email) {
     val storedUser = userService.findByEmail(email);
 
     if (storedUser == null) {
