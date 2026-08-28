@@ -3,22 +3,21 @@ import { ArrowLeft, Mail } from 'lucide-react';
 import style from './SuccessRegistration.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../shared/config';
-import { useEffect, useState } from 'react';
-import { useResendingEmail } from '../../shared/hooks';
-import { Alert } from '../../shared/components/alert';
+import { useEffect } from 'react';
 import { Icon } from '../../shared/components/icons';
 import { MailType } from '../../app/api/auth/request';
+import { useResendVerificationMailMutation } from '../../app/api';
+import { Link } from '../../shared/components/link';
 
 type SuccessRegistrationState = {
   email?: string;
 };
 
 export const SuccessRegistrationPage = () => {
+  const [resend, { isLoading }] = useResendVerificationMailMutation();
   const navigate = useNavigate();
-  const { resendEmail, isLoading } = useResendingEmail();
   const location = useLocation();
   const { email } = (location.state as SuccessRegistrationState) ?? {};
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!email) {
@@ -29,11 +28,7 @@ export const SuccessRegistrationPage = () => {
   const resendEmailHandler = async () => {
     if (!email) return;
 
-    const error = await resendEmail(email, MailType.REGISTRATION);
-
-    if (error) {
-      setError(error.message);
-    }
+    void resend({ email, type: MailType.REGISTRATION });
   };
 
   return (
@@ -46,7 +41,6 @@ export const SuccessRegistrationPage = () => {
           backgroundType={'ellipse'}
           className={style.iconMail}
         />
-        {error && <Alert message={error} />}
         <h1 className={style.title}>Verify your email</h1>
         <span className={style.text}>We've sent a verification link to</span>
         <span className={style.email}>{email}</span>
@@ -63,16 +57,10 @@ export const SuccessRegistrationPage = () => {
         >
           Resend Email
         </Button>
-        <Button
-          variant={'defaultText'}
-          onClick={() => {
-            navigate(ROUTES.LOGIN);
-          }}
-          disabled={isLoading}
-        >
+        <Link to={ROUTES.LOGIN} type={'defaultText'}>
           <ArrowLeft size={18} />
           Back to Login
-        </Button>
+        </Link>
       </div>
     </div>
   );

@@ -6,9 +6,9 @@ import { ArrowRight } from 'lucide-react';
 import { Select } from '../../../shared/components/select';
 import style from './SchoolInfoStep.module.scss';
 import { GENDER_OPTIONS } from '../../../entities/user/constants/genderOptions';
-import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../shared/config';
 import { AuthStepActions } from '../../../shared/components/authStepActions';
+import { Link } from '../../../shared/components/link';
 
 export const SchoolInfoStep = () => {
   const {
@@ -16,7 +16,6 @@ export const SchoolInfoStep = () => {
     control,
     formState: { errors },
   } = useFormContext<RegisterForm>();
-  const navigate = useNavigate();
 
   const schoolName = register('schoolName', {
     required: {
@@ -86,14 +85,13 @@ export const SchoolInfoStep = () => {
         <Button type="submit" variant={'primary'}>
           Continue <ArrowRight size={18} />
         </Button>
-        <Button
-          variant={'text'}
-          type={'button'}
-          onClick={() => navigate(ROUTES.LOGIN)}
+        <Link
+          to={ROUTES.LOGIN}
+          type={'primaryText'}
           inlineText={'Already have an account?'}
         >
           Log in
-        </Button>
+        </Link>
       </AuthStepActions>
     </>
   );

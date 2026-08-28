@@ -1,0 +1,47 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  box-shadow: 0 8px 24px 0 $shadow-elevation;
+  width: 480px;
+  border-radius: 16px;
+  background-color: $color-white;
+  height: 100%;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.errorIconNetwork {
+  --icon-bg: #{$color-network-error};
+  --icon-color: #{$color-network-error-icon};
+}
+
+.errorIconSystem {
+  --icon-bg: #{$color-danger-subtle-hover};
+  --icon-color: #{$color-danger};
+}
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.errorTitle {
+  @include font(sub-heading);
+}
+
+.errorMessage {
+  text-align: center;
+  color: $color-text-secondary;
+  @include font(body);
+}

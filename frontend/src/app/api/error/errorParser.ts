@@ -1,9 +1,11 @@
-import { ApiError } from '../model';
+import { ApiError } from '../../model';
 
-export const parseApiError = (error: unknown) => {
+export const parseApiError = (error: unknown): ApiError | null => {
   const errorData = (error as { data?: unknown } | null)?.data;
 
-  if (!errorData) return null;
+  if (!errorData) {
+    return null;
+  }
 
   if (typeof errorData === 'string') {
     try {

@@ -1,38 +1,25 @@
-import { useState } from 'react';
 import { LoginForm } from '../model';
-import { useLogin } from '../../../app/hooks/auth/useLogin';
-import { parseApiError } from '../../../app/api';
-import { ErrorCode } from '../../../app/model/ErrorCode';
+import { useLoginMutation } from '../../../app/api';
+import { useApiValidationError } from '../../../shared/hooks';
+import { UseFormReturn } from 'react-hook-form';
+import { parseApiError } from '../../../app/api/error';
 
-export const useLoginForm = () => {
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const { login, isLoading } = useLogin();
+export const useLoginForm = (methods: UseFormReturn<LoginForm>) => {
+  const [login, { isLoading, error }] = useLoginMutation();
+
+  useApiValidationError(error, methods.setError);
+
+  const apiError = parseApiError(error);
 
   const submit = async (form: LoginForm) => {
-    try {
-      setSubmitError(null);
+    const request = { email: form.email, password: form.password };
 
-      const request = { email: form.email, password: form.password };
-
-      await login(request);
-    } catch (error) {
-      const apiError = parseApiError(error);
-
-      if (apiError?.errorType === ErrorCode.AUTH_ERROR) {
-        setSubmitError(
-          'Incorrect email or password, or the user is not activated.',
-        );
-
-        return;
-      }
-
-      setSubmitError('Something went wrong. Please try again later.');
-    }
+    await login(request).unwrap();
   };
 
   return {
     submit,
     isLoading,
-    submitError,
+    apiError,
   };
 };

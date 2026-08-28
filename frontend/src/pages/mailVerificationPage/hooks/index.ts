@@ -1,1 +1,0 @@
-export { useVerificationToken } from './useVerificationToken';

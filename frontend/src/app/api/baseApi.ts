@@ -7,6 +7,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { env } from '../../shared/config';
 import { RootState } from '../store/store';
 import { clearAccessToken, setAccessToken } from '../store/authSlice';
+import { handleErrors } from './error/handleErrors';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: env.apiUrl,
@@ -22,15 +23,8 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const isAuthEndpoint = (rawUrl: string) => {
-  try {
-    const pathname = new URL(rawUrl, 'http://localhost').pathname;
-
-    return pathname === '/auth' || pathname.startsWith('/auth/');
-  } catch {
-    return rawUrl === '/auth' || rawUrl.startsWith('/auth/');
-  }
-};
+const isAuthEndpoint = (url: string) =>
+  url === '/auth' || url.startsWith('/auth/');
 
 let refreshPromise: Promise<boolean> | null = null;
 
@@ -56,23 +50,25 @@ const baseQueryWithReauth: BaseQueryFn<
             extraOptions,
           );
 
-          if (refreshResult.data) {
-            const { accessToken } = refreshResult.data as {
-              accessToken: string;
-            };
-
-            api.dispatch(setAccessToken(accessToken));
-
-            return true;
-          } else {
+          if (refreshResult.error || !refreshResult.data) {
             api.dispatch(clearAccessToken());
 
             return false;
           }
-        } catch {
-          api.dispatch(clearAccessToken());
 
-          return false;
+          const { accessToken } = refreshResult.data as {
+            accessToken: string;
+          };
+
+          if (!accessToken) {
+            api.dispatch(clearAccessToken());
+
+            return false;
+          }
+
+          api.dispatch(setAccessToken(accessToken));
+
+          return true;
         } finally {
           refreshPromise = null;
         }
@@ -84,6 +80,10 @@ const baseQueryWithReauth: BaseQueryFn<
     if (refreshSuccess) {
       result = await baseQuery(args, api, extraOptions);
     }
+  }
+
+  if (result.error) {
+    handleErrors(result.error, api, url);
   }
 
   return result;

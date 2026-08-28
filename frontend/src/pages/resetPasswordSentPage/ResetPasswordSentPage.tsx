@@ -5,27 +5,23 @@ import { ROUTES } from '../../shared/config';
 import { Icon } from '../../shared/components/icons';
 import { Mail } from 'lucide-react';
 import style from './ResetPasswordSentPage.module.scss';
-import { useResendingEmail } from '../../shared/hooks';
 import { MailType } from '../../app/api/auth/request';
-import { useState } from 'react';
-import { Alert } from '../../shared/components/alert';
+import { useResendVerificationMailMutation } from '../../app/api';
 
 export const ResetPasswordSentPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const [error, setError] = useState<string | null>(null);
-  const { resendEmail, isLoading } = useResendingEmail();
+  const [resendEmail, { isLoading }] = useResendVerificationMailMutation();
 
   if (state?.success === undefined || state?.email === undefined) {
     return <Navigate to={ROUTES.HOME} replace />;
   }
 
   const resendEmailHandler = async () => {
-    const error = await resendEmail(state.email, MailType.RESET_PASSWORD);
-
-    if (error) {
-      setError(error.message);
-    }
+    void resendEmail({
+      email: state.email,
+      type: MailType.RESET_PASSWORD,
+    });
   };
 
   return (
@@ -38,7 +34,6 @@ export const ResetPasswordSentPage = () => {
           backgroundType={'ellipse'}
           className={style.iconMail}
         />
-        {error && <Alert message={error} />}
         <h1 className={style.title}>Check your email</h1>
         <div className={style.textContainer}>
           <span className={style.text}>

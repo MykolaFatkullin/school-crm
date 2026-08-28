@@ -11,7 +11,7 @@ import {
   ResendVerificationMailRequest,
   ResetPasswordRequest,
 } from './request';
-import { clearAccessToken, setAccessToken } from '../../store/authSlice';
+import { setAccessToken } from '../../store/authSlice';
 import { ChangePasswordRequest } from './request/ChangePasswordRequest';
 
 const authApi = baseApi.injectEndpoints({
@@ -21,15 +21,6 @@ const authApi = baseApi.injectEndpoints({
         url: '/auth/refresh',
         method: 'POST',
       }),
-      async onQueryStarted(_, { queryFulfilled, dispatch }) {
-        try {
-          const { data } = await queryFulfilled;
-
-          dispatch(setAccessToken(data.accessToken));
-        } catch {
-          dispatch(clearAccessToken());
-        }
-      },
     }),
 
     register: builder.mutation<RegistrationResponse, RegistrationRequest>({

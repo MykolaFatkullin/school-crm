@@ -8,4 +8,5 @@ export const ROUTES = {
   RESET_PASSWORD_SENT: '/reset-password-sent',
   SET_NEW_PASSWORD: '/set-new-password',
   RESET_PASSWORD_RESULT: '/reset-password-result',
+  APP: '/app',
 };

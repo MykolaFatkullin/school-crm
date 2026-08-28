@@ -8,13 +8,12 @@ import { SetNewPasswordForm } from './model';
 import { createPasswordValidation, ROUTES } from '../../shared/config';
 import { createConfirmPasswordValidation } from '../../shared/config/formValidation';
 import { useChangePasswordForm } from './hooks';
-import { Alert } from '../../shared/components/alert';
 import { useEffect, useState } from 'react';
-import { useVerificationToken } from '../mailVerificationPage/hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MailVerificationResult } from '../../app/api/auth/response';
 import { FailedVerification } from '../../shared/components/failedLinkVerificationComponent';
 import { LoadingPage } from '../loadingPage';
+import { useVerifyMailTokenMutation } from '../../app/api';
 
 export const SetNewPasswordPage = () => {
   const { token } = useParams();
@@ -26,12 +25,9 @@ export const SetNewPasswordPage = () => {
     handleSubmit,
     formState: { errors },
   } = useAppForm<SetNewPasswordForm>();
-  const { changePassword, isLoading, submitError } = useChangePasswordForm();
-  const {
-    submit,
-    submitError: verificationTokenError,
-    isLoading: isVerificationLoading,
-  } = useVerificationToken();
+  const { changePassword, isLoading } = useChangePasswordForm();
+  const [submit, { isLoading: isLoadingVerification }] =
+    useVerifyMailTokenMutation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,7 +39,8 @@ export const SetNewPasswordPage = () => {
       return;
     }
 
-    submit(token)
+    submit({ token })
+      .unwrap()
       .then(r => {
         if (r) {
           setVerificationResult(r.result);
@@ -65,10 +62,9 @@ export const SetNewPasswordPage = () => {
   const isVerificationResolved = verificationResult !== null;
   const isVerified = verificationResult === MailVerificationResult.VERIFIED;
   const shouldShowFailedVerification =
-    (isVerificationResolved && !isVerified && !isPageLoading) ||
-    !!verificationTokenError;
+    isVerificationResolved && !isVerified && !isPageLoading;
 
-  if (isPageLoading || isVerificationLoading) {
+  if (isPageLoading || isLoadingVerification) {
     return <LoadingPage message={'Verifying your email...'} />;
   }
 
@@ -87,7 +83,6 @@ export const SetNewPasswordPage = () => {
         header={'Reset password'}
         subHeader={'Enter your new password below'}
       />
-      {submitError && <Alert message={submitError} />}
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
           {...password}

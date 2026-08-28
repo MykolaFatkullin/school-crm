@@ -1,28 +1,29 @@
 import { Button } from '../../shared/components/button';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '../../shared/config';
-import { Input } from '../../shared/components/input';
-import { LoginForm } from './model';
-import style from './LoginPage.module.scss';
-import { AuthStepActions } from '../../shared/components/authStepActions';
-import { useLoginForm } from './hooks';
-import { Alert } from '../../shared/components/alert';
-import { AuthHeader } from '../../shared/components/authHeader';
-import { Form } from '../../shared/components/form';
-import { useAppForm } from '../../shared/hooks';
 import {
   createEmailValidation,
   createPasswordValidation,
+  ROUTES,
 } from '../../shared/config';
+import { Input } from '../../shared/components/input';
+import { LoginForm } from './model';
+import { AuthStepActions } from '../../shared/components/authStepActions';
+import { useLoginForm } from './hooks';
+import { AuthHeader } from '../../shared/components/authHeader';
+import { Form } from '../../shared/components/form';
+import { useAppForm } from '../../shared/hooks';
+import { Link } from '../../shared/components/link';
+import { ErrorCode } from '../../app/model/ErrorCode';
+import { Alert } from '../../shared/components/alert';
 
 export const LoginPage = () => {
-  const navigate = useNavigate();
+  const formMethods = useAppForm<LoginForm>();
+  const { submit, isLoading, apiError } = useLoginForm(formMethods);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useAppForm<LoginForm>();
-  const { submit, isLoading, submitError } = useLoginForm();
+  } = formMethods;
 
   const email = register('email', createEmailValidation());
 
@@ -33,13 +34,15 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className={style.loginPage}>
+    <>
       <AuthHeader
         header={'Welcome back'}
         subHeader={'Sign in to your account'}
       />
+      {apiError && apiError.errorType === ErrorCode.AUTH_ERROR && (
+        <Alert message={'Incorrect email or password'} />
+      )}
       <Form onSubmit={handleSubmit(onSubmit)}>
-        {submitError && <Alert message={submitError} />}
         <Input
           {...email}
           label={'Email'}
@@ -53,29 +56,26 @@ export const LoginPage = () => {
           error={errors.password?.message}
           placeholder={'Enter your password'}
         />
-        <Button
-          type={'button'}
-          variant={'text'}
-          containerClassName={style.formForgotPassword}
-          onClick={() => navigate(ROUTES.RESET_PASSWORD)}
+        <Link
+          type={'primaryText'}
+          to={ROUTES.RESET_PASSWORD}
+          position={'right'}
         >
           Forgot password?
-        </Button>
+        </Link>
         <AuthStepActions>
           <Button variant={'primary'} type={'submit'} isLoading={isLoading}>
             Log in
           </Button>
-          <Button
-            type={'button'}
-            variant={'text'}
+          <Link
+            to={ROUTES.REGISTRATION}
+            type={'primaryText'}
             inlineText={"Don't have a school yet?"}
-            onClick={() => navigate(ROUTES.REGISTRATION)}
-            disabled={isLoading}
           >
             Create School
-          </Button>
+          </Link>
         </AuthStepActions>
       </Form>
-    </div>
+    </>
   );
 };

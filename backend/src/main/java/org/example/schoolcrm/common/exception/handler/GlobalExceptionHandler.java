@@ -72,7 +72,7 @@ public class GlobalExceptionHandler {
     return switch (type) {
       case AUTH_ERROR -> HttpStatus.UNAUTHORIZED;
       case NOT_FOUND_ERROR -> HttpStatus.NOT_FOUND;
-      case VALIDATION_ERROR -> HttpStatus.BAD_REQUEST;
+      case VALIDATION_ERROR -> HttpStatus.UNPROCESSABLE_CONTENT;
       case SYSTEM_ERROR -> HttpStatus.INTERNAL_SERVER_ERROR;
     };
   }
