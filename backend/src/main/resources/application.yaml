@@ -3,9 +3,9 @@ spring:
     name: school-crm
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: user
-    password: password
-    url: jdbc:postgresql://localhost:5432/school_crm
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    url: ${DB_URL}
   jpa:
     hibernate:
       ddl-auto: none
@@ -15,8 +15,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username:
-    password:
+    username: ${SMTP_MAIL}
+    password: ${SMTP_PASSWORD}
     properties:
       mail:
         smtp:
@@ -35,7 +35,7 @@ app:
 jwt:
   expiration-in-ms: 60000
   refresh-token-expiration-in-days: 7
-  private-key-path: keys/private_key.pem
-  public-key-path: keys/public_key.pem
+  private-key-path: file:${JWT_PRIVATE_KEY_PATH}
+  public-key-path: file:${JWT_PUBLIC_KEY_PATH}
   password-change-leeway-seconds: 2
 
