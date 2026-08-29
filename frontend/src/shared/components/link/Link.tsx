@@ -7,7 +7,6 @@ import styles from './Link.module.scss';
 type Props = {
   to: string;
   type: LinkType;
-  disabled?: boolean;
   inlineText?: string;
   children?: React.ReactNode;
   position?: 'left' | 'right';

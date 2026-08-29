@@ -20,6 +20,7 @@ export const SetNewPasswordPage = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [verificationResult, setVerificationResult] =
     useState<MailVerificationResult | null>(null);
+  const [verificationFailed, setVerificationFailed] = useState(false);
   const {
     register,
     handleSubmit,
@@ -46,6 +47,9 @@ export const SetNewPasswordPage = () => {
           setVerificationResult(r.result);
         }
       })
+      .catch(() => {
+        setVerificationFailed(true);
+      })
       .finally(() => setIsPageLoading(false));
   }, [token, submit, navigate]);
 
@@ -59,10 +63,10 @@ export const SetNewPasswordPage = () => {
     void changePassword(data, token!);
   };
 
-  const isVerificationResolved = verificationResult !== null;
   const isVerified = verificationResult === MailVerificationResult.VERIFIED;
   const shouldShowFailedVerification =
-    isVerificationResolved && !isVerified && !isPageLoading;
+    (!isPageLoading && verificationResult !== null && !isVerified) ||
+    verificationFailed;
 
   if (isPageLoading || isLoadingVerification) {
     return <LoadingPage message={'Verifying your email...'} />;
@@ -71,7 +75,7 @@ export const SetNewPasswordPage = () => {
   if (shouldShowFailedVerification) {
     return (
       <FailedVerification
-        verificationResult={verificationResult!}
+        verificationResult={verificationResult ?? undefined}
         token={token}
       />
     );
