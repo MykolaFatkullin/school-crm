@@ -1,7 +1,5 @@
 package org.example.schoolcrm.web;
 
-import static org.example.schoolcrm.web.auth.RefreshTokenCookieFactory.dropRefreshCookies;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -18,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.example.schoolcrm.web.auth.RefreshTokenCookieFactory.dropRefreshCookies;
+
 @RestController
 @RequestMapping("/api/account")
 @RequiredArgsConstructor
@@ -31,10 +31,10 @@ public class AccountController {
   public ResponseEntity<AccountInfoResponse> getAccountInfo(
       @AuthenticationPrincipal UserPrincipal principal) {
     try {
-      val accountInfo = accountService.getAccountInfo(principal);
+      val accountInfo = accountService.getAccountInfo(principal.userId());
       return ResponseEntity.ok().body(accountInfo);
     } catch (NotFoundException e) {
-      log.warn("GET /api/account/me: authenticated user was not found");
+      log.warn("GET /api/account/me: authenticated user was not found, id={}", principal.userId());
       val cookie = dropRefreshCookies(appProperties.getCookies().isSecure());
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
