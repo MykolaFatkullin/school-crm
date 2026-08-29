@@ -23,8 +23,15 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const isAuthEndpoint = (url: string) =>
-  url === '/auth' || url.startsWith('/auth/');
+const isAuthEndpoint = (url: string) => {
+  try {
+    const { pathname } = new URL(url, env.apiUrl);
+
+    return pathname === '/auth' || pathname.startsWith('/auth/');
+  } catch {
+    return url === '/auth' || url.startsWith('/auth/');
+  }
+};
 
 let refreshPromise: Promise<boolean> | null = null;
 

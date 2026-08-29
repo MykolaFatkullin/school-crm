@@ -31,13 +31,18 @@ export const handleErrors = (
 ) => {
   const apiError = parseApiError(error);
 
-  if (
-    isCriticalRequest(url) &&
-    (isServerError(error.status) || isNetworkError(error.status))
-  ) {
-    api.dispatch(setGlobalError('SERVER_ERROR'));
+  if (isCriticalRequest(url)) {
+    if (isNetworkError(error.status)) {
+      api.dispatch(setGlobalError('NETWORK_ERROR'));
 
-    return;
+      return;
+    }
+
+    if (isServerError(error.status)) {
+      api.dispatch(setGlobalError('SERVER_ERROR'));
+
+      return;
+    }
   }
 
   if (apiError) {
