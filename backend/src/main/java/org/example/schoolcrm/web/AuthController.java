@@ -1,6 +1,6 @@
 package org.example.schoolcrm.web;
 
-import static org.example.schoolcrm.web.auth.RefreshTokenCookieFactory.dropRefreshCookies;
+import static org.example.schoolcrm.web.auth.RefreshTokenCookieFactory.dropRefreshCookie;
 import static org.example.schoolcrm.web.auth.RefreshTokenCookieFactory.getCookieForRefresh;
 
 import jakarta.validation.Valid;
@@ -78,7 +78,7 @@ public class AuthController {
       @CookieValue(value = "refreshToken", required = false) UUID refreshToken) {
     authService.logout(refreshToken);
 
-    val cookie = dropRefreshCookies(appProperties.getCookies().isSecure());
+    val cookie = dropRefreshCookie(appProperties.getCookies().isSecure());
 
     return ResponseEntity.noContent().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
   }

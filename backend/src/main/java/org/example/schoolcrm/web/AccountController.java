@@ -1,6 +1,6 @@
 package org.example.schoolcrm.web;
 
-import static org.example.schoolcrm.web.auth.RefreshTokenCookieFactory.dropRefreshCookies;
+import static org.example.schoolcrm.web.auth.RefreshTokenCookieFactory.dropRefreshCookie;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class AccountController {
       return ResponseEntity.ok().body(accountInfo);
     } catch (NotFoundException e) {
       log.warn("GET /api/account/me: authenticated user was not found, id={}", principal.userId());
-      val cookie = dropRefreshCookies(appProperties.getCookies().isSecure());
+      val cookie = dropRefreshCookie(appProperties.getCookies().isSecure());
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
           .header(HttpHeaders.SET_COOKIE, cookie.toString())

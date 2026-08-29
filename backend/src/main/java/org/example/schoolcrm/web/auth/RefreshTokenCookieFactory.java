@@ -4,9 +4,11 @@ import java.time.Duration;
 import lombok.val;
 import org.springframework.http.ResponseCookie;
 
-public class RefreshTokenCookieFactory {
+public final class RefreshTokenCookieFactory {
 
-  public static ResponseCookie dropRefreshCookies(boolean isSecure) {
+  private RefreshTokenCookieFactory() {}
+
+  public static ResponseCookie dropRefreshCookie(boolean isSecure) {
     return getCookieForRefresh("", null, isSecure);
   }
 
