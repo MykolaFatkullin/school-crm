@@ -33,9 +33,8 @@ public class AccountController {
 
   @GetMapping("/me")
   public ResponseEntity<AccountInfoResponse> getAccountInfo(
-      @AuthenticationPrincipal @CookieValue(value = "refreshToken", required = false)
-          UUID refreshToken,
-      UserPrincipal principal) {
+      @CookieValue(value = "refreshToken", required = false) UUID refreshToken,
+      @AuthenticationPrincipal UserPrincipal principal) {
     try {
       val accountInfo = accountService.getAccountInfo(principal.userId());
       return ResponseEntity.ok().body(accountInfo);
