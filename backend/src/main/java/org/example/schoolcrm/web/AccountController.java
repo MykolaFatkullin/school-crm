@@ -11,6 +11,7 @@ import org.example.schoolcrm.infrastructure.config.AppProperties;
 import org.example.schoolcrm.infrastructure.security.UserPrincipal;
 import org.example.schoolcrm.web.dto.account.AccountInfoResponse;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +37,9 @@ public class AccountController {
       log.warn("GET /me: authenticated user was not found");
       val cookie = dropRefreshCookies(appProperties.getCookies().isSecure());
 
-      return ResponseEntity.notFound().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .header(HttpHeaders.SET_COOKIE, cookie.toString())
+          .build();
     }
   }
 }

@@ -2,6 +2,7 @@ package org.example.schoolcrm.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.example.schoolcrm.application.mapper.AccountMapper;
 import org.example.schoolcrm.infrastructure.security.UserPrincipal;
 import org.example.schoolcrm.web.dto.account.AccountInfoResponse;
 import org.springframework.stereotype.Service;
@@ -11,17 +12,13 @@ import org.springframework.stereotype.Service;
 public class AccountService {
 
   private final UserService userService;
+  private final AccountMapper accountMapper;
 
   public AccountInfoResponse getAccountInfo(UserPrincipal principal) {
     val id = principal.userId();
 
     val user = userService.findById(id);
 
-    return new AccountInfoResponse(
-        user.getRole(),
-        user.getSchool().getId(),
-        user.getId(),
-        user.getFirstName(),
-        user.getLastName());
+    return accountMapper.userToAccountInfoResponse(user);
   }
 }
