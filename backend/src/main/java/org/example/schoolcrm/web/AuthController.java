@@ -9,7 +9,6 @@ import org.example.schoolcrm.application.service.AuthService;
 import org.example.schoolcrm.application.service.EmailVerificationService;
 import org.example.schoolcrm.application.service.RegistrationService;
 import org.example.schoolcrm.application.service.mail.MailService;
-import org.example.schoolcrm.common.exception.not_found.NotFoundException;
 import org.example.schoolcrm.infrastructure.config.AppProperties;
 import org.example.schoolcrm.infrastructure.config.JwtProperties;
 import org.example.schoolcrm.web.dto.auth.AccessTokenResponse;
