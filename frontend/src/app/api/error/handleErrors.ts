@@ -8,7 +8,8 @@ const isCriticalRequest = (url: string) => {
   return (
     url === '/me' ||
     url === '/auth/verify-mail-token' ||
-    url.startsWith('/auth/resend-verification-by-token')
+    url.startsWith('/auth/resend-verification-by-token') ||
+    url.startsWith('/auth/resend-verification-by-email')
   );
 };
 
