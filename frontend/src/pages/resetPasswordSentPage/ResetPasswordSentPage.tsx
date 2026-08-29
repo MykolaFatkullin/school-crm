@@ -1,4 +1,4 @@
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { AuthStepActions } from '../../shared/components/authStepActions';
 import { Button } from '../../shared/components/button';
 import { ROUTES } from '../../shared/config';
