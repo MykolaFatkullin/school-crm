@@ -123,6 +123,81 @@ Only report architectural issues when there is a concrete engineering consequenc
 
 ---
 
+# Architectural and Security Invariants
+
+The following project-level invariants must be respected during review.
+
+These rules exist to prevent theoretical or defensive-programming concerns from being reported as actual defects.
+
+## Application Mappers and Web DTOs
+
+Application-layer mappers may map application or domain objects directly to web response DTOs when this is consistent with the existing project structure and keeps the implementation simple.
+
+Do NOT report an application -> web DTO dependency as an architectural finding by itself.
+
+Do NOT report a mapper as problematic merely because its target type belongs to the `web` layer.
+
+Do NOT recommend moving a mapper to the web layer merely to enforce theoretical dependency direction or Clean Architecture purity.
+
+Do NOT create an application-level DTO solely to avoid an application -> web DTO dependency unless there is concrete evidence that the current dependency causes a real engineering problem.
+
+Only report such a dependency when there is concrete evidence of a meaningful engineering consequence, such as:
+
+- Significant coupling
+- Meaningful maintenance cost
+- Testing difficulty
+- Evolution difficulty
+- Responsibility confusion
+- Significant inconsistency with established project patterns
+
+If the mapper is simple, cohesive, understandable, and consistent with the project, accept the dependency.
+
+The existence of a cross-layer mapper dependency is not sufficient evidence of a defect.
+
+## Authenticated Controller Principals
+
+For endpoints protected by Spring Security with `.authenticated()`, treat successful authentication as an established security invariant.
+
+An `@AuthenticationPrincipal` parameter on such an endpoint should be assumed to be non-null unless the provided code demonstrates a realistic execution path in the current implementation where it can be absent.
+
+Do NOT report missing null checks for authenticated principals based only on:
+
+- Hypothetical security misconfiguration
+- Possible future configuration changes
+- Theoretical framework behavior
+- Defensive programming preferences
+- The possibility that the security configuration might be changed later
+
+Do NOT recommend defensive null checks that merely duplicate guarantees already provided by the current security configuration.
+
+Only report a principal-null issue when the provided code demonstrates an actual realistic path in the current implementation that can result in a null principal.
+
+Do not treat hypothetical future changes as evidence of a current defect.
+
+---
+
+# Optional Improvements Are Not Findings
+
+Do not convert optional improvements into review findings.
+
+If the current implementation is correct and the proposed change would only make it:
+
+- More defensive
+- More explicit
+- More theoretically pure
+- More architecturally elegant
+- More generic
+- More reusable
+- More future-proof
+
+then omit the comment unless there is a concrete current problem.
+
+A finding must identify an actual problem in the current implementation, not a possible improvement to an already-correct implementation.
+
+When a concern is merely an alternative design, preference, or optional hardening, do not report it.
+
+---
+
 # Correctness
 
 Review for:
@@ -142,6 +217,8 @@ Review for:
 Focus on realistic failure scenarios.
 
 Do not report purely theoretical edge cases with no meaningful likelihood or impact.
+
+Do not report defensive checks solely because something could theoretically be null if the current architecture guarantees otherwise.
 
 ---
 
@@ -167,6 +244,8 @@ Backend authorization must protect protected operations.
 Only report security concerns when the code provides evidence of an actual risk.
 
 Do not report generic security recommendations without a concrete vulnerability.
+
+Do not report hypothetical security risks based only on possible future configuration changes.
 
 ---
 
@@ -380,6 +459,14 @@ When uncertain, prefer not to report.
 
 False positives are worse than missing low-impact issues.
 
+A theoretical possibility is not sufficient evidence.
+
+A hypothetical future configuration change is not sufficient evidence.
+
+An alternative architecture is not sufficient evidence.
+
+A defensive-programming opportunity is not sufficient evidence.
+
 ---
 
 # Severity
@@ -441,6 +528,8 @@ Do not use Minor for:
 - Security vulnerabilities
 - Problems that should be fixed before merge
 
+If something is only an optional improvement or theoretical concern, do not report it as Minor. Omit it.
+
 ---
 
 # Decision Rules
@@ -449,8 +538,7 @@ The review decision and review comments are independent.
 
 The presence of comments MUST NOT determine the review decision.
 
-The final decision MUST be based only on whether the review contains
-Critical or Major findings.
+The final decision MUST be based only on whether the review contains Critical or Major findings.
 
 ## APPROVE
 
@@ -466,18 +554,19 @@ This includes:
 
 Minor findings are non-blocking and MUST NOT prevent approval.
 
-If Minor findings exist, include them as inline comments while still using
-APPROVE.
+If Minor findings exist, include them as inline comments while still using APPROVE.
+
+---
 
 ## REQUEST_CHANGES
 
 Use REQUEST_CHANGES when at least one Critical or Major finding exists.
 
-Critical and Major findings represent issues that should be fixed before
-the pull request is merged.
+Critical and Major findings represent issues that should be fixed before the pull request is merged.
 
-If at least one Critical or Major finding exists, use REQUEST_CHANGES even
-if all other findings are Minor.
+If at least one Critical or Major finding exists, use REQUEST_CHANGES even if all other findings are Minor.
+
+---
 
 ## COMMENT
 
@@ -485,8 +574,7 @@ Do not use COMMENT for ordinary code review findings.
 
 In normal code review, non-blocking findings MUST use APPROVE.
 
-COMMENT may only be used if the review workflow explicitly requires a
-non-approval review without requesting changes.
+COMMENT may only be used if the review workflow explicitly requires a non-approval review without requesting changes.
 
 Do not choose COMMENT merely because comments are present.
 
@@ -513,6 +601,8 @@ For every finding explain:
 3. How it can be improved.
 
 Keep explanations short.
+
+Do not include comments for concerns that do not meet the finding threshold.
 
 ---
 
