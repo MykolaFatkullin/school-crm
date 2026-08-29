@@ -1,0 +1,1 @@
+export { GlobalErrorComponent } from './GlobalErrorComponent';

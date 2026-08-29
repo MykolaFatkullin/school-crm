@@ -1,17 +1,17 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '../../shared/config';
 import { useEffect, useState } from 'react';
-import { useVerificationToken } from './hooks';
 import { SuccessVerification } from './component';
 import { FailedVerification } from '../../shared/components/failedLinkVerificationComponent';
 import { MailVerificationResult } from '../../app/api/auth/response';
 import { LoadingPage } from '../loadingPage';
+import { useVerifyMailTokenMutation } from '../../app/api';
 
 export const MailVerificationPage = () => {
   const { token } = useParams();
   const [verificationResult, setVerificationResult] =
     useState<MailVerificationResult | null>(null);
-  const { submit, isLoading, submitError } = useVerificationToken();
+  const [submit, { isLoading }] = useVerifyMailTokenMutation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,17 +23,15 @@ export const MailVerificationPage = () => {
       return;
     }
 
-    submit(token).then(r => {
-      if (r) {
-        setVerificationResult(r.result);
+    submit({ token }).then(r => {
+      if ('data' in r && r.data) {
+        setVerificationResult(r.data.result);
       }
     });
-  }, [token, navigate, submit]);
+  }, [token, submit, navigate]);
 
   const isSuccess =
-    !submitError &&
-    !isLoading &&
-    verificationResult === MailVerificationResult.VERIFIED;
+    !isLoading && verificationResult === MailVerificationResult.VERIFIED;
 
   if (isLoading) {
     return <LoadingPage message={'Verifying your email...'} />;

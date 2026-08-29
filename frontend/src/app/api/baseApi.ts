@@ -7,6 +7,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { env } from '../../shared/config';
 import { RootState } from '../store/store';
 import { clearAccessToken, setAccessToken } from '../store/authSlice';
+import { handleErrors } from './error/handleErrors';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: env.apiUrl,
@@ -22,13 +23,13 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const isAuthEndpoint = (rawUrl: string) => {
+const isAuthEndpoint = (url: string) => {
   try {
-    const pathname = new URL(rawUrl, 'http://localhost').pathname;
+    const { pathname } = new URL(url, env.apiUrl);
 
     return pathname === '/auth' || pathname.startsWith('/auth/');
   } catch {
-    return rawUrl === '/auth' || rawUrl.startsWith('/auth/');
+    return url === '/auth' || url.startsWith('/auth/');
   }
 };
 
@@ -56,23 +57,26 @@ const baseQueryWithReauth: BaseQueryFn<
             extraOptions,
           );
 
-          if (refreshResult.data) {
-            const { accessToken } = refreshResult.data as {
-              accessToken: string;
-            };
+          if (refreshResult.error || !refreshResult.data) {
+            api.dispatch(clearAccessToken());
+            api.dispatch(baseApi.util.resetApiState());
 
-            api.dispatch(setAccessToken(accessToken));
+            return false;
+          }
 
-            return true;
-          } else {
+          const { accessToken } = refreshResult.data as {
+            accessToken: string;
+          };
+
+          if (!accessToken) {
             api.dispatch(clearAccessToken());
 
             return false;
           }
-        } catch {
-          api.dispatch(clearAccessToken());
 
-          return false;
+          api.dispatch(setAccessToken(accessToken));
+
+          return true;
         } finally {
           refreshPromise = null;
         }
@@ -84,6 +88,10 @@ const baseQueryWithReauth: BaseQueryFn<
     if (refreshSuccess) {
       result = await baseQuery(args, api, extraOptions);
     }
+  }
+
+  if (result.error) {
+    handleErrors(result.error, api, url);
   }
 
   return result;

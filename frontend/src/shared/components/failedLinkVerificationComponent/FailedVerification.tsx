@@ -3,10 +3,9 @@ import { ArrowLeft, Link2Off } from 'lucide-react';
 import { Button } from '../button';
 import styles from './FailedVerification.module.scss';
 import { MailVerificationResult } from '../../../app/api/auth/response';
-import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../config';
-import { useResendMail } from './hooks';
-import { Alert } from '../alert';
+import { Link } from '../link';
+import { useResendMailByTokenMutation } from '../../../app/api';
 
 type Props = {
   verificationResult?: MailVerificationResult | null;
@@ -34,17 +33,15 @@ const getText = (verificationResult?: MailVerificationResult | null) => {
 };
 
 export const FailedVerification = ({ verificationResult, token }: Props) => {
-  const navigate = useNavigate();
-  const { resendMail, isLoading, submitError } = useResendMail();
+  const [resendMail, { isLoading }] = useResendMailByTokenMutation();
   const shouldShowResendEmailButton =
-    verificationResult === MailVerificationResult.EXPIRED && token;
+    verificationResult === MailVerificationResult.EXPIRED && !!token;
   const title = getTitle(verificationResult);
   const text = getText(verificationResult);
 
   return (
     <>
       <div className={styles.container}>
-        {submitError && <Alert message={submitError} />}
         <div className={styles.content}>
           <Icon
             icon={Link2Off}
@@ -61,18 +58,15 @@ export const FailedVerification = ({ verificationResult, token }: Props) => {
             <Button
               variant={'primary'}
               isLoading={isLoading}
-              onClick={() => void resendMail(token)}
+              onClick={() => void resendMail({ token })}
             >
               Send new verification email
             </Button>
           )}
-          <Button
-            variant={'defaultText'}
-            onClick={() => navigate(ROUTES.LOGIN)}
-          >
+          <Link to={ROUTES.LOGIN} type={'defaultText'}>
             <ArrowLeft size={18} />
             Back to Login
-          </Button>
+          </Link>
         </div>
       </div>
     </>

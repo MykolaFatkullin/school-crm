@@ -20,10 +20,12 @@
 
 .circle {
   border-radius: 50%;
+  width: calc(var(--icon-size) * 3);
+  height: calc(var(--icon-size) * 3);
 }
 
 .ellipse {
-  width: 64px;
-  height: 38px;
+  width: calc(var(--icon-size) * 3);
+  height: calc(var(--icon-size) * 1.75);
   border-radius: 16px;
 }

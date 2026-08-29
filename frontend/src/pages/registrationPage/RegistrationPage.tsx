@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { AccountCredentialsStep, SchoolInfoStep } from './components';
 import { useRegistrationForm } from './hooks/useRegistrationForm';
 import { MAX_STEPS, registerSteps } from './hooks/registrationSteps';
-import { Alert } from '../../shared/components/alert';
 import { AuthHeader } from '../../shared/components/authHeader';
 import { Form } from '../../shared/components/form';
 import { useAppForm } from '../../shared/hooks';
@@ -12,10 +11,7 @@ import { useAppForm } from '../../shared/hooks';
 export const RegistrationPage = () => {
   const [step, setStep] = useState(0);
   const formMethods = useAppForm<RegisterForm>();
-  const { submit, isLoading, submitError } = useRegistrationForm(
-    formMethods,
-    setStep,
-  );
+  const { submit, isLoading } = useRegistrationForm(formMethods, setStep);
 
   const renderCurrentStep = (step: number) => {
     switch (step) {
@@ -41,7 +37,6 @@ export const RegistrationPage = () => {
         additionalInfo={`Step ${registerSteps[step].stepNumber} of ${MAX_STEPS}`}
       />
       <FormProvider {...formMethods}>
-        {submitError && <Alert message={submitError} />}
         <Form
           onSubmit={formMethods.handleSubmit(form => {
             if (step === MAX_STEPS - 1) {

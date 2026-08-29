@@ -7,7 +7,6 @@ import { createEmailValidation, ROUTES } from '../../shared/config';
 import { AuthHeader } from '../../shared/components/authHeader';
 import { ResetPasswordForm } from './model';
 import { useResetPasswordForm } from './hooks/useResetPasswordForm';
-import { Alert } from '../../shared/components/alert';
 import { Form } from '../../shared/components/form';
 import { useAppForm } from '../../shared/hooks';
 
@@ -18,7 +17,7 @@ export const ResetPasswordPage = () => {
     handleSubmit,
     formState: { errors },
   } = useAppForm<ResetPasswordForm>();
-  const { resetPassword, isLoading, submitError } = useResetPasswordForm();
+  const { resetPassword, isLoading } = useResetPasswordForm();
 
   const email = register('email', createEmailValidation());
 
@@ -28,7 +27,6 @@ export const ResetPasswordPage = () => {
         header={'Forgot password?'}
         subHeader={"Enter your email and we'll send you a password reset link."}
       />
-      {submitError && <Alert message={submitError} />}
       <Form onSubmit={handleSubmit(data => resetPassword(data))}>
         <Input
           {...email}
