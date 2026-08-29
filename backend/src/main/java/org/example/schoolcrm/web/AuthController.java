@@ -1,7 +1,9 @@
 package org.example.schoolcrm.web;
 
+import static org.example.schoolcrm.web.auth.RefreshTokenCookieFactory.dropRefreshCookie;
+import static org.example.schoolcrm.web.auth.RefreshTokenCookieFactory.getCookieForRefresh;
+
 import jakarta.validation.Valid;
-import java.time.Duration;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -21,7 +23,6 @@ import org.example.schoolcrm.web.dto.mail.TokenRequest;
 import org.example.schoolcrm.web.dto.registration.UserRegistrationDto;
 import org.example.schoolcrm.web.dto.registration.UserRegistrationResponse;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +47,10 @@ public class AuthController {
     val result = authService.login(loginRequest);
 
     val cookie =
-        getCookieForRefresh(result.refreshToken(), jwtProperties.getRefreshTokenExpirationInDays());
+        getCookieForRefresh(
+            result.refreshToken(),
+            jwtProperties.getRefreshTokenExpirationInDays(),
+            appProperties.getCookies().isSecure());
 
     return ResponseEntity.ok()
         .header(HttpHeaders.SET_COOKIE, cookie.toString())
@@ -62,7 +66,9 @@ public class AuthController {
         .header(
             HttpHeaders.SET_COOKIE,
             getCookieForRefresh(
-                    result.refreshToken(), jwtProperties.getRefreshTokenExpirationInDays())
+                    result.refreshToken(),
+                    jwtProperties.getRefreshTokenExpirationInDays(),
+                    appProperties.getCookies().isSecure())
                 .toString())
         .body(new AccessTokenResponse(result.accessToken()));
   }
@@ -72,7 +78,7 @@ public class AuthController {
       @CookieValue(value = "refreshToken", required = false) UUID refreshToken) {
     authService.logout(refreshToken);
 
-    val cookie = getCookieForRefresh("", null);
+    val cookie = dropRefreshCookie(appProperties.getCookies().isSecure());
 
     return ResponseEntity.noContent().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
   }
@@ -106,20 +112,5 @@ public class AuthController {
   @PostMapping("/change-password")
   public void changePassword(@RequestBody @Valid ChangePasswordRequest request) {
     authService.changePassword(request);
-  }
-
-  private ResponseCookie getCookieForRefresh(String value, Integer maxAge) {
-    val cookieBuilder =
-        ResponseCookie.from("refreshToken", value)
-            .httpOnly(true)
-            .secure(appProperties.getCookies().isSecure())
-            .sameSite("Strict")
-            .path("/");
-
-    if (maxAge == null) {
-      return cookieBuilder.maxAge(0).build();
-    }
-
-    return cookieBuilder.maxAge(Duration.ofDays(maxAge)).build();
   }
 }
