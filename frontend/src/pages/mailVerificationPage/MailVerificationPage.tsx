@@ -9,6 +9,7 @@ import { useVerifyMailTokenMutation } from '../../app/api';
 
 export const MailVerificationPage = () => {
   const { token } = useParams();
+  const [verificationFailed, setVerificationFailed] = useState(false);
   const [verificationResult, setVerificationResult] =
     useState<MailVerificationResult | null>(null);
   const [submit, { isLoading }] = useVerifyMailTokenMutation();
@@ -29,11 +30,15 @@ export const MailVerificationPage = () => {
         if (r) {
           setVerificationResult(r.result);
         }
+      })
+      .catch(() => {
+        setVerificationFailed(true);
       });
-  }, [token, navigate, submit]);
+  }, [token, submit, navigate]);
 
   const isSuccess =
-    !isLoading && verificationResult === MailVerificationResult.VERIFIED;
+    (!isLoading && verificationResult === MailVerificationResult.VERIFIED) ||
+    !verificationFailed;
 
   if (isLoading) {
     return <LoadingPage message={'Verifying your email...'} />;

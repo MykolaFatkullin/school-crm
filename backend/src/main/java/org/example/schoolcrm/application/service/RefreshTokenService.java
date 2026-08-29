@@ -38,6 +38,7 @@ public class RefreshTokenService {
     refreshTokenRepository.deleteByToken(tokenId);
   }
 
+  @Transactional
   public void dropTokenByUser(UUID userId) {
     refreshTokenRepository.deleteByUserId(userId);
   }

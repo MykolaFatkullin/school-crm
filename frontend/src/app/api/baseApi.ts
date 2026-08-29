@@ -59,6 +59,7 @@ const baseQueryWithReauth: BaseQueryFn<
 
           if (refreshResult.error || !refreshResult.data) {
             api.dispatch(clearAccessToken());
+            api.dispatch(baseApi.util.resetApiState());
 
             return false;
           }
