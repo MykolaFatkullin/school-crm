@@ -1,12 +1,11 @@
 package org.example.schoolcrm.application.service;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.example.schoolcrm.application.mapper.AccountMapper;
 import org.example.schoolcrm.web.dto.account.AccountInfoResponse;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
