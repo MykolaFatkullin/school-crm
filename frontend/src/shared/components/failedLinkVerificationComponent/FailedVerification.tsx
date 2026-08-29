@@ -35,7 +35,7 @@ const getText = (verificationResult?: MailVerificationResult | null) => {
 export const FailedVerification = ({ verificationResult, token }: Props) => {
   const [resendMail, { isLoading }] = useResendMailByTokenMutation();
   const shouldShowResendEmailButton =
-    verificationResult === MailVerificationResult.EXPIRED && token;
+    verificationResult === MailVerificationResult.EXPIRED && !!token;
   const title = getTitle(verificationResult);
   const text = getText(verificationResult);
 
