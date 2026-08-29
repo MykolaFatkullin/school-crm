@@ -3,14 +3,14 @@ import { AuthStepActions } from '../../shared/components/authStepActions';
 import { Button } from '../../shared/components/button';
 import { ROUTES } from '../../shared/config';
 import { Icon } from '../../shared/components/icons';
-import { Mail } from 'lucide-react';
+import { ArrowLeft, Mail } from 'lucide-react';
 import style from './ResetPasswordSentPage.module.scss';
 import { MailType } from '../../app/api/auth/request';
 import { useResendVerificationMailMutation } from '../../app/api';
+import { Link } from '../../shared/components/link';
 
 export const ResetPasswordSentPage = () => {
   const { state } = useLocation();
-  const navigate = useNavigate();
   const [resendEmail, { isLoading }] = useResendVerificationMailMutation();
 
   if (state?.success === undefined || state?.email === undefined) {
@@ -51,20 +51,15 @@ export const ResetPasswordSentPage = () => {
       <AuthStepActions>
         <Button
           variant={'primary'}
-          onClick={() => {
-            navigate(ROUTES.LOGIN);
-          }}
-          disabled={isLoading}
-        >
-          Back to Login
-        </Button>
-        <Button
-          variant={'text'}
           onClick={resendEmailHandler}
           isLoading={isLoading}
         >
           Resend Email
         </Button>
+        <Link to={ROUTES.LOGIN} type={'defaultText'}>
+          <ArrowLeft size={18} />
+          Back to Login
+        </Link>
       </AuthStepActions>
     </>
   );
