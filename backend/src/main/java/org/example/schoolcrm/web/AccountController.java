@@ -34,7 +34,7 @@ public class AccountController {
       val accountInfo = accountService.getAccountInfo(principal);
       return ResponseEntity.ok().body(accountInfo);
     } catch (NotFoundException e) {
-      log.warn("GET /me: authenticated user was not found");
+      log.warn("GET /api/account/me: authenticated user was not found");
       val cookie = dropRefreshCookies(appProperties.getCookies().isSecure());
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
