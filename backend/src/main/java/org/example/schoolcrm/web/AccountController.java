@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.example.schoolcrm.application.service.AccountService;
-import org.example.schoolcrm.application.service.AuthService;
+import org.example.schoolcrm.application.service.auth.AuthService;
 import org.example.schoolcrm.common.exception.not_found.NotFoundException;
 import org.example.schoolcrm.infrastructure.config.AppProperties;
 import org.example.schoolcrm.infrastructure.security.UserPrincipal;
@@ -43,7 +43,7 @@ public class AccountController {
       authService.logout(refreshToken);
       val cookie = dropRefreshCookie(appProperties.getCookies().isSecure());
 
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+      return ResponseEntity.status(HttpStatus.FORBIDDEN)
           .header(HttpHeaders.SET_COOKIE, cookie.toString())
           .build();
     }

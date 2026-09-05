@@ -1,4 +1,4 @@
-package org.example.schoolcrm.application.service;
+package org.example.schoolcrm.application.service.auth;
 
 import jakarta.mail.MessagingException;
 import java.time.Instant;
@@ -7,6 +7,8 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.example.schoolcrm.application.service.EmailVerificationService;
+import org.example.schoolcrm.application.service.UserService;
 import org.example.schoolcrm.application.service.mail.MailService;
 import org.example.schoolcrm.common.exception.auth.AuthException;
 import org.example.schoolcrm.common.exception.system.EmailNotSentException;

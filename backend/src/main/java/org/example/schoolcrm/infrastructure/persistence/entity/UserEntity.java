@@ -53,7 +53,7 @@ public class UserEntity {
   @Column(nullable = false)
   private String password;
 
-  @Column(name = "created_at", nullable = false)
+  @Column(name = "created_at", nullable = false, updatable = false)
   @CreationTimestamp
   private Instant createdAt;
 
