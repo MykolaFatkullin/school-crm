@@ -8,5 +8,4 @@ public record AccountInfoResponse(
     UUID schoolId,
     UUID id,
     String firstName,
-    String lastName,
-    Long unreadNotificationsCount) {}
+    String lastName) {}

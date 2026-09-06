@@ -1,6 +1,5 @@
 package org.example.schoolcrm.application.service.notifications;
 
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.example.schoolcrm.application.mapper.NotificationsMapper;
@@ -10,10 +9,13 @@ import org.example.schoolcrm.infrastructure.persistence.entity.NotificationsEnti
 import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
 import org.example.schoolcrm.infrastructure.persistence.repository.NotificationsRepository;
 import org.example.schoolcrm.web.dto.notifications.NotificationsDto;
+import org.example.schoolcrm.web.dto.notifications.NotificationsMetaDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +64,9 @@ public class NotificationsService {
     return notificationsRepository.findByUserId(userId, pageable).map(notificationsMapper::toDto);
   }
 
-  public Long getUnreadNotificationsCount(UUID userId) {
-    return notificationsRepository.getCountOfUnreadNotificationsByUser(userId);
+  public NotificationsMetaDto getUnreadNotificationsCount(UUID userId) {
+    val count = notificationsRepository.getCountOfUnreadNotificationsByUser(userId);
+
+    return new NotificationsMetaDto(count);
   }
 }
