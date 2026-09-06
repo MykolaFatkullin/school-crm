@@ -4,8 +4,4 @@ import java.util.UUID;
 import org.example.schoolcrm.domain.UserRoles;
 
 public record AccountInfoResponse(
-    UserRoles role,
-    UUID schoolId,
-    UUID id,
-    String firstName,
-    String lastName) {}
+    UserRoles role, UUID schoolId, UUID id, String firstName, String lastName) {}

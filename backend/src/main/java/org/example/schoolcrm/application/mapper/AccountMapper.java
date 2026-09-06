@@ -9,7 +9,6 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AccountMapper {
 
-  @Mapping(target = "schoolId", source = "userEntity.school.id")
-  AccountInfoResponse userToAccountInfoResponse(
-      UserEntity userEntity, Long unreadNotificationsCount);
+  @Mapping(target = "schoolId", source = "school.id")
+  AccountInfoResponse userToAccountInfoResponse(UserEntity userEntity);
 }

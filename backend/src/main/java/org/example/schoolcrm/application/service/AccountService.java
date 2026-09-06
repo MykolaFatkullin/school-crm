@@ -18,8 +18,7 @@ public class AccountService {
 
   public AccountInfoResponse getAccountInfo(UUID userId) {
     val user = userService.findById(userId);
-    val unreadNotificationsCount = notificationsService.getUnreadNotificationsCount(userId);
 
-    return accountMapper.userToAccountInfoResponse(user, unreadNotificationsCount);
+    return accountMapper.userToAccountInfoResponse(user);
   }
 }

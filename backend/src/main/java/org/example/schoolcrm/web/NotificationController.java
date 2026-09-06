@@ -1,5 +1,6 @@
 package org.example.schoolcrm.web;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -18,8 +19,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/notifications")
@@ -57,8 +56,10 @@ public class NotificationController {
   }
 
   @GetMapping("/meta")
-  public ResponseEntity<NotificationsMetaDto> getUnreadNotificationsCount(@AuthenticationPrincipal UserPrincipal principal) {
-    val unreadNotificationsCount = notificationsService.getUnreadNotificationsCount(principal.userId());
+  public ResponseEntity<NotificationsMetaDto> getUnreadNotificationsCount(
+      @AuthenticationPrincipal UserPrincipal principal) {
+    val unreadNotificationsCount =
+        notificationsService.getUnreadNotificationsCount(principal.userId());
     return ResponseEntity.ok(unreadNotificationsCount);
   }
 }
