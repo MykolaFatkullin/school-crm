@@ -1,4 +1,4 @@
-package org.example.schoolcrm.application.service;
+package org.example.schoolcrm.application.service.auth;
 
 import java.time.Instant;
 import java.util.UUID;
