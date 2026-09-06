@@ -11,7 +11,7 @@ export const Alert = ({ message }: Props) => {
       <span className={styles.alertIcon}>
         <CircleAlert size={20} />
       </span>
-      <span className={styles.alertMessage}>{message}</span>
+      <p className={styles.alertMessage}>{message}</p>
     </div>
   );
 };

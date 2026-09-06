@@ -23,7 +23,11 @@ export const Button = ({
   ...buttonProps
 }: Props) => {
   return (
-    <div className={classNames(styles.buttonContainer, containerClassName)}>
+    <div
+      className={classNames(containerClassName, {
+        [styles.buttonContainer]: variant !== 'iconButton',
+      })}
+    >
       {inlineText && (variant === 'defaultText' || variant === 'text') && (
         <span className={styles.inlineText}>{inlineText}</span>
       )}

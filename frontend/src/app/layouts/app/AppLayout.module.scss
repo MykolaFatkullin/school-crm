@@ -1,0 +1,7 @@
+@use '../../../shared/styles/variables' as *;
+
+.appLayout {
+  background-color: $color-background;
+  display: flex;
+  min-height: 100vh;
+}

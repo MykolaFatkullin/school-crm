@@ -82,7 +82,7 @@ export const SetNewPasswordPage = () => {
   }
 
   return (
-    <>
+    <main>
       <AuthHeader
         header={'Reset password'}
         subHeader={'Enter your new password below'}
@@ -109,6 +109,6 @@ export const SetNewPasswordPage = () => {
           </Button>
         </AuthStepActions>
       </Form>
-    </>
+    </main>
   );
 };

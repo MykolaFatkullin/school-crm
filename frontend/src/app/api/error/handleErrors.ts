@@ -6,11 +6,15 @@ import { toast } from '../../../shared/components/toast';
 
 const isCriticalRequest = (url: string) => {
   return (
-    url === '/me' ||
+    url === '/api/account/me' ||
     url === '/auth/verify-mail-token' ||
     url.startsWith('/auth/resend-verification-by-token') ||
     url.startsWith('/auth/resend-verification-by-email')
   );
+};
+
+const isUnauthorized = (status: FetchBaseQueryError['status']) => {
+  return status === 401;
 };
 
 const isServerError = (status: FetchBaseQueryError['status']) => {
@@ -30,6 +34,10 @@ export const handleErrors = (
   api: BaseQueryApi,
   url: string,
 ) => {
+  if (isUnauthorized(error.status)) {
+    return;
+  }
+
   const apiError = parseApiError(error);
 
   if (isCriticalRequest(url)) {
@@ -44,6 +52,8 @@ export const handleErrors = (
 
       return;
     }
+
+    return;
   }
 
   if (apiError) {

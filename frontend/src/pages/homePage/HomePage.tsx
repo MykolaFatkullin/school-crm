@@ -1,31 +1,25 @@
-import { Button } from '../../shared/components/button';
 import { ArrowRight } from 'lucide-react';
 import styles from './HomePage.module.scss';
-import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../shared/config';
 import { Logo } from '../../shared/components/icons';
+import { Link } from '../../shared/components/link';
 
 export const HomePage = () => {
-  const navigate = useNavigate();
-
   return (
-    <div className={styles.homePage}>
-      <div className={styles.heading}>
+    <main className={styles.homePage}>
+      <header className={styles.heading}>
         <Logo />
         <h1 className={styles.headingTitle}>School CRM</h1>
         <p className={styles.headingSubtitle}>Manage your school with ease</p>
-      </div>
+      </header>
       <div className={styles.buttons}>
-        <Button
-          onClick={() => navigate(ROUTES.REGISTRATION)}
-          variant={'primary'}
-        >
+        <Link to={ROUTES.REGISTRATION} type={'primaryButton'}>
           Create school <ArrowRight size={18} />
-        </Button>
-        <Button onClick={() => navigate(ROUTES.LOGIN)} variant={'secondary'}>
+        </Link>
+        <Link to={ROUTES.LOGIN} type={'secondaryButton'}>
           Log in <ArrowRight size={18} />
-        </Button>
+        </Link>
       </div>
-    </div>
+    </main>
   );
 };

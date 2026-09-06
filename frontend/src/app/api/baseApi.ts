@@ -6,7 +6,7 @@ import {
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { env } from '../../shared/config';
 import { RootState } from '../store/store';
-import { clearAccessToken, setAccessToken } from '../store/authSlice';
+import { setAccessToken, setUnauthenticated } from '../store/authSlice';
 import { handleErrors } from './error/handleErrors';
 
 const baseQuery = fetchBaseQuery({
@@ -24,13 +24,7 @@ const baseQuery = fetchBaseQuery({
 });
 
 const isAuthEndpoint = (url: string) => {
-  try {
-    const { pathname } = new URL(url, env.apiUrl);
-
-    return pathname === '/auth' || pathname.startsWith('/auth/');
-  } catch {
-    return url === '/auth' || url.startsWith('/auth/');
-  }
+  return url === '/auth' || url.startsWith('/auth/');
 };
 
 let refreshPromise: Promise<boolean> | null = null;
@@ -44,7 +38,10 @@ const baseQueryWithReauth: BaseQueryFn<
 
   const url = typeof args === 'string' ? args : args.url;
 
-  if (result.error?.status === 401 && !isAuthEndpoint(url)) {
+  const isSessionEnded =
+    (api.getState() as RootState).auth.status === 'unauthenticated';
+
+  if (result.error?.status === 401 && !isAuthEndpoint(url) && !isSessionEnded) {
     if (!refreshPromise) {
       refreshPromise = (async () => {
         try {
@@ -58,7 +55,7 @@ const baseQueryWithReauth: BaseQueryFn<
           );
 
           if (refreshResult.error || !refreshResult.data) {
-            api.dispatch(clearAccessToken());
+            api.dispatch(setUnauthenticated());
             api.dispatch(baseApi.util.resetApiState());
 
             return false;
@@ -69,7 +66,7 @@ const baseQueryWithReauth: BaseQueryFn<
           };
 
           if (!accessToken) {
-            api.dispatch(clearAccessToken());
+            api.dispatch(setUnauthenticated());
 
             return false;
           }
@@ -100,6 +97,6 @@ const baseQueryWithReauth: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['User'],
+  tagTypes: ['Me'],
   endpoints: () => ({}),
 });

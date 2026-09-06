@@ -1,8 +1,8 @@
 @use '../../styles/variables' as *;
 
 .logo {
-  width: 64px;
-  height: 64px;
+  width: calc(var(--icon-size) + 8px);
+  height: calc(var(--icon-size) + 8px);
   border-radius: 50%;
   background: $color-logo-bg;
   display: flex;

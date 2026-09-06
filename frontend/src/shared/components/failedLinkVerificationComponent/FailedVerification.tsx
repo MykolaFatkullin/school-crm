@@ -40,35 +40,33 @@ export const FailedVerification = ({ verificationResult, token }: Props) => {
   const text = getText(verificationResult);
 
   return (
-    <>
-      <div className={styles.container}>
-        <div className={styles.content}>
-          <Icon
-            icon={Link2Off}
-            withBackground={true}
-            backgroundType={'ellipse'}
-            size={22}
-            className={styles.icon}
-          />
-          <h1 className={styles.title}>{title}</h1>
-          <span className={styles.text}>{text}</span>
-        </div>
-        <div className={styles.buttons}>
-          {shouldShowResendEmailButton && (
-            <Button
-              variant={'primary'}
-              isLoading={isLoading}
-              onClick={() => void resendMail({ token })}
-            >
-              Send new verification email
-            </Button>
-          )}
-          <Link to={ROUTES.LOGIN} type={'defaultText'}>
-            <ArrowLeft size={18} />
-            Back to Login
-          </Link>
-        </div>
+    <main className={styles.container}>
+      <div className={styles.content}>
+        <Icon
+          icon={Link2Off}
+          withBackground={true}
+          backgroundType={'ellipse'}
+          size={22}
+          className={styles.icon}
+        />
+        <h1 className={styles.title}>{title}</h1>
+        <p className={styles.text}>{text}</p>
       </div>
-    </>
+      <div className={styles.buttons}>
+        {shouldShowResendEmailButton && (
+          <Button
+            variant={'primary'}
+            isLoading={isLoading}
+            onClick={() => void resendMail({ token })}
+          >
+            Send new verification email
+          </Button>
+        )}
+        <Link to={ROUTES.LOGIN} type={'defaultText'}>
+          <ArrowLeft size={18} />
+          Back to Login
+        </Link>
+      </div>
+    </main>
   );
 };

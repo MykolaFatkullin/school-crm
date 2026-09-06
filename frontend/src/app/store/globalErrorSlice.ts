@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type GlobalErrorType = 'SERVER_ERROR' | 'NETWORK_ERROR';
@@ -15,11 +16,9 @@ const globalErrorSlice = createSlice({
   initialState,
   reducers: {
     setGlobalError: (state, action: PayloadAction<GlobalErrorType>) => {
-      // eslint-disable-next-line no-param-reassign
       state.type = action.payload;
     },
     clearGlobalError: state => {
-      // eslint-disable-next-line no-param-reassign
       state.type = null;
     },
   },

@@ -233,3 +233,20 @@
     color: $color-gray-400;
   }
 }
+
+.iconButton {
+  width: max-content;
+  padding: 8px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-background;
+    border-radius: 8px;
+  }
+
+  &:active {
+    background-color: $color-gray-200;
+  }
+}

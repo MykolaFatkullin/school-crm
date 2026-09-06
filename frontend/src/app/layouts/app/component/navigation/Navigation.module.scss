@@ -1,0 +1,53 @@
+@use '../../../../../shared/styles/variables' as *;
+@use '../../../../../shared/styles/mixins' as *;
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
+.navigationTitle {
+  color: $color-nav-title;
+  text-transform: uppercase;
+  padding: 8px 12px;
+
+  @include font(caption);
+}
+
+.navigationLink {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 12px;
+  color: $color-text;
+  border-radius: 8px;
+
+  @include font(caption);
+
+  &:hover {
+    background-color: $color-gray-100;
+  }
+}
+
+.navLinkActive {
+  background-color: $color-nav-selected;
+  color: $color-primary;
+  position: relative;
+
+  &:hover {
+    background-color: $color-nav-selected;
+  }
+
+  &::after {
+    position: absolute;
+    content: '';
+    display: block;
+    border-radius: 4px;
+    width: 3px;
+    height: 18px;
+    left: 0;
+    background-color: $color-primary;
+  }
+}
