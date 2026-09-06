@@ -29,7 +29,6 @@ public interface NotificationsRepository extends JpaRepository<NotificationsEnti
 
   void deleteAllByUserId(UUID userId);
 
-  @Query(
-      "SELECT n FROM NotificationsEntity n WHERE n.user.id = :userId ORDER BY n.createdAt DESC")
+  @Query("SELECT n FROM NotificationsEntity n WHERE n.user.id = :userId ORDER BY n.createdAt DESC")
   Page<NotificationsEntity> findByUserId(@Param("userId") UUID userId, Pageable pageable);
 }
