@@ -21,7 +21,7 @@ public interface NotificationsRepository extends JpaRepository<NotificationsEnti
 
   Optional<NotificationsEntity> findByIdAndUserIdAndRead(UUID id, UUID userId, boolean read);
 
-  @Modifying
+  @Modifying(clearAutomatically = true)
   @Query(
       value =
           "UPDATE NotificationsEntity n SET n.read = true WHERE n.user.id = :userId AND n.read = false")
