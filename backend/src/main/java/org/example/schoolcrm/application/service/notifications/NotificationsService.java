@@ -10,6 +10,7 @@ import org.example.schoolcrm.infrastructure.persistence.entity.NotificationsEnti
 import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
 import org.example.schoolcrm.infrastructure.persistence.repository.NotificationsRepository;
 import org.example.schoolcrm.web.dto.notifications.NotificationsDto;
+import org.example.schoolcrm.web.dto.notifications.NotificationsMetaDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -62,7 +63,9 @@ public class NotificationsService {
     return notificationsRepository.findByUserId(userId, pageable).map(notificationsMapper::toDto);
   }
 
-  public Long getUnreadNotificationsCount(UUID userId) {
-    return notificationsRepository.getCountOfUnreadNotificationsByUser(userId);
+  public NotificationsMetaDto getUnreadNotificationsCount(UUID userId) {
+    val count = notificationsRepository.getCountOfUnreadNotificationsByUser(userId);
+
+    return new NotificationsMetaDto(count);
   }
 }
