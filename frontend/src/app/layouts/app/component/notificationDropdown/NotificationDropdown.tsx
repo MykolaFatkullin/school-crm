@@ -109,6 +109,17 @@ export const NotificationDropdown = ({ isNotificationsOpen }: Props) => {
     },
   );
 
+  // Intentional "adjusting state during render" pattern (see
+  // https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes).
+  // This is NOT a bug: it's guarded (only fires on the isNotificationsOpen
+  // transition) and idempotent, so React re-renders once synchronously
+  // before committing/painting instead of looping. Doing the reset here
+  // rather than in a useEffect matters functionally: it lets `page` be
+  // corrected to 0 in the very same render that flips `skip` to false, so
+  // useGetAllNotificationsQuery only ever fires once with page=0. Moving
+  // this into a useEffect would fetch once with the stale page and again
+  // after the effect resets it - an extra request on every reopen after
+  // paging past page 0.
   if (isNotificationsOpen && !prevIsOpen) {
     setPage(0);
     setPrevIsOpen(true);

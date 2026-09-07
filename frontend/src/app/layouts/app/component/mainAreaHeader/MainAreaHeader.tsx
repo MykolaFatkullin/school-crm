@@ -69,7 +69,7 @@ export const MainAreaHeader = () => {
       ? MAX_NOTIFICATION_COUNT
       : unreadNotifications;
 
-  const initials = `${accountInfo?.firstName?.charAt(0).toUpperCase()}${accountInfo?.lastName?.charAt(0).toUpperCase()}`;
+  const initials = `${accountInfo?.firstName?.charAt(0)?.toUpperCase() ?? ''}${accountInfo?.lastName?.charAt(0)?.toUpperCase() ?? ''}`;
 
   return (
     <header className={styles.header}>

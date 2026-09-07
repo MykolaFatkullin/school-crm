@@ -19,7 +19,7 @@ import {
 import { UserRoles } from '../../../../../entities/user/model';
 import { ROUTES } from '../../../../../shared/config';
 
-export const dashboardNavigaton: NavigationModel = {
+export const dashboardNavigation: NavigationModel = {
   title: '',
   navigations: [
     {

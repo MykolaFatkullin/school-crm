@@ -35,7 +35,7 @@ export const AuthInitializer = ({ children, refreshSucceeded }: Props) => {
     }
   }, [refreshSucceeded, isSuccess, isError, dispatch]);
 
-  if (refreshSucceeded && isLoading && isNotificationsMetaLoading) {
+  if (refreshSucceeded && (isLoading || isNotificationsMetaLoading)) {
     return <LoadingPage />;
   }
 

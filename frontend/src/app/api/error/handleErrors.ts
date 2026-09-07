@@ -52,8 +52,6 @@ export const handleErrors = (
 
       return;
     }
-
-    return;
   }
 
   if (apiError) {

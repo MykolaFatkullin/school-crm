@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 export const useInfiniteScrollTrigger = (
   onIntersect: () => void,
@@ -6,6 +6,13 @@ export const useInfiniteScrollTrigger = (
   root: HTMLElement | null = null,
 ) => {
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    return () => {
+      observerRef.current?.disconnect();
+      observerRef.current = null;
+    };
+  }, []);
 
   return useCallback(
     (node: HTMLElement | null) => {

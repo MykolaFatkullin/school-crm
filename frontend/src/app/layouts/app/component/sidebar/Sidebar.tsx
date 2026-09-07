@@ -5,14 +5,19 @@ import {
   academicsNavigation,
   administrationNavigation,
   communicationNavigation,
-  dashboardNavigaton,
+  dashboardNavigation,
   learningNavigation,
 } from '../navigation/navigationCreator';
 import { useMeQuery } from '../../../../api/account/accountApi';
 
 export const Sidebar = () => {
   const { data: me } = useMeQuery();
-  const userRole = me!.role;
+
+  if (!me) {
+    return null;
+  }
+
+  const userRole = me.role;
 
   return (
     <aside className={styles.sidebar}>
@@ -21,7 +26,7 @@ export const Sidebar = () => {
         <h1 className={styles.title}>School CRM</h1>
       </header>
       <div className={styles.nav}>
-        <Navigation navigationModel={dashboardNavigaton} userRole={userRole} />
+        <Navigation navigationModel={dashboardNavigation} userRole={userRole} />
         <Navigation navigationModel={academicsNavigation} userRole={userRole} />
         <Navigation navigationModel={learningNavigation} userRole={userRole} />
         <Navigation

@@ -7,7 +7,7 @@ export const useLogout = () => {
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
-    await logout();
+    await logout().unwrap();
 
     dispatch(setUnauthenticated());
 
