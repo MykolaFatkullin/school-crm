@@ -14,10 +14,8 @@ import { setUnreadCount } from '../../../app/store/notificationsSlice';
 export const useLoginForm = (methods: UseFormReturn<LoginForm>) => {
   const [login, { isLoading, error }] = useLoginMutation();
   const [me, { isLoading: isMeLoading, error: meError }] = useLazyMeQuery();
-  const [
-    getNotificationsMeta,
-    { data: notificationsMeta, isLoading: isNotificationsMetaLoading },
-  ] = useLazyGetMetaQuery();
+  const [getNotificationsMeta, { isLoading: isNotificationsMetaLoading }] =
+    useLazyGetMetaQuery();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -31,9 +29,10 @@ export const useLoginForm = (methods: UseFormReturn<LoginForm>) => {
     await login(request).unwrap();
 
     await me().unwrap();
-    await getNotificationsMeta().unwrap();
+    const meta = await getNotificationsMeta().unwrap();
+
     dispatch(setAuthenticated());
-    dispatch(setUnreadCount(notificationsMeta?.unreadNotificationsCount ?? 0));
+    dispatch(setUnreadCount(meta.unreadNotificationsCount ?? 0));
 
     navigate(ROUTES.DASHBOARD);
   };

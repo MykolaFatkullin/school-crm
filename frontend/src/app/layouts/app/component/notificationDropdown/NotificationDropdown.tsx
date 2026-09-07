@@ -109,11 +109,11 @@ export const NotificationDropdown = ({ isNotificationsOpen }: Props) => {
     },
   );
 
-  if (isNotificationsOpen !== prevIsOpen) {
-    setPrevIsOpen(isNotificationsOpen);
-    if (isNotificationsOpen) {
-      setPage(0);
-    }
+  if (isNotificationsOpen && !prevIsOpen) {
+    setPage(0);
+    setPrevIsOpen(true);
+  } else if (!isNotificationsOpen && prevIsOpen) {
+    setPrevIsOpen(false);
   }
 
   const isLastPage = data?.last ?? false;
