@@ -1,5 +1,5 @@
 import { useRefreshMutation } from '../../api';
-import { clearAccessToken, setAccessToken } from '../../store/authSlice';
+import { setAccessToken, setUnauthenticated } from '../../store/authSlice';
 import { useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 
@@ -15,7 +15,7 @@ export const useRefresh = () => {
 
       return accessToken;
     } catch {
-      dispatch(clearAccessToken());
+      dispatch(setUnauthenticated());
 
       return null;
     }

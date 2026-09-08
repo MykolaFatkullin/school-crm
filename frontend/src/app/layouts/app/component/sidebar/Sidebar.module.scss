@@ -1,0 +1,24 @@
+@use '../../../../../shared/styles/variables' as *;
+@use '../../../../../shared/styles/mixins' as *;
+
+.sidebar {
+  background-color: $color-white;
+  width: 272px;
+  border-right: 1px solid $color-gray-250;
+  box-shadow: 0 2px 16px -4px $color-app-shadow;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 17px 20px;
+}
+
+.title {
+  @include font(body-bold);
+}
+
+.nav {
+  padding: 16px;
+}

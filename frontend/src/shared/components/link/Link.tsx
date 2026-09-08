@@ -13,12 +13,21 @@ type Props = {
 };
 
 export const Link = ({ to, type, inlineText, children, position }: Props) => {
+  const isButtonLike = type === 'primaryButton' || type === 'secondaryButton';
+
   return (
     <div
       className={classNames(styles.linkContainer, position && styles[position])}
     >
       {inlineText && <span className={styles.inlineText}>{inlineText}</span>}
-      <ReactLink to={to} className={classNames(styles.link, styles[type])}>
+      <ReactLink
+        to={to}
+        className={classNames(
+          styles.link,
+          styles[type],
+          isButtonLike && styles.button,
+        )}
+      >
         {children}
       </ReactLink>
     </div>

@@ -1,0 +1,165 @@
+@use '../../../../../shared/styles/variables' as *;
+@use '../../../../../shared/styles/mixins' as *;
+
+.notificationDropdown {
+  position: absolute;
+  width: 380px;
+  background-color: $color-white;
+  border: 1px solid $color-gray-250;
+  border-radius: 10px;
+  box-shadow:
+    0 2px 4px 0 $color-user-menu-shadow,
+    0 4px 12px 0 $color-user-menu-second-shadow;
+  max-height: 500px;
+  overflow-y: auto;
+  right: -190px;
+  top: calc(100% + 15px);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translateY(-8px) scale(0.98);
+  transform-origin: top right;
+
+  transition:
+    opacity $animation-speed ease,
+    transform $animation-speed ease,
+    visibility $animation-speed ease;
+
+  &Open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateY(0) scale(1);
+  }
+}
+
+.notificationDropdownHeader {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid $color-gray-250;
+}
+
+.notificationDropdownTitle {
+  @include font(body-bold);
+}
+
+.notificationDropdownButtons {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  max-width: 150px;
+}
+
+.notificationDropdownButtonsSeparator {
+  width: 4px;
+  height: 24px;
+  background-color: $color-gray-250;
+}
+
+.notificationList {
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.notificationItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+}
+
+.notificationUnread {
+  background-color: $color-unread-notification-bg;
+}
+
+.notificationIcon {
+  --icon-color: #{$color-text-secondary};
+
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.notificationUnreadIcon {
+  --icon-color: #{$color-primary};
+}
+
+.notificationContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.notificationTopLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.notificationType {
+  @include font(body-bold);
+
+  min-width: 0;
+  color: $color-text;
+}
+
+.notificationText {
+  color: $color-text-secondary;
+  @include font(body);
+}
+
+.notificationDate {
+  color: $color-text-secondary;
+  @include font(caption);
+}
+
+.notificationStatus {
+  height: 8px;
+  width: 8px;
+  background-color: $color-primary;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.notificationEmpty {
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+}
+
+.notificationEmptyDataIcon {
+  --icon-color: #{$color-text-secondary};
+}
+
+.notificationEmptyDataIconWrapper {
+  width: 48px;
+  height: 48px;
+  background-color: $color-background;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.iconMail {
+}
+.notificationEmptyData {
+  color: $color-text-secondary;
+}
+
+.notificationEmptyDataText {
+  @include font(body);
+}
+
+.notificationEmptyDataAdditionalText {
+  @include font(caption);
+}

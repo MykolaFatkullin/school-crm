@@ -1,0 +1,74 @@
+@use '../../../../../shared/styles/variables' as *;
+@use '../../../../../shared/styles/mixins' as *;
+
+.userMenuDropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  border: 1px solid $color-gray-250;
+  background-color: $color-white;
+  border-radius: 8px;
+  box-shadow:
+    0 2px 4px 0 $color-user-menu-shadow,
+    0 4px 12px 0 $color-user-menu-second-shadow;
+  padding: 6px;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translateY(-8px) scale(0.98);
+  transform-origin: top right;
+
+  transition:
+    opacity $animation-speed ease,
+    transform $animation-speed ease,
+    visibility $animation-speed ease;
+
+  &Open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateY(0) scale(1);
+  }
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 12px;
+  color: $color-text;
+  border-radius: 8px;
+
+  @include font(caption);
+
+  &:hover {
+    background-color: $color-gray-100;
+  }
+}
+
+.logOutButton {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 12px;
+  color: $color-text;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  width: 100%;
+
+  @include font(caption);
+
+  &:hover {
+    background-color: $color-gray-100;
+  }
+}

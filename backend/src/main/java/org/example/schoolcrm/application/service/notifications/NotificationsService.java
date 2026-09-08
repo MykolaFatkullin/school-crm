@@ -36,17 +36,13 @@ public class NotificationsService {
   }
 
   @Transactional
-  public NotificationsDto readNotification(UUID notificationId, UUID userId) {
+  public void readNotification(UUID notificationId, UUID userId) {
     val storedNotification =
         notificationsRepository
             .findByIdAndUserIdAndRead(notificationId, userId, false)
             .orElseThrow(() -> new NotificationNotFoundException(notificationId));
 
     storedNotification.setRead(true);
-
-    val saved = notificationsRepository.save(storedNotification);
-
-    return notificationsMapper.toDto(saved);
   }
 
   @Transactional

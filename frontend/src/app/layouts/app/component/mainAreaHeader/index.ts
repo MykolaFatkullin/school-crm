@@ -1,0 +1,1 @@
+export { MainAreaHeader } from './MainAreaHeader';

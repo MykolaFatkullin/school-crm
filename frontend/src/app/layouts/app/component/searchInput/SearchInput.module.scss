@@ -1,0 +1,40 @@
+@use '../../../../../shared/styles/variables' as *;
+@use '../../../../../shared/styles/mixins' as *;
+
+.searchInput {
+  width: 100%;
+  position: relative;
+}
+
+.searchInputIcon {
+  position: absolute;
+  color: $color-text-secondary;
+  top: 16px;
+  left: 16px;
+}
+
+.input {
+  @include form-control-field;
+
+  padding: 12px 40px;
+  box-sizing: border-box;
+  color: $color-text-secondary;
+
+  @include font(body);
+  background-color: $color-app-background;
+}
+
+.kbd {
+  position: absolute;
+  width: 34px;
+  height: 24px;
+  right: 14px;
+  top: 10px;
+  border: 1px solid $color-gray-250;
+  background-color: $color-white;
+  border-radius: 5px;
+  color: $color-gray-400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -22,7 +22,7 @@ export const ResetPasswordPage = () => {
   const email = register('email', createEmailValidation());
 
   return (
-    <>
+    <main>
       <AuthHeader
         header={'Forgot password?'}
         subHeader={"Enter your email and we'll send you a password reset link."}
@@ -49,6 +49,6 @@ export const ResetPasswordPage = () => {
           </Button>
         </AuthStepActions>
       </Form>
-    </>
+    </main>
   );
 };

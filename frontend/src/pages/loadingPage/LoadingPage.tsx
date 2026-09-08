@@ -6,8 +6,8 @@ type Props = {
 };
 
 export const LoadingPage = ({ message }: Props) => (
-  <div className={styles.loadingPage}>
+  <main className={styles.loadingPage}>
     <LoaderCircle size={100} className={styles.loaderCircle} />
     {message && <p className={styles.message}>{message}</p>}
-  </div>
+  </main>
 );

@@ -16,8 +16,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,22 +28,28 @@ public class NotificationController {
 
   private final NotificationsService notificationsService;
 
-  @PatchMapping("/read")
-  public ResponseEntity<NotificationsDto> readNotification(
-      @RequestParam(name = "id") UUID id, @AuthenticationPrincipal UserPrincipal principal) {
-    val updatedNotification = notificationsService.readNotification(id, principal.userId());
+  @PatchMapping("/{id}/read")
+  public ResponseEntity<Void> readNotification(
+      @PathVariable(name = "id") UUID id, @AuthenticationPrincipal UserPrincipal principal) {
+    notificationsService.readNotification(id, principal.userId());
 
-    return ResponseEntity.ok(updatedNotification);
+    return ResponseEntity.noContent().build();
   }
 
   @PatchMapping("/read-all")
-  public void readAllNotifications(@AuthenticationPrincipal UserPrincipal principal) {
+  public ResponseEntity<Void> readAllNotifications(
+      @AuthenticationPrincipal UserPrincipal principal) {
     notificationsService.readAllNotifications(principal.userId());
+
+    return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping("/delete")
-  public void deleteNotifications(@AuthenticationPrincipal UserPrincipal principal) {
+  public ResponseEntity<Void> deleteNotifications(
+      @AuthenticationPrincipal UserPrincipal principal) {
     notificationsService.deleteNotifications(principal.userId());
+
+    return ResponseEntity.noContent().build();
   }
 
   @GetMapping("/all")

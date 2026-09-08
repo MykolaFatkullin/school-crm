@@ -1,23 +1,30 @@
-import { Button } from '../../shared/components/button';
 import {
   createEmailValidation,
   createPasswordValidation,
   ROUTES,
 } from '../../shared/config';
-import { Input } from '../../shared/components/input';
 import { LoginForm } from './model';
-import { AuthStepActions } from '../../shared/components/authStepActions';
 import { useLoginForm } from './hooks';
-import { AuthHeader } from '../../shared/components/authHeader';
-import { Form } from '../../shared/components/form';
 import { useAppForm } from '../../shared/hooks';
-import { Link } from '../../shared/components/link';
+import { AuthHeader } from '../../shared/components/authHeader';
 import { ErrorCode } from '../../app/model/ErrorCode';
 import { Alert } from '../../shared/components/alert';
+import { Form } from '../../shared/components/form';
+import { Input } from '../../shared/components/input';
+import { Link } from '../../shared/components/link';
+import { AuthStepActions } from '../../shared/components/authStepActions';
+import { Button } from '../../shared/components/button';
 
 export const LoginPage = () => {
   const formMethods = useAppForm<LoginForm>();
-  const { submit, isLoading, apiError } = useLoginForm(formMethods);
+  const {
+    submit,
+    isLoading,
+    isMeLoading,
+    isNotificationsMetaLoading,
+    apiError,
+    meError,
+  } = useLoginForm(formMethods);
 
   const {
     register,
@@ -33,14 +40,19 @@ export const LoginPage = () => {
     void submit(data);
   };
 
+  const isSubmitting = isLoading || isMeLoading || isNotificationsMetaLoading;
+
   return (
-    <>
+    <main>
       <AuthHeader
         header={'Welcome back'}
         subHeader={'Sign in to your account'}
       />
-      {apiError && apiError.errorType === ErrorCode.AUTH_ERROR && (
+      {apiError && !meError && apiError.errorType === ErrorCode.AUTH_ERROR && (
         <Alert message={'Incorrect email or password'} />
+      )}
+      {meError && (
+        <Alert message={'Something went wrong. Please try again later.'} />
       )}
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
@@ -64,7 +76,7 @@ export const LoginPage = () => {
           Forgot password?
         </Link>
         <AuthStepActions>
-          <Button variant={'primary'} type={'submit'} isLoading={isLoading}>
+          <Button variant={'primary'} type={'submit'} isLoading={isSubmitting}>
             Log in
           </Button>
           <Link
@@ -76,6 +88,6 @@ export const LoginPage = () => {
           </Link>
         </AuthStepActions>
       </Form>
-    </>
+    </main>
   );
 };

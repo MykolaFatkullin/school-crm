@@ -25,7 +25,7 @@ export const ResetPasswordSentPage = () => {
   };
 
   return (
-    <>
+    <main>
       <div className={style.container}>
         <Icon
           icon={Mail}
@@ -36,16 +36,16 @@ export const ResetPasswordSentPage = () => {
         />
         <h1 className={style.title}>Check your email</h1>
         <div className={style.textContainer}>
-          <span className={style.text}>
+          <p className={style.text}>
             If an account with this email exists, we've sent a password reset
             link.
-          </span>
-          <div className={style.additionalText}>
+          </p>
+          <p className={style.additionalText}>
             <span className={style.text}>Didn't receive the email?</span>
             <span className={style.text}>
               Check your spam folder or request another email.
             </span>
-          </div>
+          </p>
         </div>
       </div>
       <AuthStepActions>
@@ -61,6 +61,6 @@ export const ResetPasswordSentPage = () => {
           Back to Login
         </Link>
       </AuthStepActions>
-    </>
+    </main>
   );
 };

@@ -75,7 +75,8 @@ const authApi = baseApi.injectEndpoints({
         method: 'POST',
         body: body,
       }),
-      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+      invalidatesTags: ['Me'],
+      onQueryStarted: async (_, { queryFulfilled, dispatch }) => {
         const { data } = await queryFulfilled;
 
         dispatch(setAccessToken(data.accessToken));
@@ -87,6 +88,13 @@ const authApi = baseApi.injectEndpoints({
         url: '/auth/change-password',
         method: 'POST',
         body: body,
+      }),
+    }),
+
+    logout: builder.mutation<void, void>({
+      query: () => ({
+        url: '/auth/logout',
+        method: 'POST',
       }),
     }),
   }),
@@ -101,4 +109,5 @@ export const {
   useResetPasswordMutation,
   useLoginMutation,
   useChangePasswordMutation,
+  useLogoutMutation,
 } = authApi;

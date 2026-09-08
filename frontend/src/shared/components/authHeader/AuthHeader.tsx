@@ -9,15 +9,15 @@ type Props = {
 
 export const AuthHeader = ({ header, subHeader, additionalInfo }: Props) => {
   return (
-    <div className={styles.registrationPageHeader}>
+    <header className={styles.authHeader}>
       <Logo />
       {additionalInfo && (
-        <p className={styles.registrationPageHeaderStep}>{additionalInfo}</p>
+        <p className={styles.authHeaderStep}>{additionalInfo}</p>
       )}
-      <div className={styles.registrationPageHeaderTitles}>
-        <h1 className={styles.registrationPageHeaderTitle}>{header}</h1>
-        <p className={styles.registrationPageHeaderDescription}>{subHeader}</p>
+      <div className={styles.authHeaderTitles}>
+        <h1 className={styles.authHeaderTitle}>{header}</h1>
+        <p className={styles.authHeaderDescription}>{subHeader}</p>
       </div>
-    </div>
+    </header>
   );
 };

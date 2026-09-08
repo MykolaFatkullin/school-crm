@@ -30,7 +30,7 @@ export const RegistrationPage = () => {
   };
 
   return (
-    <>
+    <main>
       <AuthHeader
         header={registerSteps[step].title}
         subHeader={registerSteps[step].description}
@@ -47,6 +47,6 @@ export const RegistrationPage = () => {
           {renderCurrentStep(step)}
         </Form>
       </FormProvider>
-    </>
+    </main>
   );
 };

@@ -50,7 +50,7 @@ export const GlobalErrorComponent = ({ errorType }: Props) => {
       : styles.errorIconSystem;
 
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       <div className={styles.content}>
         <div className={styles.errorContainer}>
           <Icon
@@ -61,7 +61,7 @@ export const GlobalErrorComponent = ({ errorType }: Props) => {
             className={iconClass}
           ></Icon>
           <h1 className={styles.errorTitle}>{errorTitle}</h1>
-          <span className={styles.errorMessage}>{errorMessage}</span>
+          <p className={styles.errorMessage}>{errorMessage}</p>
         </div>
         <Button
           variant={'primary'}
@@ -74,6 +74,6 @@ export const GlobalErrorComponent = ({ errorType }: Props) => {
           Try again
         </Button>
       </div>
-    </div>
+    </main>
   );
 };

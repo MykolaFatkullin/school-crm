@@ -32,7 +32,7 @@ export const SuccessRegistrationPage = () => {
   };
 
   return (
-    <div className={style.successPage}>
+    <main className={style.successPage}>
       <div className={style.contentContainer}>
         <Icon
           icon={Mail}
@@ -42,12 +42,12 @@ export const SuccessRegistrationPage = () => {
           className={style.iconMail}
         />
         <h1 className={style.title}>Verify your email</h1>
-        <span className={style.text}>We've sent a verification link to</span>
-        <span className={style.email}>{email}</span>
-        <span className={style.text}>
+        <p className={style.text}>We've sent a verification link to</p>
+        <p className={style.email}>{email}</p>
+        <p className={style.text}>
           Please open your inbox and click the verification link before
           continuing.
-        </span>
+        </p>
       </div>
       <div className={style.buttonContainer}>
         <Button
@@ -62,6 +62,6 @@ export const SuccessRegistrationPage = () => {
           Back to Login
         </Link>
       </div>
-    </div>
+    </main>
   );
 };

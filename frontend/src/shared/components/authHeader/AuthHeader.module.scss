@@ -1,7 +1,7 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
-.registrationPageHeader {
+.authHeader {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,22 +9,22 @@
   margin-bottom: 32px;
 }
 
-.registrationPageHeaderStep {
+.authHeaderStep {
   color: $color-primary;
 }
 
-.registrationPageHeaderTitles {
+.authHeaderTitles {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
 }
 
-.registrationPageHeaderTitle {
+.authHeaderTitle {
   @include font(heading);
 }
 
-.registrationPageHeaderDescription {
+.authHeaderDescription {
   color: $color-text-secondary;
   text-align: center;
   max-width: 260px;

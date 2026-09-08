@@ -3,12 +3,17 @@ import { ROUTES } from '../../../shared/config';
 import { HomePage } from '../../../pages/homePage';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import { LoadingPage } from '../../../pages/loadingPage';
 
 export const RootRoute = () => {
-  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+  const status = useSelector((state: RootState) => state.auth.status);
 
-  if (accessToken) {
-    return <Navigate to={ROUTES.APP} replace />;
+  if (status === 'unknown') {
+    return <LoadingPage />;
+  }
+
+  if (status === 'authenticated') {
+    return <Navigate to={ROUTES.DASHBOARD} replace />;
   }
 
   return <HomePage />;

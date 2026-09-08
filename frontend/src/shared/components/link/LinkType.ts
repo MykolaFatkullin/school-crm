@@ -1,1 +1,6 @@
-export type LinkType = 'defaultText' | 'dangerText' | 'primaryText';
+export type LinkType =
+  | 'defaultText'
+  | 'dangerText'
+  | 'primaryText'
+  | 'primaryButton'
+  | 'secondaryButton';
