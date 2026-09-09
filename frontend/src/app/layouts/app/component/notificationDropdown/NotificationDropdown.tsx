@@ -15,8 +15,10 @@ import {
   appendNotifications,
   setNotifications,
 } from '../../../../store/notificationsSlice';
-import { NotificationsResponseDto } from '../../../../api/notifications/response';
-import { NotificationType } from '../../../../../entities/notifications';
+import {
+  Notification,
+  NotificationType,
+} from '../../../../../entities/notifications';
 import { useInfiniteScrollTrigger } from '../../../../../shared/hooks';
 
 const PAGE_SIZE = 10;
@@ -46,7 +48,7 @@ const getEmptyData = () => {
 };
 
 const renderNotification = (
-  notifications: NotificationsResponseDto[],
+  notifications: Notification[],
   readNotification: (id: string) => void,
   lastElementRef: (node: HTMLElement | null) => void,
 ) => {

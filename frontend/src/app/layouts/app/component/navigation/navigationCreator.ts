@@ -132,7 +132,7 @@ export const communicationNavigation: NavigationModel = {
   navigations: [
     {
       title: 'Messages',
-      path: ROUTES.HELP,
+      path: ROUTES.MESSAGES,
       icon: MessageCircle,
       roles: [],
     },
