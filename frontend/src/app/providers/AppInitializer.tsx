@@ -4,6 +4,7 @@ import { LoadingPage } from '../../pages/loadingPage';
 import { RouterProvider } from 'react-router-dom';
 import { router } from '../router';
 import { AuthInitializer } from './AuthInitializer';
+import { NotificationsProvider } from './NotificationsProvider';
 
 export const AppInitializer = () => {
   const { refresh } = useRefresh();
@@ -27,7 +28,9 @@ export const AppInitializer = () => {
 
   return (
     <AuthInitializer refreshSucceeded={refreshSucceeded}>
-      <RouterProvider router={router} />
+      <NotificationsProvider>
+        <RouterProvider router={router} />
+      </NotificationsProvider>
     </AuthInitializer>
   );
 };

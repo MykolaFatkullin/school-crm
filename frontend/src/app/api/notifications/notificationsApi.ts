@@ -1,10 +1,8 @@
 import { baseApi } from '../baseApi';
-import {
-  NotificationsMetaResponse,
-  NotificationsResponseDto,
-} from './response';
+import { NotificationsMetaResponse } from './response';
 import { PageResponse } from '../../model';
 import { NotificationsQueryParams } from './request';
+import { Notification } from '../../../entities/notifications';
 
 const NOTIFICATIONS_ENDPOINT = '/api/notifications';
 
@@ -29,7 +27,7 @@ const notificationsApi = baseApi.injectEndpoints({
       }),
     }),
     getAllNotifications: builder.query<
-      PageResponse<NotificationsResponseDto>,
+      PageResponse<Notification>,
       NotificationsQueryParams
     >({
       query: ({ page, size }) => ({

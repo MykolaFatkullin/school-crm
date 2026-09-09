@@ -1,5 +1,7 @@
 import { Toast } from './types';
 
+const MAX_TOASTS = 5;
+
 let toasts: Toast[] = [];
 const listeners = new Set<(toasts: Toast[]) => void>();
 
@@ -20,7 +22,7 @@ export const toastStore = {
     return toasts;
   },
   add(toast: Toast) {
-    toasts = [...toasts, toast];
+    toasts = [toast, ...toasts].slice(0, MAX_TOASTS);
     emit();
   },
   remove(id: string) {
