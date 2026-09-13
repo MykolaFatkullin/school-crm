@@ -61,7 +61,7 @@ public class SchoolSettingsService {
 
   @Transactional
   public SchoolPaymentSettingsDto updatePaymentSettings(
-      UUID schoolId, SchoolPaymentSettingsDto schoolSmtpSettingsDto) {
+      UUID schoolId, SchoolPaymentSettingsDto schoolPaymentSettingsDto) {
     val storedPaymentSettings =
         schoolPaymentSettingsRepository
             .findBySchoolId(schoolId)
@@ -72,14 +72,16 @@ public class SchoolSettingsService {
       storedPaymentSettings.setSchool(school);
     }
 
-    schoolSettingsMapper.updateSchoolPaymentSettings(storedPaymentSettings, schoolSmtpSettingsDto);
+    schoolSettingsMapper.updateSchoolPaymentSettings(
+        storedPaymentSettings, schoolPaymentSettingsDto);
 
     val storedApiKey = storedPaymentSettings.getApiKey();
     val storedSecretKey = storedPaymentSettings.getSecretKey();
 
-    storedPaymentSettings.setApiKey(encryptIfChanged(storedApiKey, schoolSmtpSettingsDto.apiKey()));
+    storedPaymentSettings.setApiKey(
+        encryptIfChanged(storedApiKey, schoolPaymentSettingsDto.apiKey()));
     storedPaymentSettings.setSecretKey(
-        encryptIfChanged(storedSecretKey, schoolSmtpSettingsDto.secretKey()));
+        encryptIfChanged(storedSecretKey, schoolPaymentSettingsDto.secretKey()));
 
     val updatedEntity = schoolPaymentSettingsRepository.save(storedPaymentSettings);
 

@@ -1,5 +1,6 @@
 package org.example.schoolcrm.infrastructure.config;
 
+import static org.example.schoolcrm.common.Constants.ADMIN_PREFIX;
 import static org.example.schoolcrm.common.Constants.AUTH_PREFIX;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,8 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers("/ws/**")
                     .permitAll()
+                    .requestMatchers(ADMIN_PREFIX + "/**")
+                    .hasRole("ADMIN")
                     .anyRequest()
                     .authenticated())
         .exceptionHandling(
