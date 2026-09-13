@@ -97,10 +97,6 @@ public class SchoolSettingsService {
   }
 
   private String encryptIfChanged(String storedValue, String newValue) {
-    if (Objects.equals(storedValue, newValue)) {
-      return storedValue;
-    }
-
     if (newValue == null || newValue.equals(REPLACEMENT)) {
       return storedValue;
     }

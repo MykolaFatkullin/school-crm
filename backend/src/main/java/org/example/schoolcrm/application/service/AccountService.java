@@ -1,5 +1,6 @@
 package org.example.schoolcrm.application.service;
 
+import java.time.Instant;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -44,5 +45,6 @@ public class AccountService {
     }
 
     user.setPassword(passwordEncoder.encode(changeAccountPasswordDto.newPassword()));
+    user.setPasswordLastChangedAt(Instant.now());
   }
 }
