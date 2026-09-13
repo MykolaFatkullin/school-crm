@@ -31,7 +31,8 @@ public class SchoolSettingsController {
       @AuthenticationPrincipal UserPrincipal principal,
       @RequestBody @Valid SchoolSmtpSettingsRequestDto schoolSmtpSettingsRequestDto) {
     val settings =
-        schoolSettingsService.updateSmtpSettings(principal.schoolId(), schoolSmtpSettingsRequestDto);
+        schoolSettingsService.updateSmtpSettings(
+            principal.schoolId(), schoolSmtpSettingsRequestDto);
 
     return ResponseEntity.ok(settings);
   }
