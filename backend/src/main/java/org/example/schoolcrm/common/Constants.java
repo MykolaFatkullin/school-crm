@@ -7,6 +7,4 @@ public class Constants {
   public static final String ACCOUNT_PREFIX = API_PREFIX + "/account";
   public static final String AUTH_PREFIX = "/auth";
   public static final String NOTIFICATION_PREFIX = API_PREFIX + "/notification";
-
-  public static final String REPLACEMENT = "******";
 }

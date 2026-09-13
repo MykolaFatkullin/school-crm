@@ -9,9 +9,9 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
-public record SchoolPaymentSettingsDto(
-    @NotBlank @Size(max = 255) String apiKey,
-    @NotBlank @Size(max = 255) String secretKey,
+public record SchoolPaymentSettingsRequestDto(
+    @Size(max = 255) String apiKey,
+    @Size(max = 255) String secretKey,
     @NotBlank @Size(min = 3, max = 3) String currency,
     @NotNull
         @DecimalMin(value = "0.00")

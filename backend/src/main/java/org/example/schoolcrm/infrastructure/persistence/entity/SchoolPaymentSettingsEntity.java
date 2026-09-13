@@ -30,10 +30,10 @@ public class SchoolPaymentSettingsEntity {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @Column(name = "api_key", nullable = false)
+  @Column(name = "api_key")
   private String apiKey;
 
-  @Column(name = "secret_key", nullable = false)
+  @Column(name = "secret_key")
   private String secretKey;
 
   @Column(nullable = false)

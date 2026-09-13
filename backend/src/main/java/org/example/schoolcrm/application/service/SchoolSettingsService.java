@@ -1,7 +1,5 @@
 package org.example.schoolcrm.application.service;
 
-import static org.example.schoolcrm.common.Constants.REPLACEMENT;
-
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -11,8 +9,10 @@ import org.example.schoolcrm.infrastructure.persistence.entity.SchoolPaymentSett
 import org.example.schoolcrm.infrastructure.persistence.entity.SchoolSmtpSettingsEntity;
 import org.example.schoolcrm.infrastructure.persistence.repository.SchoolPaymentSettingsRepository;
 import org.example.schoolcrm.infrastructure.persistence.repository.SchoolSmtpSettingsRepository;
-import org.example.schoolcrm.web.dto.school.SchoolPaymentSettingsDto;
-import org.example.schoolcrm.web.dto.school.SchoolSmtpSettingsDto;
+import org.example.schoolcrm.web.dto.school.SchoolPaymentSettingsRequestDto;
+import org.example.schoolcrm.web.dto.school.SchoolPaymentSettingsResponseDto;
+import org.example.schoolcrm.web.dto.school.SchoolSmtpSettingsRequestDto;
+import org.example.schoolcrm.web.dto.school.SchoolSmtpSettingsResponseDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +27,8 @@ public class SchoolSettingsService {
   private final AesEncryptionService aesEncryptionService;
 
   @Transactional
-  public SchoolSmtpSettingsDto updateSmtpSettings(
-      UUID schoolId, SchoolSmtpSettingsDto schoolSmtpSettingsDto) {
+  public SchoolSmtpSettingsResponseDto updateSmtpSettings(
+      UUID schoolId, SchoolSmtpSettingsRequestDto schoolSmtpSettingsRequestDto) {
     val storedEntity =
         schoolSmtpSettingsRepository
             .findBySchoolId(schoolId)
@@ -39,18 +39,18 @@ public class SchoolSettingsService {
       storedEntity.setSchool(school);
     }
 
-    schoolSettingsMapper.updateSchoolSmtpSettings(storedEntity, schoolSmtpSettingsDto);
+    schoolSettingsMapper.updateSchoolSmtpSettings(storedEntity, schoolSmtpSettingsRequestDto);
 
     val storedSmtpPassword = storedEntity.getSmtpPassword();
     storedEntity.setSmtpPassword(
-        encryptIfChanged(storedSmtpPassword, schoolSmtpSettingsDto.smtpPassword()));
+        encryptIfChanged(storedSmtpPassword, schoolSmtpSettingsRequestDto.smtpPassword()));
 
     val updatedEntity = schoolSmtpSettingsRepository.save(storedEntity);
 
     return schoolSettingsMapper.smtpSettingsToDto(updatedEntity);
   }
 
-  public SchoolSmtpSettingsDto getSmtpSettings(UUID schoolId) {
+  public SchoolSmtpSettingsResponseDto getSmtpSettings(UUID schoolId) {
     val storedSmtpSettings =
         schoolSmtpSettingsRepository
             .findBySchoolId(schoolId)
@@ -60,8 +60,8 @@ public class SchoolSettingsService {
   }
 
   @Transactional
-  public SchoolPaymentSettingsDto updatePaymentSettings(
-      UUID schoolId, SchoolPaymentSettingsDto schoolPaymentSettingsDto) {
+  public SchoolPaymentSettingsResponseDto updatePaymentSettings(
+      UUID schoolId, SchoolPaymentSettingsRequestDto schoolPaymentSettingsRequestDto) {
     val storedPaymentSettings =
         schoolPaymentSettingsRepository
             .findBySchoolId(schoolId)
@@ -73,22 +73,22 @@ public class SchoolSettingsService {
     }
 
     schoolSettingsMapper.updateSchoolPaymentSettings(
-        storedPaymentSettings, schoolPaymentSettingsDto);
+        storedPaymentSettings, schoolPaymentSettingsRequestDto);
 
     val storedApiKey = storedPaymentSettings.getApiKey();
     val storedSecretKey = storedPaymentSettings.getSecretKey();
 
     storedPaymentSettings.setApiKey(
-        encryptIfChanged(storedApiKey, schoolPaymentSettingsDto.apiKey()));
+        encryptIfChanged(storedApiKey, schoolPaymentSettingsRequestDto.apiKey()));
     storedPaymentSettings.setSecretKey(
-        encryptIfChanged(storedSecretKey, schoolPaymentSettingsDto.secretKey()));
+        encryptIfChanged(storedSecretKey, schoolPaymentSettingsRequestDto.secretKey()));
 
     val updatedEntity = schoolPaymentSettingsRepository.save(storedPaymentSettings);
 
     return schoolSettingsMapper.paymentSettingsToDto(updatedEntity);
   }
 
-  public SchoolPaymentSettingsDto getPaymentSettings(UUID schoolId) {
+  public SchoolPaymentSettingsResponseDto getPaymentSettings(UUID schoolId) {
     val storedPaymentSettings =
         schoolPaymentSettingsRepository
             .findBySchoolId(schoolId)
@@ -98,7 +98,7 @@ public class SchoolSettingsService {
   }
 
   private String encryptIfChanged(String storedValue, String newValue) {
-    if (newValue == null || newValue.equals(REPLACEMENT)) {
+    if (newValue == null || newValue.isBlank()) {
       return storedValue;
     }
 

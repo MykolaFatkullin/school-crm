@@ -7,8 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.example.schoolcrm.application.service.SchoolSettingsService;
 import org.example.schoolcrm.infrastructure.security.UserPrincipal;
-import org.example.schoolcrm.web.dto.school.SchoolPaymentSettingsDto;
-import org.example.schoolcrm.web.dto.school.SchoolSmtpSettingsDto;
+import org.example.schoolcrm.web.dto.school.SchoolPaymentSettingsRequestDto;
+import org.example.schoolcrm.web.dto.school.SchoolPaymentSettingsResponseDto;
+import org.example.schoolcrm.web.dto.school.SchoolSmtpSettingsRequestDto;
+import org.example.schoolcrm.web.dto.school.SchoolSmtpSettingsResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,17 +27,17 @@ public class SchoolSettingsController {
   private final SchoolSettingsService schoolSettingsService;
 
   @PutMapping("/settings/smtp")
-  public ResponseEntity<SchoolSmtpSettingsDto> updateSmtpSettings(
+  public ResponseEntity<SchoolSmtpSettingsResponseDto> updateSmtpSettings(
       @AuthenticationPrincipal UserPrincipal principal,
-      @RequestBody @Valid SchoolSmtpSettingsDto schoolSmtpSettingsDto) {
+      @RequestBody @Valid SchoolSmtpSettingsRequestDto schoolSmtpSettingsRequestDto) {
     val settings =
-        schoolSettingsService.updateSmtpSettings(principal.schoolId(), schoolSmtpSettingsDto);
+        schoolSettingsService.updateSmtpSettings(principal.schoolId(), schoolSmtpSettingsRequestDto);
 
     return ResponseEntity.ok(settings);
   }
 
   @GetMapping("/settings/smtp")
-  public ResponseEntity<SchoolSmtpSettingsDto> getSmtpSettings(
+  public ResponseEntity<SchoolSmtpSettingsResponseDto> getSmtpSettings(
       @AuthenticationPrincipal UserPrincipal principal) {
     val settings = schoolSettingsService.getSmtpSettings(principal.schoolId());
 
@@ -43,17 +45,18 @@ public class SchoolSettingsController {
   }
 
   @PutMapping("/settings/payment")
-  public ResponseEntity<SchoolPaymentSettingsDto> updatePaymentSettings(
+  public ResponseEntity<SchoolPaymentSettingsResponseDto> updatePaymentSettings(
       @AuthenticationPrincipal UserPrincipal principal,
-      @RequestBody @Valid SchoolPaymentSettingsDto schoolPaymentSettingsDto) {
+      @RequestBody @Valid SchoolPaymentSettingsRequestDto schoolPaymentSettingsRequestDto) {
     val settings =
-        schoolSettingsService.updatePaymentSettings(principal.schoolId(), schoolPaymentSettingsDto);
+        schoolSettingsService.updatePaymentSettings(
+            principal.schoolId(), schoolPaymentSettingsRequestDto);
 
     return ResponseEntity.ok(settings);
   }
 
   @GetMapping("/settings/payment")
-  public ResponseEntity<SchoolPaymentSettingsDto> getPaymentSettings(
+  public ResponseEntity<SchoolPaymentSettingsResponseDto> getPaymentSettings(
       @AuthenticationPrincipal UserPrincipal principal) {
     val settings = schoolSettingsService.getPaymentSettings(principal.schoolId());
 

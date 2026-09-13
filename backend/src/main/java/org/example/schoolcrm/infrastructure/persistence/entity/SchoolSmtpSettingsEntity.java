@@ -38,7 +38,7 @@ public class SchoolSmtpSettingsEntity {
   @Column(name = "smtp_username", nullable = false)
   private String smtpUsername;
 
-  @Column(name = "smtp_password", nullable = false)
+  @Column(name = "smtp_password")
   private String smtpPassword;
 
   @Column(nullable = false)

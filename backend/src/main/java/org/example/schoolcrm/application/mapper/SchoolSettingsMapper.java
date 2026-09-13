@@ -1,11 +1,11 @@
 package org.example.schoolcrm.application.mapper;
 
-import static org.example.schoolcrm.common.Constants.REPLACEMENT;
-
 import org.example.schoolcrm.infrastructure.persistence.entity.SchoolPaymentSettingsEntity;
 import org.example.schoolcrm.infrastructure.persistence.entity.SchoolSmtpSettingsEntity;
-import org.example.schoolcrm.web.dto.school.SchoolPaymentSettingsDto;
-import org.example.schoolcrm.web.dto.school.SchoolSmtpSettingsDto;
+import org.example.schoolcrm.web.dto.school.SchoolPaymentSettingsRequestDto;
+import org.example.schoolcrm.web.dto.school.SchoolPaymentSettingsResponseDto;
+import org.example.schoolcrm.web.dto.school.SchoolSmtpSettingsRequestDto;
+import org.example.schoolcrm.web.dto.school.SchoolSmtpSettingsResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -19,10 +19,13 @@ public interface SchoolSettingsMapper {
   @Mapping(target = "school", ignore = true)
   void updateSchoolSmtpSettings(
       @MappingTarget SchoolSmtpSettingsEntity schoolSmtpSettingsEntity,
-      SchoolSmtpSettingsDto schoolSmtpSettingsDto);
+      SchoolSmtpSettingsRequestDto schoolSmtpSettingsRequestDto);
 
-  @Mapping(target = "smtpPassword", constant = REPLACEMENT)
-  SchoolSmtpSettingsDto smtpSettingsToDto(SchoolSmtpSettingsEntity schoolSmtpSettingsEntity);
+  @Mapping(
+      target = "smtpPasswordConfigured",
+      expression = "java(schoolSmtpSettingsEntity.getSmtpPassword() != null)")
+  SchoolSmtpSettingsResponseDto smtpSettingsToDto(
+      SchoolSmtpSettingsEntity schoolSmtpSettingsEntity);
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "apiKey", ignore = true)
@@ -30,10 +33,14 @@ public interface SchoolSettingsMapper {
   @Mapping(target = "school", ignore = true)
   void updateSchoolPaymentSettings(
       @MappingTarget SchoolPaymentSettingsEntity schoolPaymentSettingsEntity,
-      SchoolPaymentSettingsDto schoolPaymentSettingsDto);
+      SchoolPaymentSettingsRequestDto schoolPaymentSettingsRequestDto);
 
-  @Mapping(target = "apiKey", constant = REPLACEMENT)
-  @Mapping(target = "secretKey", constant = REPLACEMENT)
-  SchoolPaymentSettingsDto paymentSettingsToDto(
+  @Mapping(
+      target = "apiKeyConfigured",
+      expression = "java(schoolPaymentSettingsEntity.getApiKey() != null)")
+  @Mapping(
+      target = "secretKeyConfigured",
+      expression = "java(schoolPaymentSettingsEntity.getSecretKey() != null)")
+  SchoolPaymentSettingsResponseDto paymentSettingsToDto(
       SchoolPaymentSettingsEntity schoolPaymentSettingsEntity);
 }
