@@ -2,7 +2,6 @@ package org.example.schoolcrm.application.service;
 
 import static org.example.schoolcrm.common.Constants.REPLACEMENT;
 
-import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.val;

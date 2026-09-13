@@ -6,13 +6,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import org.example.schoolcrm.infrastructure.config.JwtProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
-
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -23,6 +16,12 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import lombok.RequiredArgsConstructor;
+import org.example.schoolcrm.infrastructure.config.JwtProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -43,8 +42,8 @@ public class JwtProvider {
   @PostConstruct
   public void setKeys()
       throws java.io.IOException,
-      java.security.NoSuchAlgorithmException,
-      java.security.spec.InvalidKeySpecException {
+          java.security.NoSuchAlgorithmException,
+          java.security.spec.InvalidKeySpecException {
     privateKey = loadPrivateKey();
     publicKey = loadPublicKey();
   }
@@ -58,7 +57,6 @@ public class JwtProvider {
             .claim(SCHOOL_ID_FIELD, schoolId)
             .issuedAt(new Date())
             .expiration(new Date(System.currentTimeMillis() + jwtProperties.getExpirationInMs()));
-
 
     if (passwordLastChangedAt != null) {
       builder.claim(PASSWORD_LAST_CHANGED_AT_FIELD, passwordLastChangedAt.getEpochSecond());
@@ -89,8 +87,8 @@ public class JwtProvider {
 
   private PrivateKey loadPrivateKey()
       throws java.io.IOException,
-      java.security.NoSuchAlgorithmException,
-      java.security.spec.InvalidKeySpecException {
+          java.security.NoSuchAlgorithmException,
+          java.security.spec.InvalidKeySpecException {
     var key =
         new ClassPathResource(jwtProperties.getPrivateKeyPath()).getInputStream().readAllBytes();
     var sanitizedKey = prepareRsaKeys(new String(key));
@@ -102,8 +100,8 @@ public class JwtProvider {
 
   private PublicKey loadPublicKey()
       throws java.io.IOException,
-      java.security.NoSuchAlgorithmException,
-      java.security.spec.InvalidKeySpecException {
+          java.security.NoSuchAlgorithmException,
+          java.security.spec.InvalidKeySpecException {
     var key =
         new ClassPathResource(jwtProperties.getPublicKeyPath()).getInputStream().readAllBytes();
     var sanitizedKey = prepareRsaKeys(new String(key));
