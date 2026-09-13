@@ -32,10 +32,12 @@ app:
   cookies:
     secure: false
 
-jwt:
-  expiration-in-ms: 60000
-  refresh-token-expiration-in-days: 7
-  private-key-path: file:${JWT_PRIVATE_KEY_PATH}
-  public-key-path: file:${JWT_PUBLIC_KEY_PATH}
-  password-change-leeway-seconds: 2
-
+security:
+  encryption:
+    key: ${ENCRYPTION_KEY}
+  jwt:
+    expiration-in-ms: 60000
+    refresh-token-expiration-in-days: 7
+    private-key-path: file:${JWT_PRIVATE_KEY_PATH}
+    public-key-path: file:${JWT_PUBLIC_KEY_PATH}
+    password-change-leeway-seconds: 2

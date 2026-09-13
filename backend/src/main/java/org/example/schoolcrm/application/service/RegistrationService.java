@@ -29,6 +29,7 @@ public class RegistrationService {
   private final PasswordEncoder passwordEncoder;
   private final EmailVerificationService emailVerificationService;
   private final MailService mailService;
+  private final SchoolSettingsService schoolSettingsService;
 
   @Transactional
   public UserRegistrationResponse register(UserRegistrationDto userRegistrationDto) {
@@ -36,7 +37,9 @@ public class RegistrationService {
       throw new UserAlreadyExistsException();
     }
 
-    val storedSchool = schoolService.createSchool(userRegistrationDto.schoolName());
+    val storedSchool =
+        schoolService.createSchool(
+            userRegistrationDto.schoolName(), userRegistrationDto.timezone());
 
     val user = userMapper.registerUser(userRegistrationDto);
 

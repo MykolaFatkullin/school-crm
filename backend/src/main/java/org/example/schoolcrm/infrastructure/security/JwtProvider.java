@@ -31,7 +31,6 @@ public class JwtProvider {
   private static final String KEYS_REGEX = "-----.*?-----|\\s+";
   private static final String ALGORITHM = "RSA";
   private static final String ROLE_FIELD = "role";
-  private static final String SCHOOL_ID_FIELD = "schoolId";
   private static final String PASSWORD_LAST_CHANGED_AT_FIELD = "passwordLastChangedAt";
 
   private PrivateKey privateKey;
@@ -56,10 +55,6 @@ public class JwtProvider {
             .claim(ROLE_FIELD, role)
             .issuedAt(new Date())
             .expiration(new Date(System.currentTimeMillis() + jwtProperties.getExpirationInMs()));
-
-    if (schoolId != null) {
-      builder.claim(SCHOOL_ID_FIELD, schoolId.toString());
-    }
 
     if (passwordLastChangedAt != null) {
       builder.claim(PASSWORD_LAST_CHANGED_AT_FIELD, passwordLastChangedAt.getEpochSecond());

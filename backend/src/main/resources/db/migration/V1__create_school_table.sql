@@ -1,5 +1,6 @@
 CREATE TABLE schools
 (
-    id   UUID PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    id       UUID PRIMARY KEY,
+    name     VARCHAR(255) NOT NULL,
+    timezone VARCHAR(255) NOT NULL
 )
