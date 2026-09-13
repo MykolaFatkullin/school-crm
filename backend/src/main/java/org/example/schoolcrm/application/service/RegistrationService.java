@@ -36,7 +36,9 @@ public class RegistrationService {
       throw new UserAlreadyExistsException();
     }
 
-    val storedSchool = schoolService.createSchool(userRegistrationDto.schoolName());
+    val storedSchool =
+        schoolService.createSchool(
+            userRegistrationDto.schoolName(), userRegistrationDto.timezone());
 
     val user = userMapper.registerUser(userRegistrationDto);
 

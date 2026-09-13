@@ -1,5 +1,7 @@
 package org.example.schoolcrm.web;
 
+import static org.example.schoolcrm.common.Constants.NOTIFICATION_PREFIX;
+
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/notifications")
+@RequestMapping(NOTIFICATION_PREFIX)
 @RequiredArgsConstructor
 @Slf4j
 public class NotificationController {

@@ -1,5 +1,6 @@
 package org.example.schoolcrm.web;
 
+import static org.example.schoolcrm.common.Constants.AUTH_PREFIX;
 import static org.example.schoolcrm.web.auth.RefreshTokenCookieFactory.dropRefreshCookie;
 import static org.example.schoolcrm.web.auth.RefreshTokenCookieFactory.getCookieForRefresh;
 
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(AUTH_PREFIX)
 @RequiredArgsConstructor
 public class AuthController {
 
