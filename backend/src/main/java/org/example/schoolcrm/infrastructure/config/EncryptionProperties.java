@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
 @ConfigurationProperties(prefix = "security.encryption")
-public class EncryptionProperties {
+public final class EncryptionProperties {
 
   private final byte[] key;
 

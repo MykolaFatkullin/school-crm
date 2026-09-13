@@ -20,6 +20,7 @@ public class SchoolSettingsService {
 
   private final SchoolSmtpSettingsRepository schoolSmtpSettingsRepository;
   private final SchoolPaymentSettingsRepository schoolPaymentSettingsRepository;
+  private final SchoolService schoolService;
   private final SchoolSettingsMapper schoolSettingsMapper;
   private final AesEncryptionService aesEncryptionService;
 
@@ -29,6 +30,11 @@ public class SchoolSettingsService {
         schoolSmtpSettingsRepository
             .findBySchoolId(schoolId)
             .orElseGet(SchoolSmtpSettingsEntity::new);
+
+    if (storedEntity.getSchool() == null) {
+      val school = schoolService.findById(schoolId);
+      storedEntity.setSchool(school);
+    }
 
     schoolSettingsMapper.updateSchoolSmtpSettings(storedEntity, schoolSmtpSettingsDto);
 
@@ -56,6 +62,11 @@ public class SchoolSettingsService {
         schoolPaymentSettingsRepository
             .findBySchoolId(schoolId)
             .orElseGet(SchoolPaymentSettingsEntity::new);
+
+    if (storedPaymentSettings.getSchool() == null) {
+      val school = schoolService.findById(schoolId);
+      storedPaymentSettings.setSchool(school);
+    }
 
     schoolSettingsMapper.updateSchoolPaymentSettings(storedPaymentSettings, schoolSmtpSettingsDto);
 

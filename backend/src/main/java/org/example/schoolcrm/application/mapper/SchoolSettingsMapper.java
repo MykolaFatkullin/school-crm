@@ -14,6 +14,7 @@ public interface SchoolSettingsMapper {
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "smtpPassword", ignore = true)
+  @Mapping(target = "school", ignore = true)
   void updateSchoolSmtpSettings(
       @MappingTarget SchoolSmtpSettingsEntity schoolSmtpSettingsEntity,
       SchoolSmtpSettingsDto schoolSmtpSettingsDto);
@@ -24,6 +25,7 @@ public interface SchoolSettingsMapper {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "apiKey", ignore = true)
   @Mapping(target = "secretKey", ignore = true)
+  @Mapping(target = "school", ignore = true)
   void updateSchoolPaymentSettings(
       @MappingTarget SchoolPaymentSettingsEntity schoolSmtpSettingsEntity,
       SchoolPaymentSettingsDto schoolPaymentSettingsDto);

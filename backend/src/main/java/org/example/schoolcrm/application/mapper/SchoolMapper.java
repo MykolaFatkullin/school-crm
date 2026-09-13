@@ -3,6 +3,7 @@ package org.example.schoolcrm.application.mapper;
 import org.example.schoolcrm.infrastructure.persistence.entity.SchoolEntity;
 import org.example.schoolcrm.web.dto.school.SchoolDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 
@@ -10,5 +11,6 @@ import org.mapstruct.MappingTarget;
 public interface SchoolMapper {
   SchoolDto toSchoolDto(SchoolEntity schoolEntity);
 
+  @Mapping(target = "id", ignore = true)
   void updateSchoolEntity(@MappingTarget SchoolEntity schoolEntity, SchoolDto schoolDto);
 }
