@@ -1,5 +1,7 @@
 package org.example.schoolcrm.application.mapper;
 
+import static org.example.schoolcrm.common.Constants.REPLACEMENT;
+
 import org.example.schoolcrm.infrastructure.persistence.entity.SchoolPaymentSettingsEntity;
 import org.example.schoolcrm.infrastructure.persistence.entity.SchoolSmtpSettingsEntity;
 import org.example.schoolcrm.web.dto.school.SchoolPaymentSettingsDto;
@@ -19,7 +21,7 @@ public interface SchoolSettingsMapper {
       @MappingTarget SchoolSmtpSettingsEntity schoolSmtpSettingsEntity,
       SchoolSmtpSettingsDto schoolSmtpSettingsDto);
 
-  @Mapping(target = "smtpPassword", constant = "******")
+  @Mapping(target = "smtpPassword", constant = REPLACEMENT)
   SchoolSmtpSettingsDto smtpSettingsToDto(SchoolSmtpSettingsEntity schoolSmtpSettingsEntity);
 
   @Mapping(target = "id", ignore = true)
@@ -30,8 +32,8 @@ public interface SchoolSettingsMapper {
       @MappingTarget SchoolPaymentSettingsEntity schoolSmtpSettingsEntity,
       SchoolPaymentSettingsDto schoolPaymentSettingsDto);
 
-  @Mapping(target = "apiKey", constant = "******")
-  @Mapping(target = "secretKey", constant = "******")
+  @Mapping(target = "apiKey", constant = REPLACEMENT)
+  @Mapping(target = "secretKey", constant = REPLACEMENT)
   SchoolPaymentSettingsDto paymentSettingsToDto(
-      SchoolPaymentSettingsEntity schoolSmtpSettingsEntity);
+      SchoolPaymentSettingsEntity schoolPaymentSettingsEntity);
 }

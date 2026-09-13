@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AesEncryptionService {
 
-  private static final String ALGORITHM = "AES/DCM/NoPadding";
+  private static final String ALGORITHM = "AES/GCM/NoPadding";
   private static final int IV_LENGTH = 12;
   private static final int TAG_LENGTH = 128;
 

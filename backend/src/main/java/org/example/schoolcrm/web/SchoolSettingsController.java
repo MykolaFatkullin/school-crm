@@ -2,6 +2,7 @@ package org.example.schoolcrm.web;
 
 import static org.example.schoolcrm.common.Constants.SCHOOL_PREFIX;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.example.schoolcrm.application.service.SchoolSettingsService;
@@ -28,7 +29,7 @@ public class SchoolSettingsController {
   @PatchMapping("/settings/smtp")
   public ResponseEntity<SchoolSmtpSettingsDto> updateSmtpSettings(
       @AuthenticationPrincipal UserPrincipal principal,
-      @RequestBody SchoolSmtpSettingsDto schoolSmtpSettingsDto) {
+      @RequestBody @Valid SchoolSmtpSettingsDto schoolSmtpSettingsDto) {
     val settings =
         schoolSettingsService.updateSmtpSettings(principal.schoolId(), schoolSmtpSettingsDto);
 
@@ -46,7 +47,7 @@ public class SchoolSettingsController {
   @PatchMapping("/settings/payment")
   public ResponseEntity<SchoolPaymentSettingsDto> updatePaymentSettings(
       @AuthenticationPrincipal UserPrincipal principal,
-      SchoolPaymentSettingsDto schoolPaymentSettingsDto) {
+      @RequestBody @Valid SchoolPaymentSettingsDto schoolPaymentSettingsDto) {
     val settings =
         schoolSettingsService.updatePaymentSettings(principal.schoolId(), schoolPaymentSettingsDto);
 

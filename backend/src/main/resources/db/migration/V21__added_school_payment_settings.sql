@@ -1,8 +1,8 @@
 CREATE TABLE school_payment_settings
 (
     id                       UUID PRIMARY KEY,
-    api_key                  VARCHAR(255)  NOT NULL,
-    secret_key               VARCHAR(255)  NOT NULL,
+    api_key                  VARCHAR(512)  NOT NULL,
+    secret_key               VARCHAR(512)  NOT NULL,
     currency                 VARCHAR(255)  NOT NULL,
     tax_rate_percentage      DECIMAL(5, 2) NOT NULL,
     invoice_prefix           VARCHAR(255)  NOT NULL,

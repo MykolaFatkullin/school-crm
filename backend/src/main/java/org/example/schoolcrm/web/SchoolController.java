@@ -2,6 +2,7 @@ package org.example.schoolcrm.web;
 
 import static org.example.schoolcrm.common.Constants.SCHOOL_PREFIX;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.example.schoolcrm.application.service.SchoolService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +32,7 @@ public class SchoolController {
 
   @PatchMapping
   public ResponseEntity<SchoolDto> updateSchool(
-      @AuthenticationPrincipal UserPrincipal principal, SchoolDto schoolDto) {
+      @AuthenticationPrincipal UserPrincipal principal, @RequestBody @Valid SchoolDto schoolDto) {
     val updatedSchool = schoolService.updateSchoolInfo(schoolDto, principal.userId());
 
     return ResponseEntity.ok(updatedSchool);

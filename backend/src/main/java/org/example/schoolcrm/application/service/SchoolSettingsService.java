@@ -1,5 +1,7 @@
 package org.example.schoolcrm.application.service;
 
+import static org.example.schoolcrm.common.Constants.REPLACEMENT;
+
 import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -96,7 +98,7 @@ public class SchoolSettingsService {
       return storedValue;
     }
 
-    if (newValue == null) {
+    if (newValue == null || storedValue.equals(REPLACEMENT)) {
       return storedValue;
     }
 

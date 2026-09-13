@@ -17,7 +17,7 @@ public interface SchoolPaymentSettingsRepository
           """
           SELECT settings
           FROM SchoolPaymentSettingsEntity settings
-          JOIN SchoolEntity school
+          JOIN settings.school school
           WHERE school.id = :schoolId
       """)
   Optional<SchoolPaymentSettingsEntity> findBySchoolId(@Param("schoolId") UUID schoolId);

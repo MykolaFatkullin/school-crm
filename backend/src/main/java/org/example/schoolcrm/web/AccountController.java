@@ -3,6 +3,7 @@ package org.example.schoolcrm.web;
 import static org.example.schoolcrm.common.Constants.ACCOUNT_PREFIX;
 import static org.example.schoolcrm.web.auth.RefreshTokenCookieFactory.dropRefreshCookie;
 
+import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +57,7 @@ public class AccountController {
   @PatchMapping("/change-password")
   public ResponseEntity<Void> changeAccountPassword(
       @AuthenticationPrincipal UserPrincipal principal,
-      @RequestBody ChangeAccountPasswordDto changeAccountPasswordDto) {
+      @RequestBody @Valid ChangeAccountPasswordDto changeAccountPasswordDto) {
     accountService.changeAccountPassword(principal.userId(), changeAccountPasswordDto);
     val cookie = dropRefreshCookie(appProperties.getCookies().isSecure());
 

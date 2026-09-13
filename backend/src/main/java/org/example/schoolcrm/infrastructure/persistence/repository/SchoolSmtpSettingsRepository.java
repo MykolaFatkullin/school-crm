@@ -17,7 +17,7 @@ public interface SchoolSmtpSettingsRepository
           """
           SELECT settings
           FROM SchoolSmtpSettingsEntity settings
-          JOIN SchoolEntity school
+          JOIN settings.school school
           WHERE school.id = :schoolId
       """)
   Optional<SchoolSmtpSettingsEntity> findBySchoolId(@Param("schoolId") UUID schoolId);
