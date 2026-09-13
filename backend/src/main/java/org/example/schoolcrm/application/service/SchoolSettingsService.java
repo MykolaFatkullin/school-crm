@@ -15,6 +15,7 @@ import org.example.schoolcrm.infrastructure.persistence.repository.SchoolSmtpSet
 import org.example.schoolcrm.web.dto.school.SchoolPaymentSettingsDto;
 import org.example.schoolcrm.web.dto.school.SchoolSmtpSettingsDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -26,6 +27,7 @@ public class SchoolSettingsService {
   private final SchoolSettingsMapper schoolSettingsMapper;
   private final AesEncryptionService aesEncryptionService;
 
+  @Transactional
   public SchoolSmtpSettingsDto updateSmtpSettings(
       UUID schoolId, SchoolSmtpSettingsDto schoolSmtpSettingsDto) {
     val storedEntity =
@@ -58,6 +60,7 @@ public class SchoolSettingsService {
     return schoolSettingsMapper.smtpSettingsToDto(storedSmtpSettings);
   }
 
+  @Transactional
   public SchoolPaymentSettingsDto updatePaymentSettings(
       UUID schoolId, SchoolPaymentSettingsDto schoolSmtpSettingsDto) {
     val storedPaymentSettings =
@@ -98,7 +101,7 @@ public class SchoolSettingsService {
       return storedValue;
     }
 
-    if (newValue == null || storedValue.equals(REPLACEMENT)) {
+    if (newValue == null || newValue.equals(REPLACEMENT)) {
       return storedValue;
     }
 

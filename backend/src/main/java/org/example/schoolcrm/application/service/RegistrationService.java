@@ -29,7 +29,6 @@ public class RegistrationService {
   private final PasswordEncoder passwordEncoder;
   private final EmailVerificationService emailVerificationService;
   private final MailService mailService;
-  private final SchoolSettingsService schoolSettingsService;
 
   @Transactional
   public UserRegistrationResponse register(UserRegistrationDto userRegistrationDto) {

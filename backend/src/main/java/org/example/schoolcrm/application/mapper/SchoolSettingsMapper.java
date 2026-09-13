@@ -29,7 +29,7 @@ public interface SchoolSettingsMapper {
   @Mapping(target = "secretKey", ignore = true)
   @Mapping(target = "school", ignore = true)
   void updateSchoolPaymentSettings(
-      @MappingTarget SchoolPaymentSettingsEntity schoolSmtpSettingsEntity,
+      @MappingTarget SchoolPaymentSettingsEntity schoolPaymentSettingsEntity,
       SchoolPaymentSettingsDto schoolPaymentSettingsDto);
 
   @Mapping(target = "apiKey", constant = REPLACEMENT)
