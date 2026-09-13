@@ -52,7 +52,7 @@ public class AuthService {
     if (!user.isActivated()) {
       throw new AuthException("Unauthorized");
     }
-//while we haven't implemented super admin, school will never be null
+    // while we haven't implemented super admin, school will never be null
     var jwt =
         jwtProvider.generateAccessToken(
             user.getId(),
@@ -78,7 +78,7 @@ public class AuthService {
     refreshTokenService.deleteByToken(existing.getToken());
 
     var user = userService.findById(existing.getUserId());
-//while we haven't implemented super admin, school will never be null
+    // while we haven't implemented super admin, school will never be null
     var access =
         jwtProvider.generateAccessToken(
             user.getId(),

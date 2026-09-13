@@ -4,7 +4,7 @@ import java.util.Base64;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-//ConfigurationPropertiesScan enabled at the main file
+// ConfigurationPropertiesScan enabled at the main file
 @Getter
 @ConfigurationProperties(prefix = "security.encryption")
 public final class EncryptionProperties {
