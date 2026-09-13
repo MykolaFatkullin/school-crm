@@ -1,9 +1,6 @@
 package org.example.schoolcrm.application.service.auth;
 
 import jakarta.mail.MessagingException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -16,13 +13,16 @@ import org.example.schoolcrm.common.exception.validation.ValidationException;
 import org.example.schoolcrm.domain.MailType;
 import org.example.schoolcrm.domain.model.LoginResult;
 import org.example.schoolcrm.infrastructure.config.JwtProperties;
-import org.example.schoolcrm.infrastructure.persistence.entity.UserEntity;
 import org.example.schoolcrm.infrastructure.security.JwtProvider;
 import org.example.schoolcrm.web.dto.auth.ChangePasswordRequest;
 import org.example.schoolcrm.web.dto.auth.LoginRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -58,7 +58,7 @@ public class AuthService {
         jwtProvider.generateAccessToken(
             user.getId(),
             user.getRole().name(),
-            getSchoolId(user),
+            user.getSchool().getId(),
             user.getPasswordLastChangedAt());
 
     var expiresAt =
@@ -84,7 +84,7 @@ public class AuthService {
         jwtProvider.generateAccessToken(
             user.getId(),
             user.getRole().name(),
-            getSchoolId(user),
+            user.getSchool().getId(),
             user.getPasswordLastChangedAt());
 
     var newToken = refreshTokenService.create(user.getId(), existing.getExpiresAt());
@@ -135,9 +135,5 @@ public class AuthService {
     userService.save(user);
     emailVerificationService.dropToken(request.token());
     refreshTokenService.dropTokenByUser(user.getId());
-  }
-
-  private UUID getSchoolId(UserEntity user) {
-    return user.getSchool() != null ? user.getSchool().getId() : null;
   }
 }

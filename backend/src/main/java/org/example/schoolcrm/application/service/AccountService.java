@@ -1,10 +1,9 @@
 package org.example.schoolcrm.application.service;
 
-import java.time.Instant;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.example.schoolcrm.application.mapper.AccountMapper;
+import org.example.schoolcrm.application.service.auth.RefreshTokenService;
 import org.example.schoolcrm.common.exception.FieldError;
 import org.example.schoolcrm.common.exception.validation.PasswordChangeValidationException;
 import org.example.schoolcrm.web.dto.account.AccountInfoResponse;
@@ -13,6 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class AccountService {
@@ -20,6 +22,7 @@ public class AccountService {
   private final UserService userService;
   private final AccountMapper accountMapper;
   private final PasswordEncoder passwordEncoder;
+  private final RefreshTokenService refreshTokenService;
 
   public AccountInfoResponse getAccountInfo(UUID userId) {
     val user = userService.findById(userId);
@@ -46,5 +49,7 @@ public class AccountService {
 
     user.setPassword(passwordEncoder.encode(changeAccountPasswordDto.newPassword()));
     user.setPasswordLastChangedAt(Instant.now());
+
+    refreshTokenService.dropTokenByUser(user.getId());
   }
 }
