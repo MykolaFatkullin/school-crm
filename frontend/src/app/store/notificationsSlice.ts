@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NotificationsResponseDto } from '../api/notifications/response';
+import { Notification } from '../../entities/notifications';
 
 type NotificationsState = {
   unreadCount: number;
-  notifications: NotificationsResponseDto[];
+  notifications: Notification[];
 };
 
 const initialState: NotificationsState = {
@@ -20,14 +20,14 @@ const notificationsSlice = createSlice({
     setUnreadCount: (state, action: PayloadAction<number>) => {
       state.unreadCount = action.payload;
     },
-    incrementUnreadCount: state => {
-      state.unreadCount += 1;
-    },
-    addNewNotification: (
-      state,
-      action: PayloadAction<NotificationsResponseDto>,
-    ) => {
-      state.notifications = [action.payload, ...state.notifications];
+    addNewNotification: (state, action: PayloadAction<Notification>) => {
+      const notification = action.payload;
+
+      if (state.notifications.some(item => item.id === notification.id)) {
+        return;
+      }
+
+      state.notifications.unshift(notification);
       state.unreadCount += 1;
     },
     readNotification: (state, action: PayloadAction<string>) => {
@@ -50,16 +50,10 @@ const notificationsSlice = createSlice({
       state.notifications = [];
       state.unreadCount = 0;
     },
-    appendNotifications: (
-      state,
-      action: PayloadAction<NotificationsResponseDto[]>,
-    ) => {
+    appendNotifications: (state, action: PayloadAction<Notification[]>) => {
       state.notifications = [...state.notifications, ...action.payload];
     },
-    setNotifications: (
-      state,
-      action: PayloadAction<NotificationsResponseDto[]>,
-    ) => {
+    setNotifications: (state, action: PayloadAction<Notification[]>) => {
       state.notifications = action.payload;
     },
   },
@@ -72,5 +66,6 @@ export const {
   readAllNotifications,
   removeNotifications,
   appendNotifications,
+  addNewNotification,
 } = notificationsSlice.actions;
 export default notificationsSlice.reducer;

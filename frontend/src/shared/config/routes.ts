@@ -24,4 +24,5 @@ export const ROUTES = {
   ADMINISTRATION_SCHOOL_SETTINGS: '/administration/school-settings',
   SETTINGS: '/settings',
   HELP: '/help',
+  MESSAGES: '/messages',
 };

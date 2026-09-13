@@ -31,7 +31,6 @@
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-
     transform: translateY(0) scale(1);
   }
 }
@@ -152,6 +151,7 @@
 
 .iconMail {
 }
+
 .notificationEmptyData {
   color: $color-text-secondary;
 }
