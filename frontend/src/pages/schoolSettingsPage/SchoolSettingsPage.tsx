@@ -1,5 +1,5 @@
 import { AppPageTitleBlock } from '../../shared/components/appPageTitleBlock';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useMeQuery } from '../../app/api/account/accountApi';
 import { ROUTES } from '../../shared/config';
 import { ContentCard } from '../../shared/components/contentCard';
@@ -26,7 +26,6 @@ const getFormByActiveSection = (activeSection: SettingsSection) => {
 };
 
 export const SchoolSettingsPage = () => {
-  const navigate = useNavigate();
   const [activeSection, setActiveSection] =
     useState<SettingsSection>('school-information');
   const { data: me } = useMeQuery();
@@ -38,7 +37,7 @@ export const SchoolSettingsPage = () => {
   const userRole = me.role;
 
   if (userRole !== 'ADMIN') {
-    navigate(ROUTES.DASHBOARD);
+    return <Navigate to={ROUTES.DASHBOARD} replace />;
   }
 
   return (

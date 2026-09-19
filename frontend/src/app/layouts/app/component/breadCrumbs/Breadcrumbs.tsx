@@ -39,11 +39,7 @@ export const Breadcrumbs = () => {
           {index === items.length - 1 ? (
             item.label
           ) : (
-            <ReactLink
-              to={item.path}
-              type={'primaryText'}
-              className={styles.BreadcrumbsLink}
-            >
+            <ReactLink to={item.path} className={styles.BreadcrumbsLink}>
               {item.label}
             </ReactLink>
           )}
