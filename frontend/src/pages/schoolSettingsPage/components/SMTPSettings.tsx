@@ -46,7 +46,7 @@ export const SMTPSettings = () => {
       smtpPort: storedSettings.smtpPort ?? 1,
       smtpUsername: storedSettings.smtpUsername ?? '',
       smtpPassword: '',
-      encryption: storedSettings.encryption ?? '',
+      encryption: storedSettings.encryption,
       fromEmail: storedSettings.fromEmail ?? '',
       fromName: storedSettings.fromName ?? '',
     });
