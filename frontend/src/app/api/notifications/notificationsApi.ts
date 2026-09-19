@@ -3,7 +3,7 @@ import { NotificationsMetaResponse } from './response';
 import { PageResponse } from '../../model';
 import { NotificationsQueryParams } from './request';
 import { Notification } from '../../../entities/notifications';
-
+//verified, and be expects on singular
 const NOTIFICATIONS_ENDPOINT = '/api/notification';
 
 const notificationsApi = baseApi.injectEndpoints({
