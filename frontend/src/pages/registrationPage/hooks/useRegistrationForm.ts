@@ -19,7 +19,9 @@ export const useRegistrationForm = (
   });
 
   const submit = async (form: RegisterForm) => {
-    const request = mapRegisterFormToRequest(form);
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    const request = mapRegisterFormToRequest(form, timeZone);
 
     const response = await register(request).unwrap();
 

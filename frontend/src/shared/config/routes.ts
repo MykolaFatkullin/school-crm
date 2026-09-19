@@ -22,7 +22,10 @@ export const ROUTES = {
   ADMINISTRATION_BILLING: '/administration/billing',
   ADMINISTRATION_REPORTS: '/administration/reports',
   ADMINISTRATION_SCHOOL_SETTINGS: '/administration/school-settings',
-  SETTINGS: '/settings',
+  SCHOOL_INFO_SETTINGS: '/school-info',
+  PAYMENT_SETTINGS: '/payment',
+  SMTP_SETTINGS: '/smtp',
+  CHANGE_PASSWORD: '/change-password',
   HELP: '/help',
   MESSAGES: '/messages',
 };

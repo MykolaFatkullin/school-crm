@@ -3,6 +3,7 @@ import { parseApiError } from './errorParser';
 import { setGlobalError } from '../../store/globalErrorSlice';
 import { ErrorCode } from '../../model/ErrorCode';
 import { toast } from '../../../shared/components/toast';
+import { RootState } from '../../store/store';
 
 const isCriticalRequest = (url: string) => {
   return (
@@ -35,6 +36,13 @@ export const handleErrors = (
   url: string,
 ) => {
   if (isUnauthorized(error.status)) {
+    return;
+  }
+
+  const isSessionEnded =
+    (api.getState() as RootState).auth.status === 'unauthenticated';
+
+  if (isSessionEnded && url === '/api/account/me') {
     return;
   }
 

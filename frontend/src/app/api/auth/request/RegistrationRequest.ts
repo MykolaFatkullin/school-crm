@@ -7,4 +7,5 @@ export interface RegistrationRequest {
   email: string;
   password: string;
   gender: Gender;
+  timezone: string;
 }

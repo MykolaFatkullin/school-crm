@@ -1,0 +1,7 @@
+@use '../../../shared/styles/mixins' as *;
+@use '../../../shared/styles/variables' as *;
+
+.paymentProvider {
+  color: $color-text-secondary;
+  @include font(caption);
+}

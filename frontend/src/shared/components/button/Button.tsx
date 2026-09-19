@@ -9,8 +9,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
   variant: ButtonType;
   children: React.ReactNode;
-  inlineText?: string;
-  containerClassName?: string;
+  fullWidth?: boolean;
 }
 
 export const Button = ({
@@ -18,30 +17,24 @@ export const Button = ({
   isLoading,
   variant,
   children,
-  inlineText,
-  containerClassName,
+  fullWidth = true,
   ...buttonProps
 }: Props) => {
   return (
-    <div
-      className={classNames(containerClassName, {
-        [styles.buttonContainer]: variant !== 'iconButton',
-      })}
-    >
-      {inlineText && (variant === 'defaultText' || variant === 'text') && (
-        <span className={styles.inlineText}>{inlineText}</span>
+    <button
+      {...buttonProps}
+      className={classNames(
+        styles.button,
+        styles[variant],
+        !fullWidth && styles.notFullWidth,
       )}
-      <button
-        {...buttonProps}
-        className={classNames(styles.button, styles[variant])}
-        disabled={disabled || isLoading}
-      >
-        {isLoading ? (
-          <LoaderCircle className={styles.spinner} size={18} />
-        ) : (
-          children
-        )}
-      </button>
-    </div>
+      disabled={disabled || isLoading}
+    >
+      {isLoading ? (
+        <LoaderCircle className={styles.spinner} size={18} />
+      ) : (
+        children
+      )}
+    </button>
   );
 };

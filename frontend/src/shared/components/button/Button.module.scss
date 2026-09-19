@@ -1,20 +1,6 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
-.buttonContainer {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.inlineText {
-  color: $color-text-secondary;
-  @include font(caption);
-}
-
 .button {
   width: 100%;
   cursor: pointer;
@@ -36,6 +22,10 @@
     pointer-events: none;
     box-shadow: none;
   }
+}
+
+.notFullWidth {
+  width: auto;
 }
 
 .spinner {
@@ -231,22 +221,5 @@
 
   &:disabled {
     color: $color-gray-400;
-  }
-}
-
-.iconButton {
-  width: max-content;
-  padding: 8px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $color-background;
-    border-radius: 8px;
-  }
-
-  &:active {
-    background-color: $color-gray-200;
   }
 }
