@@ -12,7 +12,6 @@ import { Controller } from 'react-hook-form';
 import {
   createEmailValidation,
   createNonEmptyValidation,
-  createNonNegativeIntegerValidation,
 } from '../../../shared/config/formValidation';
 import { FormActions } from '../../../shared/components/formActions';
 import { Button } from '../../../shared/components/button';
@@ -44,7 +43,7 @@ export const SMTPSettings = () => {
 
     reset({
       smtpHost: storedSettings.smtpHost ?? '',
-      smtpPort: storedSettings.smtpPort ?? '',
+      smtpPort: storedSettings.smtpPort ?? 1,
       smtpUsername: storedSettings.smtpUsername ?? '',
       smtpPassword: '',
       encryption: storedSettings.encryption ?? '',
@@ -58,10 +57,19 @@ export const SMTPSettings = () => {
     createNonEmptyValidation<SchoolSmtpSettingsRequest, 'smtpHost'>(),
   );
 
-  const smtpPort = register(
-    'smtpPort',
-    createNonNegativeIntegerValidation<SchoolSmtpSettingsRequest, 'smtpPort'>(),
-  );
+  const smtpPort = register('smtpPort', {
+    valueAsNumber: true,
+    required: {
+      value: true,
+      message: 'Please fill this field',
+    },
+    min: {
+      value: 1,
+      message: 'Value must be greater than or equal to 1',
+    },
+    validate: value =>
+      Number.isInteger(value) || 'Value must be a whole number',
+  });
 
   const smtpUsername = register(
     'smtpUsername',
@@ -102,7 +110,7 @@ export const SMTPSettings = () => {
         placeholder={'Enter Port'}
         type="number"
         step="1"
-        min="0"
+        min="1"
         error={errors.smtpPort?.message}
       />
       <Controller

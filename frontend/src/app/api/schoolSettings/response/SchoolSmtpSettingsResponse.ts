@@ -1,4 +1,4 @@
-import { SMTPEncryption } from '../request/SchoolSmtpSettingsRequest';
+import { SMTPEncryption } from '../request';
 
 export interface SchoolSmtpSettingsResponse {
   smtpHost: string;

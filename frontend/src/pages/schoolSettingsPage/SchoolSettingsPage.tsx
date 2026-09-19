@@ -11,6 +11,7 @@ import { SettingsSections } from './model/SettingsSection';
 import { SchoolSettings } from './components/SchoolSettings';
 import { SMTPSettings } from './components/SMTPSettings';
 import { PaymentSettings } from './components/PaymentSettings';
+import { UserRoles } from '../../entities/user/model';
 
 const getFormByActiveSection = (activeSection: SettingsSection) => {
   switch (activeSection) {
@@ -36,7 +37,7 @@ export const SchoolSettingsPage = () => {
 
   const userRole = me.role;
 
-  if (userRole !== 'ADMIN') {
+  if (userRole !== UserRoles.ADMIN) {
     return <Navigate to={ROUTES.DASHBOARD} replace />;
   }
 
