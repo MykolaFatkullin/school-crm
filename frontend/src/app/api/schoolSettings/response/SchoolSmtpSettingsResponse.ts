@@ -1,9 +1,11 @@
+import { SMTPEncryption } from '../request/SchoolSmtpSettingsRequest';
+
 export interface SchoolSmtpSettingsResponse {
   smtpHost: string;
   smtpPort: number;
   smtpUsername: string;
   smtpPasswordConfigured: boolean;
-  encryption: string;
+  encryption: SMTPEncryption;
   fromEmail: string;
   fromName: string;
 }

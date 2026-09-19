@@ -1,2 +1,5 @@
-export type { SchoolSmtpSettingsRequest } from './SchoolSmtpSettingsRequest';
+export type {
+  SchoolSmtpSettingsRequest,
+  SMTPEncryption,
+} from './SchoolSmtpSettingsRequest';
 export type { SchoolPaymentSettingsRequest } from './SchoolPaymentSettingsRequest';

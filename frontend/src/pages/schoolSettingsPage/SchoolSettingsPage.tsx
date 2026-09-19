@@ -41,7 +41,7 @@ export const SchoolSettingsPage = () => {
   }
 
   return (
-    <div className={styles.container}>
+    <>
       <AppPageTitleBlock
         title={'School Settings'}
         subtitle={'Configure school information and preferences'}
@@ -61,6 +61,6 @@ export const SchoolSettingsPage = () => {
           {getFormByActiveSection(activeSection)}
         </ContentCard>
       </div>
-    </div>
+    </>
   );
 };

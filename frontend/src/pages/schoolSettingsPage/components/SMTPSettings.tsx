@@ -3,7 +3,10 @@ import { Input } from '../../../shared/components/input';
 import { useGetSmtpSettingsQuery } from '../../../app/api/schoolSettings/schoolSettingsApi';
 import { useEffect } from 'react';
 import { useAppForm } from '../../../shared/hooks';
-import { SchoolSmtpSettingsRequest } from '../../../app/api/schoolSettings/request';
+import {
+  SchoolSmtpSettingsRequest,
+  SMTPEncryption,
+} from '../../../app/api/schoolSettings/request';
 import { Select } from '../../../shared/components/select';
 import { Controller } from 'react-hook-form';
 import {
@@ -16,7 +19,7 @@ import { Button } from '../../../shared/components/button';
 import { useSmtpForm } from './hooks/useSmtpForm';
 import { Alert } from '../../../shared/components/alert';
 
-const encryptionValues = [
+const encryptionValues: { value: SMTPEncryption; label: string }[] = [
   { value: 'NONE', label: 'None' },
   { value: 'STARTTLS', label: 'STARTTLS' },
   { value: 'IMPLICIT_TLS', label: 'SSL/TLS' },

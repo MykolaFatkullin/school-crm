@@ -14,7 +14,10 @@ export const useSmtpForm = (
   const apiError = parseApiError(error);
 
   const update = async (settings: SchoolSmtpSettingsRequest) => {
-    await updateSmtp(settings).unwrap();
+    await updateSmtp({
+      ...settings,
+      smtpPassword: settings.smtpPassword?.trim() || null,
+    }).unwrap();
 
     toast.success('SMTP settings updated successfully');
   };
