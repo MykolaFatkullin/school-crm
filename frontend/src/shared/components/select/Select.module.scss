@@ -28,6 +28,7 @@
 }
 
 .selectTrigger > span {
+  padding: 16px;
   color: $color-text-secondary;
   @include font(body);
 }
@@ -40,7 +41,8 @@
   background-color: $color-white;
   display: flex;
   width: var(--radix-select-trigger-width);
-
+  overflow: auto;
+  max-height: 500px;
   margin-top: 8px;
   border-radius: 8px;
   border: 1px solid $color-gray-250;

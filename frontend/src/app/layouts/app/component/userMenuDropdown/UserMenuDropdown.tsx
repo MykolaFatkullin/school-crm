@@ -21,12 +21,12 @@ export const UserMenuDropdown = ({ isOpened, onRedirect }: Props) => {
     >
       <nav className={styles.navigation}>
         <NavLink
-          to={ROUTES.SETTINGS}
+          to={ROUTES.CHANGE_PASSWORD}
           className={styles.link}
           onClick={onRedirect}
         >
           <Settings size={20} />
-          Settings
+          Change password
         </NavLink>
         <NavLink to={ROUTES.HELP} className={styles.link} onClick={onRedirect}>
           <CircleQuestionMark size={20} />

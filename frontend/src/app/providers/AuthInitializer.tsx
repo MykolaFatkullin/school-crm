@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMeQuery } from '../api/account/accountApi';
+import { useGetSchoolQuery } from '../api/school/schoolApi';
 import { setAuthenticated, setUnauthenticated } from '../store/authSlice';
 import { LoadingPage } from '../../pages/loadingPage';
 import { useGetNotificationsMeta } from './hooks/useGetNotificationsMeta';
+import { RootState } from '../store/store';
 
 interface Props {
   children: React.ReactNode;
@@ -13,11 +15,20 @@ interface Props {
 export const AuthInitializer = ({ children, refreshSucceeded }: Props) => {
   const dispatch = useDispatch();
 
+  const authStatus = useSelector((state: RootState) => state.auth.status);
+  const skipAccountQueries =
+    !refreshSucceeded || authStatus === 'unauthenticated';
+
   const { isLoading, isSuccess, isError } = useMeQuery(undefined, {
-    skip: !refreshSucceeded,
+    skip: skipAccountQueries,
   });
 
-  const isNotificationsMetaLoading = useGetNotificationsMeta(!refreshSucceeded);
+  const { isLoading: isSchoolLoading } = useGetSchoolQuery(undefined, {
+    skip: skipAccountQueries,
+  });
+
+  const isNotificationsMetaLoading =
+    useGetNotificationsMeta(skipAccountQueries);
 
   useEffect(() => {
     if (!refreshSucceeded) {
@@ -35,7 +46,10 @@ export const AuthInitializer = ({ children, refreshSucceeded }: Props) => {
     }
   }, [refreshSucceeded, isSuccess, isError, dispatch]);
 
-  if (refreshSucceeded && (isLoading || isNotificationsMetaLoading)) {
+  const isApiLoading =
+    isLoading || isSchoolLoading || isNotificationsMetaLoading;
+
+  if (refreshSucceeded && isApiLoading) {
     return <LoadingPage />;
   }
 

@@ -1,5 +1,5 @@
 import styles from './MainAreaHeader.module.scss';
-import { Button } from '../../../../../shared/components/button';
+import { IconButton } from '../../../../../shared/components/iconButton';
 import { Icon } from '../../../../../shared/components/icons';
 import { Bell, ChevronDown } from 'lucide-react';
 import { SearchInput } from '../searchInput';
@@ -77,12 +77,11 @@ export const MainAreaHeader = () => {
         <SearchInput placeholder={'Search students, classes, teachers...'} />
       </div>
       <div className={styles.notificationButton} ref={notificationRef}>
-        <Button
-          variant="iconButton"
+        <IconButton
           onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
         >
           <Bell size={20} />
-        </Button>
+        </IconButton>
         {unreadNotifications > 0 && (
           <span className={styles.notificationCount}>{shownNotifications}</span>
         )}

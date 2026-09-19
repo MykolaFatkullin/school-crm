@@ -1,0 +1,19 @@
+@use '../../../../../shared/styles/variables' as *;
+@use '../../../../../shared/styles/mixins' as *;
+
+.Breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  @include font(caption);
+}
+
+.BreadcrumbsItem {
+  color: $color-text-secondary;
+}
+
+.BreadcrumbsLink {
+  text-decoration: none;
+  color: $color-primary;
+}

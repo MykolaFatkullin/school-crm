@@ -1,0 +1,12 @@
+@use '../../shared/styles/variables' as *;
+@use '../../shared/styles/mixins' as *;
+
+.contentContainer {
+  display: flex;
+  gap: 32px;
+}
+
+.sectionLabel {
+  @include font(body-bold);
+  margin-bottom: 20px;
+}

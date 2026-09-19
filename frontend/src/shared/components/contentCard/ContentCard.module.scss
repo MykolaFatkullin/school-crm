@@ -1,0 +1,9 @@
+@use '../../styles/variables' as *;
+
+.contentCard {
+  padding: 24px;
+  background-color: $color-white;
+  border: 1px solid $color-gray-200;
+  border-radius: 12px;
+  width: 100%;
+}

@@ -4,6 +4,7 @@ import { Gender } from '../../../entities/user/model/Gender.enum';
 
 export const mapRegisterFormToRequest = (
   form: RegisterForm,
+  timezone: string,
 ): RegistrationRequest => ({
   schoolName: form.schoolName,
   firstName: form.firstName,
@@ -11,4 +12,5 @@ export const mapRegisterFormToRequest = (
   email: form.email,
   password: form.password,
   gender: Gender[form.gender as keyof typeof Gender],
+  timezone: timezone,
 });

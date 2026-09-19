@@ -1,0 +1,17 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.appPageTitleBlock {
+  margin-top: 6px;
+  margin-bottom: 24px;
+  flex: 1;
+}
+
+.appPageTitleBlockTitle {
+  @include font(sub-heading);
+}
+
+.appPageTitleBlockSubtitle {
+  color: $color-text-secondary;
+  @include font(caption);
+}

@@ -6,5 +6,4 @@ export type ButtonType =
   | 'ghost'
   | 'text'
   | 'defaultText'
-  | 'dangerText'
-  | 'iconButton';
+  | 'dangerText';

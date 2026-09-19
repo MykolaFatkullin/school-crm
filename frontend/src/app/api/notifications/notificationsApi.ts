@@ -4,7 +4,7 @@ import { PageResponse } from '../../model';
 import { NotificationsQueryParams } from './request';
 import { Notification } from '../../../entities/notifications';
 
-const NOTIFICATIONS_ENDPOINT = '/api/notifications';
+const NOTIFICATIONS_ENDPOINT = '/api/notification';
 
 const notificationsApi = baseApi.injectEndpoints({
   endpoints: builder => ({

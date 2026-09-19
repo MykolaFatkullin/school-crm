@@ -1,0 +1,27 @@
+@use '../../styles/variables' as *;
+
+.iconButton {
+  width: max-content;
+  padding: 8px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: background-color $animation-speed;
+
+  &:hover {
+    background-color: $color-background;
+    border-radius: 8px;
+  }
+
+  &:active {
+    background-color: $color-gray-200;
+  }
+
+  &:disabled {
+    pointer-events: none;
+  }
+}

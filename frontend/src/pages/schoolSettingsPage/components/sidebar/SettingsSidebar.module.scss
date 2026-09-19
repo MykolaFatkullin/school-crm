@@ -1,0 +1,48 @@
+@use '../../../../shared/styles/variables' as *;
+@use '../../../../shared/styles/mixins' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  width: 240px;
+  gap: 14px;
+  padding: 8px 12px;
+  color: $color-text;
+  border-radius: 8px;
+  cursor: pointer;
+
+  @include font(caption);
+
+  &:hover {
+    background-color: $color-gray-100;
+  }
+}
+
+.itemActive {
+  background-color: $color-nav-selected;
+  color: $color-primary;
+  position: relative;
+
+  &:hover {
+    background-color: $color-nav-selected;
+  }
+
+  &::after {
+    position: absolute;
+    content: '';
+    display: block;
+    border-radius: 4px;
+    width: 3px;
+    height: 18px;
+    left: 0;
+    background-color: $color-primary;
+  }
+}
