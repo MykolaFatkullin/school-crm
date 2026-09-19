@@ -46,7 +46,9 @@ export const SMTPSettings = () => {
       smtpPort: storedSettings.smtpPort ?? 1,
       smtpUsername: storedSettings.smtpUsername ?? '',
       smtpPassword: '',
-      encryption: storedSettings.encryption,
+      encryption: encryptionValues.find(
+        v => v.value === storedSettings?.encryption,
+      )?.value,
       fromEmail: storedSettings.fromEmail ?? '',
       fromName: storedSettings.fromName ?? '',
     });
@@ -122,10 +124,6 @@ export const SMTPSettings = () => {
             message: 'Please choose encryption',
           },
         }}
-        defaultValue={
-          encryptionValues.find(v => v.value === storedSettings?.encryption)
-            ?.value
-        }
         render={({ field, fieldState }) => (
           <Select
             {...field}

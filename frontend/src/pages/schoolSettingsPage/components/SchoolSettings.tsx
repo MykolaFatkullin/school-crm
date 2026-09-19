@@ -10,6 +10,7 @@ import { useSchoolForm } from './hooks/useSchoolForm';
 import { Alert } from '../../../shared/components/alert';
 import { createNonEmptyValidation } from '../../../shared/config/formValidation';
 import { FormActions } from '../../../shared/components/formActions';
+import { useEffect } from 'react';
 
 export const SchoolSettings = () => {
   const { data: storedSettings } = useGetSchoolQuery();
@@ -19,6 +20,7 @@ export const SchoolSettings = () => {
     handleSubmit,
     formState: { errors },
     control,
+    reset,
   } = formMethods;
   const { update, isLoading, apiError } = useSchoolForm(formMethods);
 
@@ -29,6 +31,17 @@ export const SchoolSettings = () => {
 
   const schoolName = register('name', createNonEmptyValidation());
 
+  useEffect(() => {
+    if (!storedSettings) {
+      return;
+    }
+
+    reset({
+      name: storedSettings.name ?? '',
+      timezone: storedSettings.timezone ?? '',
+    });
+  }, [storedSettings, reset]);
+
   return (
     <Form onSubmit={handleSubmit(update)}>
       {apiError && (
@@ -37,7 +50,6 @@ export const SchoolSettings = () => {
       <Input
         {...schoolName}
         label={'School name'}
-        defaultValue={storedSettings?.name ?? ''}
         error={errors.name?.message}
         placeholder={'Enter school name'}
       />
@@ -50,7 +62,7 @@ export const SchoolSettings = () => {
             message: 'Please choose school timezone',
           },
         }}
-        defaultValue={storedSettings?.timezone}
+        defaultValue={''}
         render={({ field, fieldState }) => (
           <Select
             {...field}
