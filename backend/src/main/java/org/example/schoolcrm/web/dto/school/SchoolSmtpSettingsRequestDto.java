@@ -14,5 +14,4 @@ public record SchoolSmtpSettingsRequestDto(
     @Size(max = 255) String smtpPassword,
     @NotNull SMTPEncryption encryption,
     @NotBlank @Size(max = 255) String fromEmail,
-    @NotBlank @Size(max = 255) String fromName) {
-}
+    @NotBlank @Size(max = 255) String fromName) {}
